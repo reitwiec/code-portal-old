@@ -13,16 +13,16 @@
     "start": "webpack-dev-server --open"
   },
   "author": "IECSE <hello@iecsemanipal.com> (https://iecsemanipal.com)",
-	"contributors": [
-		"Jyotinder Singh",
-		"Reitwiec",
-		"Steve Roche",
-		"Surbhi Pachnanda"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Shreyansh97/Code-Portal.git"
-	},
+  "contributors": [
+    "Jyotinder Singh",
+    "Reitwiec",
+    "Steve Roche",
+    "Surbhi Pachnanda"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shreyansh97/Code-Portal.git"
+  },
   "license": "MIT",
   "dependencies": {
     "react": "^16.6.1",
@@ -30,7 +30,10 @@
     "react-redux": "^5.1.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",
