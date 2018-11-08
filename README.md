@@ -4,7 +4,8 @@
 	brew install yarn
 
 ## Install the dependencies
-	To install all the dependencies just run the command `yarn install`
+	To install all the dependencies just run the command 
+	`yarn install`
 
 ## Run the Webpack dev server: 
 	yarn run start
