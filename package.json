@@ -1,20 +1,36 @@
 {
-  "name": "code-portal",
+  "name": "code-portal-client-side",
+  "description": "Frontend for IECSE Code Portal",
   "version": "1.0.0",
   "main": "index.js",
-  "babel":{
-    "presets":[
+  "babel": {
+    "presets": [
       "@babel/preset-env",
       "@babel/preset-react"
     ]
   },
   "scripts": {
-    "start":"webpack-dev-server --open"
+    "start": "webpack-dev-server --open"
   },
+  "author": "IECSE <hello@iecsemanipal.com> (https://iecsemanipal.com)",
+	"contributors": [
+		"Jyotinder Singh",
+		"Reitwiec",
+		"Steve Roche",
+		"Surbhi Pachnanda"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Shreyansh97/Code-Portal.git"
+	},
   "license": "MIT",
   "dependencies": {
     "react": "^16.6.1",
-    "react-dom": "^16.6.1"
+    "react-dom": "^16.6.1",
+    "react-redux": "^5.1.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",
