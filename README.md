@@ -3,7 +3,7 @@
 ## Install Yarn : 
 	brew install yarn
 
-## Install the dependencies
+## Install the dependencies:
 	yarn install
 
 ## Run the Webpack dev server: 
