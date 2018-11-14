@@ -11,7 +11,7 @@ module.exports= {
     module:{
         rules: [
             {
-                test: /\.(png|jpg|gif|svg)$/i,
+                test: /\.(png|jpg|gif|svg|ico)$/i,
                 use: [
                   {
                     loader: 'url-loader',
@@ -21,15 +21,7 @@ module.exports= {
                   }
                 ]
               },
-              {
-                test: /\.(png|jpg|gif|svg)$/,
-                use: [
-                  {
-                    loader: 'file-loader',
-                    options: {}
-                  }
-                ]
-              },
+              
             {test:/\.(js)$/,use: 'babel-loader'},
             {test:/\.(css)$/,use: ['style-loader','css-loader']}
         ]
@@ -38,7 +30,8 @@ module.exports= {
     plugins: [
         new HtmlWebpackPlugin(
             {
-                template: 'app/index.html'
+                template: 'app/index.html',
+                favicon: './app/favicon.ico'
             }
         )
     ]
