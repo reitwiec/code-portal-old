@@ -18,7 +18,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   secret: 'IECSE',
-  // store: redisStore,
+  store: redisStore,
   cookie: { maxAge: 604800 }
 }));
 app.use(passport.initialize());
@@ -28,11 +28,6 @@ app.use(cookieParser('IECSE'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(response);
-
-passport.serializeUser({id: 52},(err,res)=>{
-  console.log(err);
-  console.log(res);
-});
 
 app.use('/api',require('./routes')(passport));
 

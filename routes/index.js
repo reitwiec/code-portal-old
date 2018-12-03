@@ -17,10 +17,5 @@ module.exports = (passport)=>{
   auth.login
   );
 
-  //Home route
-  router.get('/',(req,res)=>{
-  return res.send('This is a confirmed working test');
-  });
-
   return router;
 }

@@ -38,26 +38,22 @@ module.exports = (passport)=>{
     return res.sendSuccess(null,'User registered successfully');
   };
 
-  exp.login = async (req, res, next) =>{
+  exp.login = async (req, res) =>{
     let err, userData, result;
-    passport.authenticate('local-login',async err=>{
+    [err, userData] = await to(user.findOne({
+      where: { email: req.body.email }
+    }));
+    if(err) return res.sendError(err);
+    if(!userData) return res.sendError(null,'Invalid email/password combination',401);
+    [err, result] = await to(bcrypt.compare(req.body.password, userData.password));
+    if(err) return res.sendError(err);
+    if(!result) return res.sendError(null, 'Invalid email/password combination',401);
+    //passport doesn't support promises :(
+    req.login(userData, err=>{
       if(err) return res.sendError(err);
-      [err, userData] = await to(user.findOne({
-        where: { email: req.body.email }
-      }));
-      if(err) return res.sendError(err);
-      if(!userData) return res.sendError(null,'Invalid email/password combination',401);
-      [err, result] = await to(bcrypt.compare(req.body.password, userData.password));
-      if(err) return res.sendError(err);
-      if(!result) return res.sendError(null, 'Invalid email/password combination',401);
-      //passport doesn't support promises :(
-      req.login(userData, err=>{
-        if(err) return res.sendError(err);
-        return res.sendSuccess(null,'Login successful');
-      });
-    })(req, res, next);
+      return res.sendSuccess(null,'Login successful');
+    });
   };
-
-
+  
   return exp;
 }
