@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanTerminalPlugin = require('clean-terminal-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
@@ -10,7 +11,11 @@ module.exports = {
 	},
 
 	resolve: {
-		extensions: ['.js', '.jsx']
+		extensions: ['.js', '.jsx'],
+		alias: {
+			components$: path.resolve(__dirname, '../app/components'),
+			assets$: path.resolve(__dirname, '../assets')
+		}
 	},
 
 	module: {
@@ -39,6 +44,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: path.resolve(__dirname, '../index.html'),
 			favicon: path.resolve(__dirname, '../favicon.ico')
-		})
+		}),
+		new CleanTerminalPlugin()
 	]
 };

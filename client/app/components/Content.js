@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './Content.css';
+import styled from 'styled-components';
 // import Joinbtn from './Joinbtn.js'
 // Just testing the content part
 class Content extends Component {
 	render() {
 		return (
-			<div id="content">
+			<div id="content" className={this.props.className}>
 				<h1 id="">Contests</h1>
 				<span id="">Overview</span>
 				<div className="contestCards">
@@ -75,4 +75,76 @@ class Content extends Component {
 	}
 }
 
-export default Content;
+export default styled(Content)`
+	display: flex;
+	position: relative;
+	top: 50px;
+	left: 220px;
+	flex-direction: column;
+	font-size: 20px;
+	justify-content: flex-end;
+
+	h1 {
+		color: #374262;
+		text-align: left;
+		font-weight: 700;
+		margin: 20px 0 0 0;
+	}
+
+	span {
+		padding-left: 2px;
+		margin: -5px 0 0 0;
+		color: #374262;
+		text-align: left;
+		font-size: 0.8em;
+		font-weight: 400;
+	}
+
+	.contestCards {
+		display: flex;
+		flex-direction: column;
+		justify-content: left;
+		height: 100vh;
+		flex-wrap: no-wrap;
+	}
+
+	.contestCards div {
+		margin-top: 50px;
+		border-radius: 20px;
+		background-color: #787cf7;
+		/* text-overflow: ellipsis;
+	    white-space: nowrap; 
+	    overflow: hidden; */
+		width: 55%;
+		height: 200px;
+		text-align: left;
+		filter: drop-shadow(8px 9px 8px rgba(0, 0, 0, 0.13));
+	}
+
+	.contestCards div h3 {
+		color: #fff;
+		font-size: 1.4em;
+		font-weight: 600;
+		margin: 24px 0 -5px 30px;
+	}
+
+	.contestCards div p {
+		margin: 0px 30px 10px 30px;
+		color: #fff;
+		font-size: 0.7em;
+		text-align: left;
+
+		height: 100px;
+
+		/* text-overflow: ellipsis;
+	    overflow: hidden; */
+	}
+
+	.contestCards div h4 {
+		color: #fff;
+		opacity: 0.5;
+		font-size: 0.5em;
+		font-weight: 600;
+		margin: 0px 0 5px 30px;
+	}
+`;

@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
-import './App.css';
-import Navbar from './components/Navbar.js';
-import Sidebar from './components/Sidebar.js';
-import Content from './components/Content.js';
+import styled from 'styled-components';
+
+import { Navbar, Sidebar, Content, GlobalStyle } from 'components';
 
 class App extends Component {
 	render() {
 		return (
-			<div className="App">
-				<Navbar />
-				<Sidebar />
-				<Content />
-			</div>
+			<>
+				<GlobalStyle />
+				<div className={this.props.className}>
+					<Navbar />
+					<Sidebar />
+					<Content />
+				</div>
+			</>
 		);
 	}
 }
 
-export default App;
+export default styled(App)`
+	text-align: center;
+`;
