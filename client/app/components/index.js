@@ -1,0 +1,10 @@
+export { default as Content } from './Content';
+export { default as Contesticon } from './Contesticon';
+export { default as GlobalStyle } from './GlobalStyle';
+export { default as Homeicon } from './Homeicon';
+export { default as Joinbtn } from './Joinbtn';
+export { default as Navbar } from './Navbar';
+export { default as Notif } from './Notif';
+export { default as Practiceicon } from './Practiceicon';
+export { default as Searchbar } from './Searchbar';
+export { default as Sidebar } from './Sidebar';

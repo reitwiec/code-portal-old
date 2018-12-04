@@ -1,0 +1,57 @@
+import React, { Component } from 'react';
+import styled from 'styled-components';
+
+var points = 1296;
+class Sidebar extends Component {
+	render() {
+		return (
+			<div className={this.props.className}>
+				<h3>Total Points</h3>
+				<span>{points}</span>
+			</div>
+		);
+	}
+}
+
+export default styled(Sidebar)`
+	z-index: -1;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 200px;
+	height: 100vh;
+	background: #dfe5f4; /* Old browsers */
+	background: -moz-linear-gradient(
+		top,
+		#dfe5f4 -15%,
+		#fcfcfc 100%
+	); /* FF3.6-15 */
+	background: -webkit-linear-gradient(
+		top,
+		#dfe5f4 -15%,
+		#fcfcfc 100%
+	); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(
+		to bottom,
+		#dfe5f4 -15%,
+		#fcfcfc 100%
+	); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfe5f4', endColorstr='#fcfcfc',GradientType=0 );
+
+	h3 {
+		color: #374262;
+		position: relative;
+		left: -28px;
+		top: 63px;
+	}
+
+	span {
+		color: #374262;
+		position: relative;
+		left: -28px;
+		top: 43px;
+		font-weight: 300;
+		font-size: 2.2em;
+	}
+`;
