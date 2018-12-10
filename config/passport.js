@@ -1,14 +1,9 @@
-const { user } = require('../models');
-
 module.exports = (passport) => {
   passport.serializeUser((User,done) => {
-    return done(null,User.id);
+    return done(null,User);
   });
 
-  passport.deserializeUser((uid,done) => {
-    user.findByPk(uid,(err, myUser)=>{
-      console.log(myUser);
-      return done(err,myUser);
-    });
+  passport.deserializeUser((User,done) => {
+    return done(null,User);    
   });
 }
