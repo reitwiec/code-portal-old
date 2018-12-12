@@ -8,7 +8,25 @@ module.exports = ()=>{
     let err,contests;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
     [err, contests] = await to(contest.findAll());
-    if(err) return res.sendError(err);
+    if (err) {
+      console.log(err);
+      return res.sendError(err);
+    }
+    return res.sendSuccess(contests,'Successfully displaying contests');
+  };
+
+  exp.showcontestbyid = async (req, res) =>{
+    let err,newcontest;
+    if(req.user.access!=30) return res.sendError(null,'Access denied for user');
+    [err, newcontest] = await to(
+      contest.findOne({
+        where: { id: req.params.id }
+      })
+    );
+    if (err) {
+      console.log(err);
+      return res.sendError(err);
+    }
     return res.sendSuccess(contests,'Successfully displaying contests');
   };
 
@@ -23,7 +41,10 @@ module.exports = ()=>{
       visibility: req.body.visibility,
       slug: req.body.slug
     }));	    
-    if(err) return res.sendError(err);
+    if (err) {
+      console.log(err);
+      return res.sendError(err);
+    }
 	  return res.sendSuccess(null,'Contest added successfully');
   };
 
@@ -52,6 +73,25 @@ module.exports = ()=>{
     }));
     if(err) return res.sendError(err);
     return res.sendSuccess(null,'Successfully updated contest');
+  };
+
+  exp.deletecontest = async (req, res) =>{
+    let err,newcontest;
+    if(req.user.access!=30) return res.sendError(null,'Access denied for user');
+    [err, newcontest] = await to(
+      contest.findOne({
+        where: { id: req.params.id }
+      })
+    );
+    if (err) {
+      console.log(err);
+      return res.sendError(err);
+    }
+    [err, newcontest] = await to(contest.destroy({
+      where: { id: req.params.id }
+    }));
+    if(err) return res.sendError(err);
+    return res.sendSuccess(null,'Successfully deleted contest');
   };
 
   return exp;

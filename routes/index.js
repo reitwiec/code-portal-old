@@ -22,6 +22,9 @@ module.exports = (passport)=>{
   router.get('/showcontests',
     admin.showcontests);
 
+  router.get('/showcontests/:id',
+    admin.showcontestbyid);
+
   router.post('/addcontest',
     validator(schemas.admin.addcontest),
     admin.addcontest);
@@ -29,6 +32,9 @@ module.exports = (passport)=>{
   router.put('/updatecontest',
     validator(schemas.admin.updatecontest),
     admin.updatecontest);
+
+  router.delete('/deletecontest/:id',
+    admin.deletecontest);
   
   return router;
 }
