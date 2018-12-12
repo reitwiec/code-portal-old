@@ -3,6 +3,12 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
 	@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900');
 
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
 	body {
 		position: relative;
 		margin: 0;
@@ -12,8 +18,8 @@ const GlobalStyle = createGlobalStyle`
 			sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		max-width: 100%;
-		overflow-x: hidden !important;
+		/* max-width: 100%;
+		overflow-x: hidden !important; */
 		font-family: 'Source Sans Pro', sans-serif;
 	}
 

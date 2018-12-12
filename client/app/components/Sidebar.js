@@ -5,21 +5,25 @@ var points = 1296;
 class Sidebar extends Component {
 	render() {
 		return (
-			<div className={this.props.className}>
+			<aside className={this.props.className}>
 				<h3>Total Points</h3>
 				<span>{points}</span>
-			</div>
+			</aside>
 		);
 	}
 }
 
 export default styled(Sidebar)`
-	z-index: -1;
-	position: fixed;
-	left: 0px;
-	top: 0px;
+	position: sticky;
+	left: 0;
+	top: 50px;
+
 	width: 200px;
-	height: 100vh;
+	height: calc(100vh - 50px);
+
+	padding: 2em 0 0 2em;
+	margin: 0;
+	float: left;
 	background: #dfe5f4; /* Old browsers */
 	background: -moz-linear-gradient(
 		top,
@@ -39,18 +43,12 @@ export default styled(Sidebar)`
 
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfe5f4', endColorstr='#fcfcfc',GradientType=0 );
 
-	h3 {
+	> h3,
+	> span {
 		color: #374262;
-		position: relative;
-		left: -28px;
-		top: 63px;
 	}
 
-	span {
-		color: #374262;
-		position: relative;
-		left: -28px;
-		top: 43px;
+	> span {
 		font-weight: 300;
 		font-size: 2.2em;
 	}

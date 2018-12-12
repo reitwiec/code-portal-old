@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 import {
 	Homeicon,
@@ -17,17 +18,29 @@ class Navbar extends Component {
 	render() {
 		return (
 			<div className={this.props.className}>
-				<span id="logo">
-					<img src={iecselogo} alt="" id="logoimg" />
-				</span>
-				<span id="avatar">
-					<img src={avatar} alt="" id="avatarimg" />
-				</span>
-				<span id="unamenav">{x}</span>
-				<Notif />
-				<Homeicon title="hello" />
-				<Contesticon />
-				<Practiceicon />
+				<NavLink to="/">
+					<span id="logo">
+						<img src={iecselogo} alt="" id="logoimg" />
+					</span>
+					<Homeicon title="hello" />
+				</NavLink>
+
+				<NavLink to="/profile">
+					<span id="avatar">
+						<img src={avatar} alt="" id="avatarimg" />
+					</span>
+					<span id="unamenav">{x}</span>
+					<Notif />
+				</NavLink>
+
+				<NavLink to="/contests">
+					<Contesticon />
+				</NavLink>
+
+				<NavLink to="/practice">
+					<Practiceicon />
+				</NavLink>
+
 				<Searchbar />
 			</div>
 		);
@@ -36,8 +49,8 @@ class Navbar extends Component {
 
 export default styled(Navbar)`
 	z-index: 1;
-	top: 0px;
-	position: fixed;
+	position: sticky;
+	top: 0;
 	background-color: #edf0f9;
 	width: 100%;
 	height: 50px;
