@@ -32,11 +32,19 @@ export default styled(EditorView)`
 	max-width: 150ch;
 	h2,
 	h3 {
+		color: #374262;
+		font-weight: 700;
 		margin: 1em 0;
 	}
 
 	h2 {
+		font-size:2em;
 		margin-top: 0;
+		margin-bottom: 0.5em;
+	}
+	section{
+		color: #374262;
+		font-weight: 400;
 	}
 
 	${Content} > div {
@@ -44,8 +52,22 @@ export default styled(EditorView)`
 	}
 
 	${Button} {
-		font-variant: small-caps;
-		margin-top: 0.5em;
-		float: right;
+		font-family: 'Source Sans Pro', sans-serif;
+		font-size: 0.7em;
+		font-weight: 600;
+		background-color: #edf0f9;
+		width: 70px;
+		height: 28px;
+		border-radius: 25px;
+		border: 1px solid #797df8;
+		transition: 0.5s;
+		margin-top: -0.5em;
+		float: left;
+	}
+	${Button}:hover{
+		color:#fff;
+		background-color: #797df8;
+			border: none;
+			cursor: pointer;
 	}
 `;
