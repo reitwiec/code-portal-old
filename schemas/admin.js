@@ -22,16 +22,23 @@ const addcontest = Joi.object({
 
 contest updatecontest = Joi.object({
   body: Joi.object({
+    id: Joi.integer()
+      .required(),
     title: Joi.string()
       .max(256)
-      .min(5),
+      .min(5)
+      .required(),
     start: Joi.date()
-      .iso(),
+      .iso()
+      .required(),
     end: Joi.date()
-      .iso(),
+      .iso()
+      .required(),
     description: Joi.string(),
-    visibility: Joi.string(),
+    visibility: Joi.string()
+      .required(),
     slug: Joi.string()
+      .required()
   })
 });
 
