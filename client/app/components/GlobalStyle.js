@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
 	}
 
 	body {
+		
 		position: relative;
 		margin: 0;
 		padding: 0;

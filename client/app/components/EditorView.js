@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 import { Button, Content, Editor, Sidebar } from 'components';
 
-const hello = () => console.log('Hello');
+const hello = () => console.log('You just submitted');
 
 const EditorView = ({ className, question }) => (
 	<div className={className}>
@@ -23,7 +24,9 @@ const EditorView = ({ className, question }) => (
 				<section>{question.output_format}</section>
 			</div>
 			<Editor />
+			<NavLink to="/submission">
 			<Button onClick={hello}>Submit</Button>
+				</NavLink>
 		</Content>
 	</div>
 );
@@ -38,36 +41,24 @@ export default styled(EditorView)`
 	}
 
 	h2 {
+		
 		font-size:2em;
 		margin-top: 0;
 		margin-bottom: 0.5em;
 	}
 	section{
-		color: #374262;
+		color: #465b97;
 		font-weight: 400;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
 
 	${Content} > div {
 		margin-bottom: 2em;
 	}
 
-	${Button} {
-		font-family: 'Source Sans Pro', sans-serif;
-		font-size: 0.7em;
-		font-weight: 600;
-		background-color: #fff;
-		width: 70px;
-		height: 28px;
-		border-radius: 25px;
-		border: 1px solid #797df8;
-		transition: 0.5s;
-		margin-top: -0.5em;
-		float: left;
-	}
-	${Button}:hover{
-		color:#fff;
-		background-color: #797df8;
-			border: none;
-			cursor: pointer;
-	}
 `;
