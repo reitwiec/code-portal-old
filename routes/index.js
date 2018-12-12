@@ -19,12 +19,16 @@ module.exports = (passport)=>{
   );
 
   //admin routes
-  router.get('/contests',
+  router.get('/showcontests',
     admin.showcontests);
 
-  router.post('/contests',
+  router.post('/addcontest',
     validator(schemas.admin.addcontest),
     admin.addcontest);
+
+  router.put('/updatecontest',
+    validator(schemas.admin.updatecontest),
+    admin.updatecontest);
   
   return router;
 }
