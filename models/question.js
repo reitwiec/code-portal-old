@@ -1,5 +1,5 @@
 module.exports = (sequelize, Datatypes) => {
-    let Questions = sequelize.define('questions', {
+    let Question = sequelize.define('question', {
         id: {
             type: Datatypes.BIGINT,
             primaryKey: true,
@@ -68,5 +68,5 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: false
         }
     });
-    return Questions;
+    return Question;
 };

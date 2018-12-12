@@ -1,5 +1,5 @@
 module.exports = (sequelize, Datatypes) => {
-    let Testcases = sequelize.define('testcases', {
+    let Testcase = sequelize.define('testcase', {
         id: {
             type = Datatypes.BIGINT,
             primaryKey = true,
@@ -9,7 +9,7 @@ module.exports = (sequelize, Datatypes) => {
             type: Sequelize.BIGINT,
             allowNull: false
         },
-        sample {
+        sample: {
             type: Sequelize.BOOLEAN,
             allowNull: false
         },
@@ -26,5 +26,5 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: false
         }
     });
-    return Testcases;
+    return Testcase;
 };
