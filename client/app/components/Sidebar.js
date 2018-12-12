@@ -6,8 +6,8 @@ class Sidebar extends Component {
 	render() {
 		return (
 			<aside className={this.props.className}>
-				{/* <h3>Total Points</h3>
-				<span>{points}</span> */}
+				<h3>Total Points</h3>
+				<span>50</span>
 			</aside>
 		);
 	}
@@ -19,17 +19,13 @@ export default styled(Sidebar)`
 	top: 50px;
 
 	width: 200px;
-	height: calc(100vh - 50px);
+	height: calc(100vh - 90px);
 
 	padding: 2em 0 0 2em;
 	margin: 0;
 	float: left;
 	background: #dfe5f4; /* Old browsers */
-	background: -moz-linear-gradient(
-		top,
-		#dfe5f4 -15%,
-		#fff 100%
-	); /* FF3.6-15 */
+	background: -moz-linear-gradient(top, #dfe5f4 -15%, #fff 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(
 		top,
 		#dfe5f4 -15%,
