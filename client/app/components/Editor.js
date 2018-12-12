@@ -31,5 +31,6 @@ const Editor = ({ className }) => (
 );
 
 export default styled(Editor)`
-	border: 1px solid #333;
+border: 1px solid #dfe5f4;
+
 `;

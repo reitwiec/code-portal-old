@@ -14,3 +14,4 @@ export { default as Practiceicon } from './Practiceicon';
 export { default as Searchbar } from './Searchbar';
 export { default as Sidebar } from './Sidebar';
 export { default as ContestsPage } from './ContestsPage';
+export { default as Footer } from './Footer';

@@ -9,7 +9,8 @@ import {
 	EditorView,
 	GlobalStyle,
 	Navbar,
-	Sidebar
+	Sidebar,
+	Footer
 } from 'components';
 
 const question = {
@@ -53,6 +54,8 @@ class App extends Component {
 								component={() => <EditorView question={question} />}
 							/>
 						</Switch>
+						<hr/>
+						<Footer/>
 					</div>
 				</BrowserRouter>
 			</>
@@ -60,4 +63,9 @@ class App extends Component {
 	}
 }
 
-export default styled(App)``;
+export default styled(App)`
+	hr{
+		margin-top:30px;
+		border: 0.5px solid #dfe5f4;
+	}
+`;
