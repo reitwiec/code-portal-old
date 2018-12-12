@@ -6,6 +6,7 @@ const schemas = require('../schemas');
 
 module.exports = (passport)=>{
   const auth = require('./auth')(passport);
+  const admin = require('./admin');
 
   //auth routes
   router.post('/register',
@@ -16,6 +17,8 @@ module.exports = (passport)=>{
   validator(schemas.auth.login),
   auth.login
   );
+
+  //admin routes
 
   return router;
 }
