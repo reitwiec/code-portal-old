@@ -14,7 +14,8 @@ module.exports = {
 		extensions: ['.js', '.jsx'],
 		alias: {
 			components$: path.resolve(__dirname, '../app/components'),
-			assets$: path.resolve(__dirname, '../assets')
+			assets$: path.resolve(__dirname, '../assets'),
+			codemirror: path.resolve(__dirname, '../node_modules/codemirror')
 		}
 	},
 

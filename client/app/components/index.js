@@ -1,5 +1,10 @@
+export { default as Button } from './Button';
 export { default as Content } from './Content';
+export { default as ContestView } from './ContestView';
+export { default as ContestCard } from './ContestCard';
 export { default as Contesticon } from './Contesticon';
+export { default as Editor } from './Editor';
+export { default as EditorView } from './EditorView';
 export { default as GlobalStyle } from './GlobalStyle';
 export { default as Homeicon } from './Homeicon';
 export { default as Joinbtn } from './Joinbtn';
@@ -8,3 +13,4 @@ export { default as Notif } from './Notif';
 export { default as Practiceicon } from './Practiceicon';
 export { default as Searchbar } from './Searchbar';
 export { default as Sidebar } from './Sidebar';
+export { default as ContestsPage } from './ContestsPage';

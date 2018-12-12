@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Contest = ({ className }) => (
+const ContestIcon = ({ className }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 297 297"
@@ -18,7 +18,7 @@ const Contest = ({ className }) => (
 	</svg>
 );
 
-export default styled(Contest)`
+export default styled(ContestIcon)`
 	position: absolute;
 	top: 14px;
 	right: 215px;
