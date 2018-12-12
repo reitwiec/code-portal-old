@@ -54,13 +54,10 @@ class App extends Component {
 								path="/editor"
 								component={() => <EditorView question={question} />}
 							/>
-							<Route
-								path="/submission"
-								component={() => <Submission />}
-							/>
+							<Route path="/submission" component={() => <Submission />} />
 						</Switch>
-						<hr/>
-						<Footer/>
+						<hr />
+						<Footer />
 					</div>
 				</BrowserRouter>
 			</>
@@ -69,8 +66,8 @@ class App extends Component {
 }
 
 export default styled(App)`
-	hr{
-		margin-top:30px;
+	hr {
+		margin-top: 30px;
 		border: 0.5px solid #dfe5f4;
 	}
 `;
