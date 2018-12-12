@@ -5,6 +5,7 @@ export { default as ContestCard } from './ContestCard';
 export { default as Contesticon } from './Contesticon';
 export { default as Editor } from './Editor';
 export { default as EditorView } from './EditorView';
+export { default as Gauge } from './Gauge';
 export { default as GlobalStyle } from './GlobalStyle';
 export { default as Homeicon } from './Homeicon';
 export { default as Joinbtn } from './Joinbtn';
