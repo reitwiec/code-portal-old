@@ -22,7 +22,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(png|jpg|gif|svg|ico)$/,
+				test: /\.(png|jpg|gif|ico)$/,
 				use: [
 					{
 						loader: 'url-loader',
@@ -37,7 +37,8 @@ module.exports = {
 			{
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader']
-			}
+			},
+			
 		]
 	},
 

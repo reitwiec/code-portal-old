@@ -10,7 +10,8 @@ import {
 	GlobalStyle,
 	Navbar,
 	Sidebar,
-	Footer
+	Footer,
+	Submission
 } from 'components';
 
 const question = {
@@ -52,6 +53,10 @@ class App extends Component {
 							<Route
 								path="/editor"
 								component={() => <EditorView question={question} />}
+							/>
+							<Route
+								path="/submission"
+								component={() => <Submission />}
 							/>
 						</Switch>
 						<hr/>

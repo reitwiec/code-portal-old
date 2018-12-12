@@ -13,4 +13,21 @@ export default styled(Button)`
 	text-align: center;
 	text-decoration: none;
 	font-size: 16px;
+		font-family: 'Source Sans Pro', sans-serif;
+		font-size: 0.7em;
+		font-weight: 600;
+		background-color: #fff;
+		width: 70px;
+		height: 28px;
+		border-radius: 25px;
+		border: 1px solid #797df8;
+		transition: 0.5s;
+		margin-top: -0.5em;
+		float: left;
+	:hover{
+		color:#fff;
+		background-color: #797df8;
+			border: none;
+			cursor: pointer;
+	}
 `;
