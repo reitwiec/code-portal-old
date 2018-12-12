@@ -55,7 +55,7 @@ export default styled(EditorView)`
 		font-family: 'Source Sans Pro', sans-serif;
 		font-size: 0.7em;
 		font-weight: 600;
-		background-color: #edf0f9;
+		background-color: #fff;
 		width: 70px;
 		height: 28px;
 		border-radius: 25px;
