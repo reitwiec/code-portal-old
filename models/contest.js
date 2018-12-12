@@ -4,7 +4,7 @@ module.exports = (sequelize, Datatypes) => {
             type = Datatypes.BIGINT,
             primaryKey: true,
             autoIncrement: true
-        }
+        },
         title: {
             type: Datatypes.STRING(50),
             unique: true,
