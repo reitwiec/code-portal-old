@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const newcontest = Joi.object({
+const addcontest = Joi.object({
   body: Joi.object({
     title: Joi.string()
       .max(256)
@@ -21,5 +21,5 @@ const newcontest = Joi.object({
 });
 
 module.exports = {
-  newcontest
+  addcontest
 };
