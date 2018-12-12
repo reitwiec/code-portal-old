@@ -35,6 +35,29 @@ module.exports = (passport)=>{
 
   router.delete('/deletecontest/:id',
     admin.deletecontest);
+
+  router.get('/showquestions',
+    admin.showquestions);
+
+  router.get('/showquestions/:id',
+    admin.showquestionbyid);
+
+  router.get('/showquestionsadmin',
+    admin.showquestionsadmin);
+
+  router.get('/showquestionsadmin/:id',
+    admin.showquestionbyidadmin);
+
+  router.post('/addquestion',
+    validator(schemas.admin.addquestion()),
+    admin.addquestion);
   
+  router.put('/updatequestion',
+    validator(schemas.admin.updatequestion()),
+    admin.updatequestion);
+
+  router.delete('/deletequestion/:id',
+    admin.deletequestion);
+
   return router;
 }

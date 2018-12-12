@@ -20,7 +20,7 @@ const addcontest = Joi.object({
   })
 });
 
-contest updatecontest = Joi.object({
+const updatecontest = Joi.object({
   body: Joi.object({
     id: Joi.integer()
       .required(),
@@ -41,6 +41,25 @@ contest updatecontest = Joi.object({
       .required()
   })
 });
+
+/*const addquestion = Joi.object({
+  body: Joi.object({
+    id: Joi.integer()
+      .required(),
+    title: Joi.string()
+      .max(256)
+      .min(5)
+      .required(),
+    body: Joi.string()
+      .required(),
+    input_format: Joi.string()
+      .required(),
+    constraints: Joi.string()
+      .required(),
+    output_format: Joi.string()
+      .required(),
+  })
+})*/
 
 module.exports = {
   addcontest,
