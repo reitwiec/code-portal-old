@@ -20,6 +20,22 @@ const addcontest = Joi.object({
   })
 });
 
+contest updatecontest = Joi.object({
+  body: Joi.object({
+    title: Joi.string()
+      .max(256)
+      .min(5),
+    start: Joi.date()
+      .iso(),
+    end: Joi.date()
+      .iso(),
+    description: Joi.string(),
+    visibility: Joi.string(),
+    slug: Joi.string()
+  })
+});
+
 module.exports = {
-  addcontest
+  addcontest,
+  updatecontest
 };
