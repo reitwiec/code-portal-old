@@ -2,7 +2,6 @@ const { contest } = require('../models');
 const { question } = require('../models');
 const to = require('../utils/to');
 
-//change newcontest to contestobj?
 module.exports = ()=>{
   let exp = {};
   exp.showcontests = async (req, res) =>{
@@ -16,8 +15,8 @@ module.exports = ()=>{
   };
 
   exp.showcontestbyid = async (req, res) =>{
-    let err,newcontest;
-    [err, newcontest] = await to(
+    let err,contestobj;
+    [err, contestobj] = await to(
       contest.findOne({
         where: { id: req.params.id }
       })
@@ -26,13 +25,13 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    return res.sendSuccess(contests,'Successfully displaying contests');
+    return res.sendSuccess(contestobj,'Successfully displaying contest');
   };
 
   exp.addcontest = async (req, res) =>{
-    let newcontest,err;
+    let contestobj,err;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
-    [err, newContest] = await to(contest.create({
+    [err, contestobj] = await to(contest.create({
       title: req.body.title,
       start: req.body.start,
       end: req.body.end,
@@ -48,9 +47,9 @@ module.exports = ()=>{
   };
 //need findOne before updating or deleting?
   exp.updatecontest = async (req, res) =>{
-    let err,newcontest;
+    let err,contestobj;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
-    [err, newcontest] = await to(
+    [err, contestobj] = await to(
       contest.findOne({
         where: { id: req.body.id }
       })
@@ -59,7 +58,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    [err, newcontest] = await to(contest.update({
+    [err, contestobj] = await to(contest.update({
       id: req.body.id,
       title: req.body.title,
       start: req.body.start,
@@ -75,9 +74,9 @@ module.exports = ()=>{
   };
 
   exp.deletecontest = async (req, res) =>{
-    let err,newcontest;
+    let err,contestobj;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
-    [err, newcontest] = await to(
+    [err, contestobj] = await to(
       contest.findOne({
         where: { id: req.params.id }
       })
@@ -86,7 +85,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    [err, newcontest] = await to(contest.destroy({
+    [err, contestobj] = await to(contest.destroy({
       where: { id: req.params.id }
     }));
     if(err) return res.sendError(err);
