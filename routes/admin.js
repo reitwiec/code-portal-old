@@ -25,6 +25,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
+    if(!contestobj) res.sendError(null,'Doesnt exist');
     return res.sendSuccess(contestobj,'Successfully displaying contest');
   };
 
@@ -58,6 +59,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
+    if(!contestobj) res.sendError(null,'Doesnt exist');
     [err, contestobj] = await to(contest.update({
       id: req.body.id,
       title: req.body.title,
@@ -85,6 +87,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
+    if(!contestobj) res.sendError(null,'Doesnt exist');
     [err, contestobj] = await to(contest.destroy({
       where: { id: req.params.id }
     }));
