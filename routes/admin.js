@@ -213,5 +213,40 @@ module.exports = ()=>{
     return res.sendSuccess(newquestion, 'Successfully deleted question');
   };
 
+
+  exp.addmoderator = async (req, res) =>{
+    let modobj,err;
+    if(req.user.access!=30) return res.sendError(null,'Access denied for user');
+    [err, modobj] = await to(moderator.create({
+      user: req.body.user,
+      question: req.body.question
+    }));      
+    if (err) {
+      console.log(err);
+      return res.sendError(err);
+    }
+    return res.sendSuccess(null,'Moderator added successfully');
+  };
+
+  exp.deletemoderator = async (req, res) =>{
+    let err,modobj;
+    if(req.user.access!=30) return res.sendError(null,'Access denied for user');
+    [err, modobj] = await to(
+      moderator.findOne({
+        where: { user: req.params.id }
+      })
+    );
+    if (err) {
+      console.log(err);
+      return res.sendError(err);
+    }
+    if(!modobj) res.sendError(null,'Doesnt exist');
+    [err, modobj] = await to(moderator.destroy({
+      where: { user: req.params.id }
+    }));
+    if(err) return res.sendError(err);
+    return res.sendSuccess(null,'Successfully deleted contest');
+  };
+
   return exp;
 }
