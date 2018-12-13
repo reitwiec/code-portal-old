@@ -49,11 +49,11 @@ module.exports = (passport)=>{
     admin.showquestionbyidadmin);
 
   router.post('/addquestion',
-    validator(schemas.admin.addquestion,
+    validator(schemas.admin.addquestion),
     admin.addquestion);
   
   router.put('/updatequestion',
-    validator(schemas.admin.updatequestion,
+    validator(schemas.admin.updatequestion),
     admin.updatequestion);
 
   router.delete('/deletequestion/:id',
