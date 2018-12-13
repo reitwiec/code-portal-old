@@ -1,9 +1,9 @@
 module.exports = (sequelize, Datatypes) => {
     let Testcase = sequelize.define('testcase', {
         id: {
-            type = Datatypes.BIGINT,
-            primaryKey = true,
-            autoIncrement = true
+            type: Datatypes.BIGINT,
+            primaryKey: true,
+            autoIncrement: true
         },
         question: {
             type: Datatypes.BIGINT,
