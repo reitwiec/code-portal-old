@@ -22,7 +22,8 @@ const addcontest = Joi.object({
 
 const updatecontest = Joi.object({
   body: Joi.object({
-    id: Joi.integer()
+    id: Joi.number()
+      .integer()
       .required(),
     title: Joi.string()
       .max(256)
@@ -41,6 +42,18 @@ const updatecontest = Joi.object({
       .required()
   })
 });
+
+const addmoderator = Joi.object({
+  body: Joi.object({
+    user: Joi.number()
+      .integer()
+      .required(),
+    start: Joi.number()
+      .integer()
+      .required()
+  })
+});
+
 
 /*const addquestion = Joi.object({
   body: Joi.object({
@@ -63,5 +76,6 @@ const updatecontest = Joi.object({
 
 module.exports = {
   addcontest,
-  updatecontest
+  updatecontest,
+  addmoderator
 };
