@@ -59,5 +59,12 @@ module.exports = (passport)=>{
   router.delete('/deletequestion/:id',
     admin.deletequestion);
 
+  router.post('/addmoderator',
+    validator(schemas.admin.addmoderator),
+    admin.addmoderator);
+
+  router.delete('/deletemoderator/:id',
+    admin.deletemoderator);
+
   return router;
 }

@@ -1,5 +1,6 @@
 const { contest } = require('../models');
 const { question } = require('../models');
+const { moderator } = require('../models');
 const to = require('../utils/to');
 
 module.exports = ()=>{
