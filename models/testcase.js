@@ -1,28 +1,28 @@
 module.exports = (sequelize, Datatypes) => {
     let Testcase = sequelize.define('testcase', {
         id: {
-            type = Datatypes.BIGINT,
-            primaryKey = true,
-            autoIncrement = true
+            type: Datatypes.BIGINT,
+            primaryKey: true,
+            autoIncrement: true
         },
         question: {
-            type: Sequelize.BIGINT,
+            type: Datatypes.BIGINT,
             allowNull: false
         },
         sample: {
-            type: Sequelize.BOOLEAN,
+            type: Datatypes.BOOLEAN,
             allowNull: false
         },
         weight: {
-            type: Sequelize.DOUBLE,
+            type: Datatypes.DOUBLE,
             allowNull: false
         },
         input_path: {
-            type: Sequelize.STRING(100),
+            type: Datatypes.STRING(100),
             allowNull: false
         },
         output_path: {
-            type: Sequelize.STRING(100),
+            type: Datatypes.STRING(100),
             allowNull: false
         }
     });

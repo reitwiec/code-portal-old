@@ -6,7 +6,7 @@ const schemas = require('../schemas');
 
 module.exports = (passport)=>{
   const auth = require('./auth')(passport);
-  const admin = require('./admin');
+  const admin = require('./admin')(passport);
 
   //auth routes
   router.post('/register',
@@ -49,15 +49,22 @@ module.exports = (passport)=>{
     admin.showquestionbyidadmin);
 
   router.post('/addquestion',
-    validator(schemas.admin.addquestion()),
+    validator(schemas.admin.addquestion),
     admin.addquestion);
   
   router.put('/updatequestion',
-    validator(schemas.admin.updatequestion()),
+    validator(schemas.admin.updatequestion),
     admin.updatequestion);
 
   router.delete('/deletequestion/:id',
     admin.deletequestion);
+
+  router.post('/addmoderator',
+    validator(schemas.admin.addmoderator),
+    admin.addmoderator);
+
+  router.delete('/deletemoderator/:id',
+    admin.deletemoderator);
 
   return router;
 }
