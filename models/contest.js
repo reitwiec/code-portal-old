@@ -1,7 +1,7 @@
 module.exports = (sequelize, Datatypes) => {
     let Contest = sequelize.define('contest', {
         id: {
-            type: Datatypes.INTEGER,
+            type: Datatypes.BIGINT,
             primaryKey: true,
             autoIncrement: true
         },
