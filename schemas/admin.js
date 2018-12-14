@@ -48,7 +48,7 @@ const addmoderator = Joi.object({
     user: Joi.number()
       .integer()
       .required(),
-    start: Joi.number()
+    question: Joi.number()
       .integer()
       .required()
   })
