@@ -119,7 +119,8 @@ module.exports = ()=>{
     if(!questionobj) res.sendError(null,'Question doesnt exist');
     return res.sendSuccess(questionobj, 'Successfully displaying question');
   };
-
+  
+  //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
     let err, questions;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
@@ -132,8 +133,18 @@ module.exports = ()=>{
   };
 
   exp.showquestionbyidadmin = async (req, res) => {
-    let err, questionobj;
-    if(req.user.access < 20) res.sendError(null, 'Access denied');
+    let err, questionobj,modobj;
+    [err, modobj] = await to(moderator.findOne({
+      where : { 
+        user: req.user.id,
+        question: req.params.id
+      }
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    if(req.user.access!=30 && !modobj) res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.findOne({
       where : { id: req.params.id}
     }));
@@ -144,9 +155,9 @@ module.exports = ()=>{
     if(!questionobj) res.sendError(null,'Question doesnt exist');
     return res.sendSuccess(questionobj, 'Successfully displaying questions');
   };
-
+  
   exp.addquestion = async (req, res) => {
-    let err, questionobj;
+    let err, questionobj,modobj;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.create({
       id: req.body.id,
@@ -170,12 +181,32 @@ module.exports = ()=>{
       console.log(err);
       res.sendError(err);
     }
+    if(req.user.access==30)
     return res.sendSuccess(questionobj, 'Successfully added question');
+    [err, modobj] = await to(moderator.create({
+      user: req.user.id,
+      question: questionobj.id
+    }));      
+    if (err) {
+      console.log(err);
+      return res.sendError(err);
+    }
+    return res.sendSuccess(null,'Successfully added question and moderator for it');
   };
 
   exp.updatequestion = async (req, res) => {
-    let err, questionobj;
-    if(req.user.access < 20) res.sendError(null, 'Access denied');
+    let err, questionobj,modobj;
+    [err, modobj] = await to(moderator.findOne({
+      where : { 
+        user: req.user.id,
+        question: req.body.id
+      }
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    if(req.user.access!=30 && !modobj) res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.update({
       id: req.body.id,
       body: req.body.body,
@@ -204,8 +235,18 @@ module.exports = ()=>{
   };
 
   exp.deletequestion = async (req, res) => {
-    let err, questionobj;
-    if(req.user.access < 20) res.sendError(null, 'Access denied');
+    let err, questionobj,modobj;
+    [err, modobj] = await to(moderator.findOne({
+      where : { 
+        user: req.user.id,
+        question: req.body.id
+      }
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    if(req.user.access!=30 && !modobj) res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.destroy({
       where: {id: req.params.id}
     }));
@@ -228,7 +269,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    return res.sendSuccess(null,'Moderator added successfully');
+    return res.sendSuccess(modobj,'Moderator added successfully');
   };
 
   exp.deletemoderator = async (req, res) =>{
