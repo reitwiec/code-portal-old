@@ -5,6 +5,7 @@ const to = require('../utils/to');
 
 module.exports = ()=>{
   let exp = {};
+
   exp.showcontests = async (req, res) =>{
     let err,contests;
     [err, contests] = await to(contest.findAll());
@@ -26,7 +27,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    if(!contestobj) res.sendError(null,'Doesnt exist');
+    if(!contestobj) res.sendError(null,'Contest doesnt exist');
     return res.sendSuccess(contestobj,'Successfully displaying contest');
   };
 
@@ -47,7 +48,7 @@ module.exports = ()=>{
     }
 	  return res.sendSuccess(null,'Contest added successfully');
   };
-//need findOne before updating or deleting?
+
   exp.updatecontest = async (req, res) =>{
     let err,contestobj;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
@@ -107,15 +108,16 @@ module.exports = ()=>{
   };
 
   exp.showquestionbyid = async (req, res) => {
-    let err, newquestion;
-    [err, newquestion] = await to(question.findOne({
+    let err, questionobj;
+    [err, questionobj] = await to(question.findOne({
       where : { id: req.params.id}
     }));
     if(err) {
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(newquestion, 'Successfully displaying question');
+    if(!questionobj) res.sendError(null,'Question doesnt exist');
+    return res.sendSuccess(questionobj, 'Successfully displaying question');
   };
 
   exp.showquestionsadmin = async (req, res) => {
@@ -130,22 +132,23 @@ module.exports = ()=>{
   };
 
   exp.showquestionbyidadmin = async (req, res) => {
-    let err, newquestion;
+    let err, questionobj;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
-    [err, newquestion] = await to(question.findOne({
+    [err, questionobj] = await to(question.findOne({
       where : { id: req.params.id}
     }));
     if(err) {
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(newquestion, 'Successfully displaying questions');
+    if(!questionobj) res.sendError(null,'Question doesnt exist');
+    return res.sendSuccess(questionobj, 'Successfully displaying questions');
   };
 
   exp.addquestion = async (req, res) => {
-    let err, newquestion;
+    let err, questionobj;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
-    [err, newquestion] = await to(question.create({
+    [err, questionobj] = await to(question.create({
       id: req.body.id,
       body: req.body.body,
       title: req.body.title,
@@ -167,13 +170,13 @@ module.exports = ()=>{
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(newquestion, 'Successfully added question');
+    return res.sendSuccess(questionobj, 'Successfully added question');
   };
 
   exp.updatequestion = async (req, res) => {
-    let err, newquestion;
+    let err, questionobj;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
-    [err, newquestion] = await to(question.update({
+    [err, questionobj] = await to(question.update({
       id: req.body.id,
       body: req.body.body,
       title: req.body.title,
@@ -197,20 +200,20 @@ module.exports = ()=>{
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(newquestion, 'Successfully updated question');
+    return res.sendSuccess(questionobj, 'Successfully updated question');
   };
 
   exp.deletequestion = async (req, res) => {
-    let err, newquestion;
+    let err, questionobj;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
-    [err, newquestion] = await to(question.destroy({
+    [err, questionobj] = await to(question.destroy({
       where: {id: req.params.id}
     }));
     if(err) {
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(newquestion, 'Successfully deleted question');
+    return res.sendSuccess(questionobj, 'Successfully deleted question');
   };
 
 
@@ -245,7 +248,7 @@ module.exports = ()=>{
       where: { user: req.params.id }
     }));
     if(err) return res.sendError(err);
-    return res.sendSuccess(null,'Successfully deleted contest');
+    return res.sendSuccess(null,'Successfully deleted moderator');
   };
 
   return exp;
