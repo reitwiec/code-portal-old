@@ -23,7 +23,7 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: true
         },
         visibility: {
-            type: Datatypes.BOOLEAN,
+            type: Datatypes.STRING.BINARY,
             allowNull: false
         },
         slug: {

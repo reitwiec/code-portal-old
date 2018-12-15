@@ -10,7 +10,7 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: false
         },
         sample: {
-            type: Datatypes.BOOLEAN,
+            type: Datatypes.STRING.BINARY,
             allowNull: false
         },
         weight: {
