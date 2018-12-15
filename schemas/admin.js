@@ -166,6 +166,10 @@ const addtestcase = Joi.object({
     input_path: Joi.string()
       .required(),
     output_path: Joi.string()
+      .required(),
+    input: Joi.string()
+      .required(),
+    output: Joi.string()
       .required()
   })
 });
