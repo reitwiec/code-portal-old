@@ -56,11 +56,8 @@ const addmoderator = Joi.object({
   })
 });
 
-
 const addquestion = Joi.object({
   body: Joi.object({
-    id: Joi.integer()
-      .required(),
     title: Joi.string()
       .max(256)
       .min(5)
@@ -76,31 +73,37 @@ const addquestion = Joi.object({
     author: Joi.string()
       .required(),
     level: Joi.string()
-      .valid['easy', 'medium', 'hard']
+      .valid(['easy', 'medium', 'hard'])
       .required(),
-    contest: Joi.integer()
+    contest: Joi.number()
+      .integer()
       .required(),
-    score: Joi.integer()
+    score: Joi.number()
+      .integer()
       .required(),
     checker_path: Joi.string()
       .required(),
-    checker_language: Joi.integer()
+    checker_language: Joi.number()
+      .integer()
       .required(),
     time_limit: Joi.number()
       .required(),
     slug: Joi.string()
       .max(50)
       .required(),
-    editorial: Joi.integer()
+    editorial: Joi.number()
+      .integer()
       .optional(),
-    is_practice: Joi.integer()
+    is_practice: Joi.number()
+      .integer()
       .required()
   })
 });
 
 const updatequestion = Joi.object({
   body: Joi.object({
-    id: Joi.integer()
+    id: Joi.number()
+      .integer()
       .required(),
     title: Joi.string()
       .max(256)
@@ -117,24 +120,29 @@ const updatequestion = Joi.object({
     author: Joi.string()
       .required(),
     level: Joi.string()
-      .valid['easy', 'medium', 'hard']
+      .valid(['easy', 'medium', 'hard'])
       .required(),
-    contest: Joi.integer()
+    contest: Joi.number()
+      .integer()
       .required(),
-    score: Joi.integer()
+    score: Joi.number()
+      .integer()
       .required(),
     checker_path: Joi.string()
       .required(),
-    checker_language: Joi.integer()
+    checker_language: Joi.number()
+      .integer()
       .required(),
     time_limit: Joi.number()
       .required(),
     slug: Joi.string()
       .max(50)
       .required(),
-    editorial: Joi.integer()
+    editorial: Joi.number()
+      .integer()
       .optional(),
-    is_practice: Joi.integer()
+    is_practice: Joi.number()
+      .integer()
       .required()
   })
 });
