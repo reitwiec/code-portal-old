@@ -12,7 +12,8 @@ const addcontest = Joi.object({
     end: Joi.date()
       .iso()
       .required(),
-    description: Joi.string(),
+    description: Joi.string()
+      .optional(),
     visibility: Joi.string()
       .required(),
     slug: Joi.string()
@@ -35,7 +36,8 @@ const updatecontest = Joi.object({
     end: Joi.date()
       .iso()
       .required(),
-    description: Joi.string(),
+    description: Joi.string()
+      .optional(),
     visibility: Joi.string()
       .required(),
     slug: Joi.string()
