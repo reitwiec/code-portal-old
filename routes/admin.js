@@ -122,12 +122,37 @@ module.exports = ()=>{
     if(!questionobj) res.sendError(null,'Question doesnt exist');
     return res.sendSuccess(questionobj, 'Successfully displaying question');
   };
+
+  exp.showquestionsbycontest = async (req, res) => {
+    let err, questions;
+    [err, questions] = await to(question.findAll({
+      where : { contest: req.params.contest}
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    return res.sendSuccess(questions, 'Successfully displaying questions');
+  };
   
   //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
     let err, questions;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
-    [err, questions] = await to(question.findAll());
+    if(req.user.access==30) {
+      [err, questions] = await to(question.findAll());
+      if(err) {
+        console.log(err);
+        res.sendError(err);
+      }
+      return res.sendSuccess(questions, 'Successfully displaying questions');
+    }
+    [err,questions] = await to(question.findAll({
+      include: [{
+        model: moderator,
+        where: ["question = id", user: req.user.id],
+      }]
+    }));
     if(err) {
       console.log(err);
       res.sendError(err);
