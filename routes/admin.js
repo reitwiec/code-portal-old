@@ -1,7 +1,10 @@
 const { contest } = require('../models');
 const { question } = require('../models');
 const { moderator } = require('../models');
+const { testcase } = require('../models');
 const to = require('../utils/to');
+const fs = require('fs');
+const path = '../questions';
 
 module.exports = ()=>{
   let exp = {};
@@ -160,7 +163,6 @@ module.exports = ()=>{
     let err, questionobj,modobj;
     if(req.user.access < 20) res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.create({
-      id: req.body.id,
       body: req.body.body,
       title: req.body.title,
       input_format: req.body.input_format,
@@ -290,6 +292,42 @@ module.exports = ()=>{
     }));
     if(err) return res.sendError(err);
     return res.sendSuccess(null,'Successfully deleted moderator');
+  };
+
+  exp.addtestcase = async (req, res) =>{
+    let err, testcaseobj;
+    let pathobj = path + '/'+ req.body.question + '/input/' + req.body.id + '.txt';
+    [err, modobj] = await to(
+      fs.writeFile(pathobj,req.body.input, (err)=>{
+        if(err){
+          console.log(err);
+          res.sendError(err);
+        }
+        console.log(req.body.id + 'submission saved');
+      })
+    );
+    
+    [err, subobj] = await to(submission.create({
+      id: req.body.id,
+      user: req.body.user,
+      question: req.body.question,
+      contest: req.body.contest,
+      path: path+'/'+req.body.id + '.txt',
+      points: req.body.points,
+      verdict: req.body.verdict,
+      language: req.body.language
+    }));
+    if(err){
+      console.log(err);
+      res.sendError(err);
+    }
+    return res.sendSuccess(null, 'Submission added successfully.');
+    
+  };
+
+  exp.deletetestcase = async (req, res) =>{
+    
+    
   };
 
   return exp;
