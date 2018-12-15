@@ -295,34 +295,35 @@ module.exports = ()=>{
   };
 
   exp.addtestcase = async (req, res) =>{
-    let err, testcaseobj;
-    let pathobj = path + '/'+ req.body.question + '/input/' + req.body.id + '.txt';
-    [err, modobj] = await to(
-      fs.writeFile(pathobj,req.body.input, (err)=>{
-        if(err){
-          console.log(err);
-          res.sendError(err);
-        }
-        console.log(req.body.id + 'submission saved');
-      })
-    );
-    
-    [err, subobj] = await to(submission.create({
-      id: req.body.id,
-      user: req.body.user,
+    let err, testobj;
+    let inpath = path + '/'+ req.body.question + '/input/' + req.body.id + '.txt';
+    let outpath = path + '/'+ req.body.question + '/output/' + req.body.id + '.txt';
+    fs.writeFile(inpath,req.body.input, (err)=>{
+      if(err){
+        console.log(err);
+        res.sendError(err);
+      }
+      console.log(req.body.id + 'input file saved');
+    });
+    fs.writeFile(outpath,req.body.output, (err)=>{
+      if(err){
+        console.log(err);
+        res.sendError(err);
+      }
+      console.log(req.body.id + 'output file saved');
+    });    
+    [err, testobj] = await to(testcase.create({
       question: req.body.question,
-      contest: req.body.contest,
-      path: path+'/'+req.body.id + '.txt',
-      points: req.body.points,
-      verdict: req.body.verdict,
-      language: req.body.language
+      sample: req.body.sample,
+      weight: req.body.weight,
+      input_path: inpath,
+      output_path: outpath
     }));
     if(err){
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(null, 'Submission added successfully.');
-    
+    return res.sendSuccess(null, 'Test case added successfully.');    
   };
 
   exp.deletetestcase = async (req, res) =>{
