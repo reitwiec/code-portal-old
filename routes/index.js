@@ -17,5 +17,8 @@ module.exports = (passport)=>{
   auth.login
   );
 
+  //leaderboard routes
+  router.get('/:contest/leaderboard', leaderboard.showleaderboard);
+
   return router;
 }
