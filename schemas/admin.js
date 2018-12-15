@@ -175,5 +175,6 @@ module.exports = {
   updatecontest,
   addquestion,
   updatequestion,
-  addmoderator
+  addmoderator,
+  addtestcase
 };
