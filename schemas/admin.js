@@ -74,7 +74,8 @@ const addquestion = Joi.object({
       .required(),
     output_format: Joi.string()
       .required(),
-    author: Joi.string()
+    author: Joi.number()
+      .integer()
       .required(),
     level: Joi.string()
       .valid(['easy', 'medium', 'hard'])
@@ -122,7 +123,8 @@ const updatequestion = Joi.object({
       .required(),
     output_format: Joi.string()
       .required(),
-    author: Joi.string()
+    author: Joi.number()
+      .integer()
       .required(),
     level: Joi.string()
       .valid(['easy', 'medium', 'hard'])
