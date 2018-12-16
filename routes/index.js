@@ -42,7 +42,7 @@ module.exports = (passport)=>{
   router.get('/showquestions/:id',
     admin.showquestionbyid);
 
-  router.get('/showquestions/:contest',
+  router.get('/showquestionsbycontest/:contest',
     admin.showquestionsbycontest);
 
   router.get('/showquestionsadmin',

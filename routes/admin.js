@@ -33,7 +33,7 @@ module.exports = ()=>{
     if(!contestobj) res.sendError(null,'Contest doesnt exist');
     return res.sendSuccess(contestobj,'Successfully displaying contest');
   };
-
+  //change this later
   exp.addcontest = async (req, res) =>{
     let contestobj,err;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
@@ -150,7 +150,7 @@ module.exports = ()=>{
     [err,questions] = await to(question.findAll({
       include: [{
         model: moderator,
-        where: ["question = id", user: req.user.id],
+        where: ["question = id", user = req.user.id],
       }]
     }));
     if(err) {
@@ -258,7 +258,7 @@ module.exports = ()=>{
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(questionobj, 'Successfully updated question');
+    return res.sendSuccess(null, 'Successfully updated question');
   };
 
   exp.deletequestion = async (req, res) => {
@@ -281,7 +281,7 @@ module.exports = ()=>{
       console.log(err);
       res.sendError(err);
     }
-    return res.sendSuccess(questionobj, 'Successfully deleted question');
+    return res.sendSuccess(null, 'Successfully deleted question');
   };
 
 
