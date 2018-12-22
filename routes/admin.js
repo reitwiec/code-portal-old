@@ -36,7 +36,7 @@ module.exports = ()=>{
     if(!contestobj) res.sendError(null,'Contest doesnt exist');
     return res.sendSuccess(contestobj,'Successfully displaying contest');
   };
-  //change this later
+  
   exp.addcontest = async (req, res) =>{
     let contestobj,err;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
@@ -126,7 +126,7 @@ module.exports = ()=>{
     return res.sendSuccess(questionobj, 'Successfully displaying question');
   };
 
-  exp.showquestionsbycontest = async (req, res) => {
+  /*exp.showquestionsbycontest = async (req, res) => {
     let err, questions;
     [err, questions] = await to(question.findAll({
       where : { contest: req.params.contest}
@@ -136,7 +136,7 @@ module.exports = ()=>{
       res.sendError(err);
     }
     return res.sendSuccess(questions, 'Successfully displaying questions');
-  };
+  };*/
   
   //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
