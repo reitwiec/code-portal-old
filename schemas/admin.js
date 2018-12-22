@@ -160,15 +160,13 @@ const addtestcase = Joi.object({
     sample: Joi.binary()
       .max(1)
       .required(),
+    explanation: Joi.string()
+      .optional(),
     weight: Joi.number()
       .required(),
     input_path: Joi.string()
       .required(),
     output_path: Joi.string()
-      .required(),
-    input: Joi.string()
-      .required(),
-    output: Joi.string()
       .required()
   })
 });
