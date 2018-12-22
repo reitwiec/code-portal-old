@@ -1,47 +1,33 @@
 import React, { Component } from 'react';
-import styled, {keyframes} from 'styled-components';
-import {NavLink} from 'react-router-dom';
-import {Navbar,Button} from 'components';
+import styled, { keyframes } from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { Navbar, Button } from 'components';
 
 class Error extends Component {
-    render() {
-        return (
-            <div className={this.props.className}>
-                <div className="container">
-                <div className="hello">
-
-                </div>
-                <div className="hello1">
-
-                </div>
-                <div className="hello2">
-
-                </div>
-                <div className="hello3">
-
-                </div>
-                <div className="hello4">
-
-            </div> 
-
-                </div>
-                <div className="subContainer">
-                <div className="error">404</div>
-                    <div className="errorMessage">
-                    <h2>Oops,</h2>
-                    <span>something went wrong.</span>
-                    <p>Error 404 Page not found</p>
-                    <NavLink to="/contests">
-                        <Button>
-                            Get outta here ...
-                        </Button>
-                    </NavLink>
-                </div>
-                </div>   
-                
-            </div>
-        );
-    }
+	render() {
+		return (
+			<div className={this.props.className}>
+				<div className="container">
+					<div className="hello" />
+					<div className="hello1" />
+					<div className="hello2" />
+					<div className="hello3" />
+					<div className="hello4" />
+				</div>
+				<div className="subContainer">
+					<div className="error">404</div>
+					<div className="errorMessage">
+						<h2>Oops,</h2>
+						<span>something went wrong.</span>
+						<p>Error 404 Page not found</p>
+						<NavLink to="/contests">
+							<Button>Get outta here ...</Button>
+						</NavLink>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
 var incoming1 = keyframes`
@@ -72,7 +58,7 @@ var incoming3 = keyframes`
     opacity: 1;
     }
 `;
-var borderchange = keyframes `
+var borderchange = keyframes`
 0%{
     width:100px;
 }

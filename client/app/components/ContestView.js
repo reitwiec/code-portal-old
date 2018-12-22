@@ -12,7 +12,8 @@ const contests = [
 		title: '101 Hack 55',
 		company: 'Hackerrank',
 		description: `Sign up for 101 Hack 55, an algorithm contest that’s all about speed, accuracy and efficiency. You’ll have 3 hours to solve 5-6 challenges. Top 10 coders win HackerRank T-shirts, and could also land a job at HackerRank! We are on the look out for great people to join our team of content engineers. You can find out more about the role on our careers page. See you on the leaderboard!`
-	},{
+	},
+	{
 		title: '55',
 		company: 'Hackerrank',
 		description: `Sign up for 101 Hack 55, an algorithm contest that’s all about speed, accuracy and efficiency. You’ll have 3 hours to solve 5-6 challenges. Top 10 coders win HackerRank T-shirts, and could also land a job at HackerRank! We are on the look out for great people to join our team of content engineers. You can find out more about the role on our careers page. See you on the leaderboard!`
@@ -27,7 +28,11 @@ class ContestView extends Component {
 				<span>Overview</span>
 				<div>
 					{new Array(contests.length).fill(0).map((_, i) => (
-						<ContestCard  contest={contests[i % contests.length]} key={i} joined={i%2}/>
+						<ContestCard
+							contest={contests[i % contests.length]}
+							key={i}
+							joined={i % 2}
+						/>
 					))}
 				</div>
 			</div>

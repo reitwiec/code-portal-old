@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
-import styled , {keyframes} from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { iecselogo } from 'assets';
-import {
-	Loginbox
-} from 'components';
+import { Loginbox } from 'components';
 
 class Login extends Component {
-    render() {
-        return (
-            <div className={this.props.className}>
-                <span id="logo">
-						<img src={iecselogo} alt="" id="logoimg" />
-					</span>
-                    <div className="alternative">
-                        <span>Create an Account</span>
-                        <span>Recover Account</span>
-                        <span id="google">Log in with Google</span>
-                    </div>
-                    <Loginbox/>
-                                    
-            </div>
-        );
-    }
+	render() {
+		return (
+			<div className={this.props.className}>
+				<span id="logo">
+					<img src={iecselogo} alt="" id="logoimg" />
+				</span>
+				<div className="alternative">
+					<span>Create an Account</span>
+					<span>Recover Account</span>
+					<span id="google">Log in with Google</span>
+				</div>
+				<Loginbox />
+			</div>
+		);
+	}
 }
-
-
 
 const slide = keyframes`
 0%{
@@ -44,8 +39,6 @@ const slide1 = keyframes`
     transform: rotate(0) translateX(0);
     }
 `;
-
-
 
 export default styled(Login)`
     height:650px;

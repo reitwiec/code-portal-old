@@ -93,7 +93,7 @@ export default styled(Editor)`
 	> div:first-child > select {
 		color: #e0873f;
 		width: 20ch;
-		font-weight:500;
+		font-weight: 500;
 		font-size: 0.8em;
 		padding: 0.2em 0.4em;
 		border: 1px solid #e0873f;
@@ -111,8 +111,8 @@ export default styled(Editor)`
 		background-repeat: no-repeat;
 		background-color: #24212b;
 	}
-	.CodeMirror{
+	.CodeMirror {
 		font-family: 'Inconsolata', monospace;
-		font-size:0.8em;
+		font-size: 0.8em;
 	}
 `;

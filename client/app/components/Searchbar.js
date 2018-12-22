@@ -44,8 +44,8 @@ export default styled(Searchbar)`
 		border: 1px solid #1e202f;
 		border-radius: 25px;
 		height: 25px;
-		background:#232437;
-		color:#fff;
+		background: #232437;
+		color: #fff;
 
 		::-webkit-input-placeholder {
 			color: #62638a;

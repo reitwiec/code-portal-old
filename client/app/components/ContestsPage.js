@@ -7,8 +7,8 @@ class ContestsPage extends Component {
 	render() {
 		return (
 			<div className={this.props.className}>
-			<Navbar />
-			
+				<Navbar />
+
 				<Content>
 					<ContestView />
 				</Content>

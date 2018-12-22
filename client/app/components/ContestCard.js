@@ -1,26 +1,26 @@
-import React ,{Component}from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
-class ContestCard extends Component{
+class ContestCard extends Component {
 	componentDidMount() {
-		console.log(this.props.joined)
+		console.log(this.props.joined);
 	}
-	
-	render(){
-		return(
-		<div className={this.props.className}>
-		<h3>{this.props.contest.title}</h3>
-		<h4>{this.props.contest.company}</h4>
-		<p>{this.props.contest.description}</p>
-		</div>
+
+	render() {
+		return (
+			<div className={this.props.className}>
+				<h3>{this.props.contest.title}</h3>
+				<h4>{this.props.contest.company}</h4>
+				<p>{this.props.contest.description}</p>
+			</div>
 		);
 	}
-};
+}
 
 export default styled(ContestCard)`
 	margin: 0 1.5em 1.5em 0;
 	border-radius: 20px;
-	background-color: ${({joined }) => ((joined===0) ? '#44db5e' : '#787cf7')};
+	background-color: ${({ joined }) => (joined === 0 ? '#44db5e' : '#787cf7')};
 	height: 200px;
 	width: 60%;
 	text-align: left;

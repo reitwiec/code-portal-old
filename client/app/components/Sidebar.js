@@ -44,7 +44,7 @@ export default styled(Sidebar)`
 	}
 
 	> span {
-		color:#6a93ff;
+		color: #6a93ff;
 		font-weight: 300;
 		font-size: 2.2em;
 	}

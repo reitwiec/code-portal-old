@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, {keyframes} from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import {
@@ -37,7 +37,7 @@ b: the amount of money that Anna contributed to the bill`,
 		'The first line contains two space-separated integers  and , the number of items ordered and the -based index of the item that Anna did not eat.  The second line contains  space-separated integers  where .  The third line contains an integer, , the amount of money that Brian charged Anna for her share of the bill.',
 	output_format:
 		'If Brian did not overcharge Anna, print Bon Appetit on a new line; otherwise, print the difference (i.e., ) that Brian must refund to Anna. This will always be an integer.',
-		submissions:1289
+	submissions: 1289
 };
 
 class App extends Component {
@@ -47,10 +47,7 @@ class App extends Component {
 				<GlobalStyle />
 				<BrowserRouter>
 					<div className={this.props.className}>
-					
-						
 						<Switch>
-
 							<Route
 								path="/contests"
 								component={() => <ContestsPage />}
@@ -60,35 +57,14 @@ class App extends Component {
 								path="/editor"
 								component={() => <EditorView question={question} />}
 							/>
-							<Route
-								path="/submission"
-								component={() => <Submission />}
-							/>
-							<Route
-								path="/questions"
-								component={() => <Questions />}
-							/>
-							<Route
-								path="/login"
-								component={() => <Login />}
-							/>
-							<Route
-								path="/"
-								component={() => <Login />}
-								exact
-							/>
-							<Route
-								component={() => <Error />}
-							/>
-
-							
-
-							
+							<Route path="/submission" component={() => <Submission />} />
+							<Route path="/questions" component={() => <Questions />} />
+							<Route path="/login" component={() => <Login />} />
+							<Route path="/" component={() => <Login />} exact />
+							<Route component={() => <Error />} />
 						</Switch>
-						
-						
-						<Footer/>
-						
+
+						<Footer />
 					</div>
 				</BrowserRouter>
 			</>
@@ -106,11 +82,11 @@ var footerup = keyframes`
     }
 `;
 export default styled(App)`
-	hr{
-		margin-top:30px;
+	hr {
+		margin-top: 30px;
 		border: 0.5px solid #dfe5f4;
 	}
-	${Footer}{
+	${Footer} {
 		animation: ${footerup} 1s 1 0s ease-in;
 	}
 `;
