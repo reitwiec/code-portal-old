@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import store from './store';
 
 import {
 	Content,
@@ -43,34 +46,37 @@ b: the amount of money that Anna contributed to the bill`,
 class App extends Component {
 	render() {
 		return (
-			<>
-				<GlobalStyle />
-				<BrowserRouter>
-					<div className={this.props.className}>
-						<Switch>
-							<Route
-								path="/contests"
-								component={() => <ContestsPage />}
-								exact
-							/>
-							<Route
-								path="/editor"
-								component={() => <EditorView question={question} />}
-							/>
-							<Route path="/submission" component={() => <Submission />} />
-							<Route path="/questions" component={() => <Questions />} />
-							<Route path="/login" component={() => <Login />} />
-							<Route path="/" component={() => <Login />} exact />
-							<Route component={() => <Error />} />
-						</Switch>
+			<Provider store={store}>
+				<>
+					<GlobalStyle />
+					<BrowserRouter>
+						<div className={this.props.className}>
+							<Switch>
+								<Route
+									path="/contests"
+									component={() => <ContestsPage />}
+									exact
+								/>
+								<Route
+									path="/editor"
+									component={() => <EditorView question={question} />}
+								/>
+								<Route path="/submission" component={() => <Submission />} />
+								<Route path="/questions" component={() => <Questions />} />
+								<Route path="/login" component={() => <Login />} />
+								<Route path="/" component={() => <Login />} exact />
+								<Route component={() => <Error />} />
+							</Switch>
 
-						<Footer />
-					</div>
-				</BrowserRouter>
-			</>
+							<Footer />
+						</div>
+					</BrowserRouter>
+				</>
+			</Provider>
 		);
 	}
 }
+
 var footerup = keyframes`
 0%{
     transform: rotate(0) translateY(10px);
