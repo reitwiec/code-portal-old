@@ -86,9 +86,6 @@ const addquestion = Joi.object({
     score: Joi.number()
       .integer()
       .required(),
-    checker_path: Joi.string()
-      .max(100)
-      .required(),
     checker_language: Joi.number()
       .integer()
       .required(),

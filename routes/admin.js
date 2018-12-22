@@ -4,7 +4,10 @@ const { moderator } = require('../models');
 const { testcase } = require('../models');
 const to = require('../utils/to');
 const fs = require('fs');
+const Busboy = require('busboy');
 const path = '../questions';
+
+moderator.belongsToMany(question, { through: 'modquestion'});
 
 module.exports = ()=>{
   let exp = {};
@@ -150,7 +153,9 @@ module.exports = ()=>{
     [err,questions] = await to(question.findAll({
       include: [{
         model: moderator,
-        where: ["question = id", user = req.user.id],
+        through: {
+          where: ["question = id", user = req.user.id]
+        }
       }]
     }));
     if(err) {
@@ -197,7 +202,6 @@ module.exports = ()=>{
       level: req.body.level,
       contest: req.body.contest,
       score: req.body.score,
-      checker_path: req.body.checker_path,
       checker_language: req.body.checker_language,
       time_limit: req.body.time_limit,
       slug: req.body.slug,
@@ -208,8 +212,17 @@ module.exports = ()=>{
       console.log(err);
       res.sendError(err);
     }
-    if(req.user.access==30)
-    return res.sendSuccess(questionobj, 'Successfully added question');
+    [err, questionobj] = await to(question.update({
+      checker_path: path + '/' + questionobj.id
+    }, { 
+        where: {id: questionobj.id}
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    if(req.user.access == 30)
+      return res.sendSuccess(questionobj, 'Successfully added question');
     [err, modobj] = await to(moderator.create({
       user: req.user.id,
       question: questionobj.id
@@ -319,11 +332,11 @@ module.exports = ()=>{
     return res.sendSuccess(null,'Successfully deleted moderator');
   };
 
-  exp.addtestcase = async (req, res) =>{
+  /*exp.addtestcase = async (req, res) =>{
     let err, testobj;
     let inpath = path + '/'+ req.body.question + '/input/' + req.body.id + '.txt';
     let outpath = path + '/'+ req.body.question + '/output/' + req.body.id + '.txt';
-    fs.writeFile(inpath,req.body.input, (err)=>{
+    fs.writeFile(inpath.req.body.input, (err)=>{
       if(err){
         console.log(err);
         res.sendError(err);
@@ -344,16 +357,65 @@ module.exports = ()=>{
       input_path: inpath,
       output_path: outpath
     }));
-    if(err){
+    (err){
       console.log(err);
       res.sendError(err);
     }
     return res.sendSuccess(null, 'Test case added successfully.');    
+  };*/
+
+  exp.addtestcase = async (req, res) => {
+    let err, testobj;
+    let inpath = path + '/'+ req.body.question + '/input/' + req.body.id + '.txt';
+    let outpath = path + '/'+ req.body.question + '/output/' + req.body.id + '.txt';
+    let busboy = new Busboy({headers: req.headers});
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+      if(fieldname == 'inputfile')
+        file.pipe(fs.createWriteStream(inpath));
+      else if(fieldname == 'outputfile')
+        file.pipe(fs.createWriteStream(outpath));
+    });
+    [err, testobj] = await to(testcase.create({
+      question: req.body.question,
+      sample: req.body.sample,
+      weight: req.body.weight,
+      input_path: inpath,
+      output_path: outpath
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    return res.sendSuccess(null, 'Test case added');
   };
 
-  exp.deletetestcase = async (req, res) =>{
-    
-    
+  exp.deletetestcase = async (req, res) => {
+    let err, testobj;
+    [err, testobj] = await to(testcase.findOne({
+      where: {id: req.params.id}
+    }));
+    if (err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    if(!testobj) { res.sendError('Testcase does not exist');
+    }
+    let inpath = path + '/'+ testobj.question + '/input/' + testobj.id + '.txt';
+    let outpath = path + '/'+ testobj.question + '/output/' + testobj.id + '.txt';
+    fs.access(inpath, err => {
+      fs.unlinkSync(inpath);
+      if(err) {
+        console.log(err);
+        res.sendError(err);
+      }
+    });
+    fs.access(outpath, err => {
+      fs.unlinkSync(outpath);
+      if(err) {
+        console.log(err);
+        res.sendError(err);
+      }
+    });
   };
 
   return exp;

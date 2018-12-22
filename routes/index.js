@@ -71,6 +71,7 @@ module.exports = (passport)=>{
 
   router.post('/addtestcase',
     validator(schemas.admin.addtestcase),
+    upload(file), 
     admin.addtestcase);
 
   router.delete('/deletetestcase/:id',
