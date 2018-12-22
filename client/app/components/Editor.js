@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/mdn-like.css';
+import 'codemirror/theme/duotone-dark.css';
 import 'codemirror/mode/clike/clike';
 import 'codemirror/mode/python/python';
 
@@ -69,7 +69,7 @@ class Editor extends Component {
 				<CodeMirror
 					value={languages[this.state.language].boilerplate}
 					options={{
-						theme: 'mdn-like',
+						theme: 'duotone-dark',
 						lineNumbers: true,
 						mode: languages[this.state.language].mode
 					}}
@@ -80,22 +80,23 @@ class Editor extends Component {
 }
 
 export default styled(Editor)`
-	border: 1px solid #dfe5f4;
+	border: 1px solid #1e202f;
 
 	> div:first-child {
 		display: flex;
-		border-left: 6px solid rgba(0, 83, 159, 0.65);
-		flex-direction: row-reverse;
+		// position:absolute;
+		border-left: 6px solid rgba(114, 97, 216, 1);
 		padding: 0.4em;
-		background-color: #fcfcfc;
+		background-color: #3a3647;
 	}
 
 	> div:first-child > select {
-		color: #797df8;
+		color: #e0873f;
 		width: 20ch;
-		font-size: 1em;
+		font-weight:500;
+		font-size: 0.8em;
 		padding: 0.2em 0.4em;
-		border: 1px solid #797df8;
+		border: 1px solid #e0873f;
 
 		-webkit-appearance: none;
 		-moz-appearance: none;
@@ -103,11 +104,15 @@ export default styled(Editor)`
 
 		outline: none;
 
-		background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%238C98F2'><polygon points='0,0 100,0 50,50'/></svg>")
+		background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='#e0873f'><polygon points='0,0 100,0 50,50'/></svg>")
 			no-repeat;
 		background-size: 0.8em;
 		background-position: calc(100% - 1ch) center;
 		background-repeat: no-repeat;
-		background-color: #efefef;
+		background-color: #24212b;
+	}
+	.CodeMirror{
+		font-family: 'Inconsolata', monospace;
+		font-size:0.8em;
 	}
 `;

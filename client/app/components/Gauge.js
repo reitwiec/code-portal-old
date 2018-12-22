@@ -1,16 +1,18 @@
-import React from 'react';
+import React,{Component} from 'react';
 import styled from 'styled-components';
 
-const Gauge = ({ className, color, size, percentage }) => (
-	<div className={className}>
-		<svg width={size} height={size}>
+class Gauge extends Component {
+    render(){
+        return(
+            <div className={this.props.className}>
+		<svg width={this.props.size} height={this.props.size}>
 			<circle
 				id="mask"
 				r="35%"
 				cx="50%"
 				cy="50%"
 				stroke="#f6f6f6"
-				stroke-width="15%"
+				strokeWidth="9%"
 				fill="none"
 			/>
 			<circle
@@ -18,16 +20,18 @@ const Gauge = ({ className, color, size, percentage }) => (
 				r="35%"
 				cx="50%"
 				cy="50%"
-				stroke={color}
-				stroke-width="15%"
-				stroke-dasharray={`${percentage * 100} 100`}
-				stroke-linecap="round"
+				stroke={this.props.color}
+				strokeWidth="10%"
+				strokeDasharray={`${this.props.percentage * 100} 100`}
+				strokeLinecap="round"
 				transform="rotate(-90)"
 				fill="none"
 			/>
 		</svg>
 	</div>
-);
+        )
+    }
+};
 
 export default styled(Gauge)`
 	display: inline-block;

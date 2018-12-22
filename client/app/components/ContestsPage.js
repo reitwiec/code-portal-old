@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Sidebar, ContestView, Content } from 'components';
+import { Navbar, ContestView, Content } from 'components';
 
 class ContestsPage extends Component {
 	render() {
 		return (
 			<div className={this.props.className}>
-				<Sidebar />
+			<Navbar />
+			
 				<Content>
 					<ContestView />
 				</Content>

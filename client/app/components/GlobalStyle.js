@@ -2,15 +2,26 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
 	@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900');
+	@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700');
 
 	* {
 		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
 	}
+	html{
+		background-color:#222437;
+	}
 
 	body {
-		
+		background-color:#000;
+		background: #2b2b46; /* Old browsers */
+		background: -moz-radial-gradient(center, ellipse cover, #2b2b46 9%, #232438 53%, #222437 100%); /* FF3.6-15 */
+		background: -webkit-radial-gradient(center, ellipse cover, #2b2b46 9%,#232438 53%,#222437 100%); /* Chrome10-25,Safari5.1-6 */
+		background: radial-gradient(ellipse at center, #2b2b46 9%,#232438 53%,#222437 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2b2b46', endColorstr='#222437',GradientType=1 );
+
+
 		position: relative;
 		margin: 0;
 		padding: 0;

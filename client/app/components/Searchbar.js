@@ -41,30 +41,32 @@ export default styled(Searchbar)`
 		appearance: none;
 		text-indent: 10px;
 		width: 250px;
-		border: 1px solid #d6deea;
+		border: 1px solid #1e202f;
 		border-radius: 25px;
 		height: 25px;
+		background:#232437;
+		color:#fff;
 
 		::-webkit-input-placeholder {
-			color: #373d5d;
-			opacity: 0.5;
+			color: #62638a;
+			opacity: 1;
 			font-size: 0.9em;
 		}
 	}
 
 	button {
-		background-color: #edf0f9;
+		background-color: #232437;
 		width: 70px;
 		height: 28px;
 		border-radius: 25px;
 		position: absolute;
-		border: 1px solid #797df8;
+		border: 1px solid #6a93ff;
 		top: 0px;
 		left: 260px;
 		transition: 0.8s;
 
 		:hover {
-			background-color: #797df8;
+			background-color: #6a93ff;
 			border: none;
 			cursor: pointer;
 
@@ -74,7 +76,7 @@ export default styled(Searchbar)`
 		}
 
 		.fa {
-			color: #797df8;
+			color: #6a93ff;
 			transition: 0.8s;
 		}
 

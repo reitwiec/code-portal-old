@@ -22,6 +22,7 @@ class Navbar extends Component {
 					<span id="logo">
 						<img src={iecselogo} alt="" id="logoimg" />
 					</span>
+
 					<Homeicon title="hello" />
 				</NavLink>
 
@@ -32,6 +33,7 @@ class Navbar extends Component {
 					<span id="unamenav">{x}</span>
 					<Notif />
 				</NavLink>
+				
 
 				<NavLink to="/contests">
 					<Contesticon />
@@ -51,7 +53,11 @@ export default styled(Navbar)`
 	z-index: 1;
 	position: sticky;
 	top: 0;
-	background-color: #edf0f9;
+	background: #2f2f4b; /* Old browsers */
+// background: -moz-radial-gradient(center, ellipse cover, #2f2f4b 9%, #282840 100%); /* FF3.6-15 */
+// background: -webkit-radial-gradient(center, ellipse cover, #2f2f4b 9%,#282840 100%); /* Chrome10-25,Safari5.1-6 */
+// background: radial-gradient(ellipse at center, #2f2f4b 9%,#282840 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+// filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2f2f4b', endColorstr='#282840',GradientType=1 );
 	width: 100%;
 	height: 50px;
 
@@ -77,6 +83,7 @@ export default styled(Navbar)`
 		top: 10px;
 		right: 25px;
 		transition: 0.5s;
+		
 
 		:hover {
 			top: 12px;
@@ -85,6 +92,7 @@ export default styled(Navbar)`
 
 		img {
 			border-radius: 50%;
+			border: 1px solid #78a5fe;
 			width: 30px;
 			height: 30px;
 			transition: 0.5s;
@@ -105,7 +113,7 @@ export default styled(Navbar)`
 		float: right;
 		height: 10px;
 		width: 10px;
-		stroke: #edf0f9;
+		stroke: #2f2e4b;
 		stroke-width: 100px;
 		transition: 0.5s;
 	}
@@ -120,7 +128,7 @@ export default styled(Navbar)`
 	#unamenav {
 		font-family: 'Source Sans Pro', sans-serif;
 		font-size: 0.7em;
-		color: #373d5d;
+		color: #78a5fe;
 		font-weight: 600;
 		position: absolute;
 		top: 18px;
@@ -129,7 +137,7 @@ export default styled(Navbar)`
 	}
 
 	#avatar:hover ~ #unamenav {
-		color: #797df8;
 		right: 62px;
 	}
+	
 `;
