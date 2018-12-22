@@ -13,6 +13,10 @@ module.exports = (sequelize, Datatypes) => {
             type: Datatypes.STRING.BINARY,
             allowNull: false
         },
+        explanation: {
+            type: Datatypes.STRING(150),
+            allowNull: true 
+        },
         weight: {
             type: Datatypes.DOUBLE,
             allowNull: false
