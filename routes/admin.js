@@ -36,7 +36,7 @@ module.exports = ()=>{
     if(!contestobj) res.sendError(null,'Contest doesnt exist');
     return res.sendSuccess(contestobj,'Successfully displaying contest');
   };
-  //change this later
+  
   exp.addcontest = async (req, res) =>{
     let contestobj,err;
     if(req.user.access!=30) return res.sendError(null,'Access denied for user');
@@ -126,7 +126,7 @@ module.exports = ()=>{
     return res.sendSuccess(questionobj, 'Successfully displaying question');
   };
 
-  exp.showquestionsbycontest = async (req, res) => {
+  /*exp.showquestionsbycontest = async (req, res) => {
     let err, questions;
     [err, questions] = await to(question.findAll({
       where : { contest: req.params.contest}
@@ -136,7 +136,7 @@ module.exports = ()=>{
       res.sendError(err);
     }
     return res.sendSuccess(questions, 'Successfully displaying questions');
-  };
+  };*/
   
   //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
@@ -366,8 +366,23 @@ module.exports = ()=>{
 
   exp.addtestcase = async (req, res) => {
     let err, testobj;
-    let inpath = path + '/'+ req.body.question + '/input/' + req.body.id + '.txt';
-    let outpath = path + '/'+ req.body.question + '/output/' + req.body.id + '.txt';
+    let temp = 'defaultpath';
+    [err, testobj] = await to(testcase.create({
+      question: req.body.question,
+      sample: req.body.sample,
+      weight: req.body.weight,
+      explanation: req.body.explanation,
+      input_path: temp,
+      output_path: temp
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }
+    console.log('Added to the database');    
+    let inpath = path + '/'+ req.body.question + '/input/' + testobj.id + '.txt';
+    let outpath = path + '/'+ req.body.question + '/output/' + testobj.id + '.txt';
+    
     let busboy = new Busboy({headers: req.headers});
     busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
       if(fieldname == 'inputfile')
@@ -375,17 +390,10 @@ module.exports = ()=>{
       else if(fieldname == 'outputfile')
         file.pipe(fs.createWriteStream(outpath));
     });
-    [err, testobj] = await to(testcase.create({
-      question: req.body.question,
-      sample: req.body.sample,
-      weight: req.body.weight,
-      input_path: inpath,
-      output_path: outpath
-    }));
-    if(err) {
-      console.log(err);
-      res.sendError(err);
-    }
+    busboy.on('finish', function() {
+      console.log('Upload complete');
+      //res.writeHead(200, { 'Connection': 'close' });
+    });    
     return res.sendSuccess(null, 'Test case added');
   };
 
