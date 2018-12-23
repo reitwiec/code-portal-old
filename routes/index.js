@@ -6,6 +6,7 @@ const schemas = require('../schemas');
 
 module.exports = (passport)=>{
   const auth = require('./auth')(passport);
+  const leaderboard = require('./leaderboard')(passport);
 
   //auth routes
   router.post('/register',
@@ -18,7 +19,9 @@ module.exports = (passport)=>{
   );
 
   //leaderboard routes
-  router.get('/:contest/leaderboard', leaderboard.showleaderboard);
+  router.get('/:contest/leaderboard', 
+  leaderboard.showleaderboard
+  );
 
   return router;
 }
