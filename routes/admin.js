@@ -7,6 +7,7 @@ const fs = require('fs');
 const Busboy = require('busboy');
 const path = '../questions';
 const Path = require("path");
+const shell = require("shelljs");
 
 module.exports = ()=>{
   let exp = {};
@@ -177,13 +178,13 @@ module.exports = ()=>{
     if(err) {
       return res.sendError(err);
     }
-    if(!questionobj) res.sendError(null,'Question doesnt exist');
+    if(!questionobj) return res.sendError(null,'Question doesnt exist');
     return res.sendSuccess(questionobj, 'Successfully displaying questions');
   };
   
   exp.addquestion = async (req, res) => {
     let err, questionobj,modobj;
-    if(req.user.access < 20) res.sendError(null, 'Access denied');
+    if(req.user.access < 20) return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.create({
       body: req.body.body,
       title: req.body.title,
@@ -201,8 +202,7 @@ module.exports = ()=>{
       is_practice: req.body.is_practice
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     [err, questionobj] = await to(question.update({
       checker_path: path + '/' + questionobj.id
@@ -210,8 +210,7 @@ module.exports = ()=>{
         where: {id: questionobj.id}
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     if(req.user.access == 30)
       return res.sendSuccess(questionobj, 'Successfully added question');
@@ -220,7 +219,6 @@ module.exports = ()=>{
       question: questionobj.id
     }));      
     if (err) {
-      console.log(err);
       return res.sendError(err);
     }
     return res.sendSuccess(null,'Successfully added question and moderator for it');
@@ -235,10 +233,9 @@ module.exports = ()=>{
       }
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
-    if(req.user.access!=30 && !modobj) res.sendError(null, 'Access denied');
+    if(req.user.access!=30 && !modobj) return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.update({
       id: req.body.id,
       body: req.body.body,
@@ -246,7 +243,6 @@ module.exports = ()=>{
       input_format: req.body.input_format,
       constraints: req.body.constraints,
       output_format: req.body.output_format,
-      author: req.body.author,
       level: req.body.level,
       contest: req.body.contest,
       score: req.body.score,
@@ -260,8 +256,7 @@ module.exports = ()=>{
         where : {id: req.body.id}
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     return res.sendSuccess(null, 'Successfully updated question');
   };
@@ -275,16 +270,14 @@ module.exports = ()=>{
       }
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
-    if(req.user.access!=30 && !modobj) res.sendError(null, 'Access denied');
+    if(req.user.access!=30 && !modobj) return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.destroy({
       where: {id: req.params.id}
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     return res.sendSuccess(null, 'Successfully deleted question');
   };
@@ -316,7 +309,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    if(!modobj) res.sendError(null,'Doesnt exist');
+    if(!modobj) return res.sendError(null,'Doesnt exist');
     [err, modobj] = await to(moderator.destroy({
       where: { user: req.params.id }
     }));
@@ -406,8 +399,12 @@ module.exports = ()=>{
     let err, testobj;
     [err, testobj] = await to(testcase.create(req.body));
     if(err) return res.sendError(err);
-    let inpath = Path.join(__dirname,'..','questions',req.body.question,'input',testobj.id+'.txt');
-    let outpath = Path.join(__dirname,'..','questions',req.body.question,'output',testobj.id+'.txt');
+    let inpath = Path.join(__dirname,'..','questions',req.body.question,'input');
+    let outpath = Path.join(__dirname,'..','questions',req.body.question,'output');
+    shell.mkdir("-p",inpath);
+    shell.mkdir("-p",outpath);
+    inpath = Path.join(inpath,testobj.id+'.txt');
+    outpath = Path.join(outpath,testobj.id+'.txt');
     req.files.inputfile.mv(inpath,async err=>{
       if(err) return res.sendError(err);
       req.files.outputfile.mv(outpath,async err=>{
@@ -430,25 +427,23 @@ module.exports = ()=>{
       where: {id: req.params.id}
     }));
     if (err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
-    if(!testobj) { res.sendError('Testcase does not exist');
+    if(!testobj) { return res.sendError('Testcase does not exist');
     }
     let inpath = path + '/'+ testobj.question + '/input/' + testobj.id + '.txt';
     let outpath = path + '/'+ testobj.question + '/output/' + testobj.id + '.txt';
     fs.access(inpath, err => {
       fs.unlinkSync(inpath);
       if(err) {
-        console.log(err);
-        res.sendError(err);
+        return res.sendError(err);
       }
     });
     fs.access(outpath, err => {
       fs.unlinkSync(outpath);
       if(err) {
         console.log(err);
-        res.sendError(err);
+        return res.sendError(err);
       }
     });
   };

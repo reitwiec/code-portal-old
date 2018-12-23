@@ -7,7 +7,6 @@ module.exports = (sequelize, Datatypes) => {
         },
         title: {
             type: Datatypes.STRING(50),
-            unique: true,
             allowNull: false
         },
         body: {
