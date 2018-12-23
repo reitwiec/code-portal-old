@@ -368,8 +368,9 @@ module.exports = ()=>{
   exp.test = async (req, res) => {
     //res.render("../index.html");
     res.sendFile(Path.join(__dirname+'/index.html'));
+
   };
-  
+
   exp.addtestcase = async (req, res) => {
     let err, testobj;
     let temp = 'defaultpath';
