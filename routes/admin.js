@@ -8,7 +8,6 @@ const Busboy = require('busboy');
 const path = '../questions';
 var Path    = require("path");
 
-
 module.exports = ()=>{
   let exp = {};
 
@@ -365,15 +364,16 @@ module.exports = ()=>{
     return res.sendSuccess(null, 'Test case added successfully.');    
   };*/
 
-  exp.test = async (req, res) => {
-    //res.render("../index.html");
+  /*exp.test = async (req, res) => {
+    //res.render('index');
     res.sendFile(Path.join(__dirname+'/index.html'));
 
-  };
+  };*/
 
   exp.addtestcase = async (req, res) => {
     let err, testobj;
     let temp = 'defaultpath';
+    console.log(req.body);
     [err, testobj] = await to(testcase.create({
       question: req.body.question,
       sample: req.body.sample,
