@@ -42,8 +42,8 @@ module.exports = (passport)=>{
   router.get('/showquestions/:id',
     admin.showquestionbyid);
 
-  /*router.get('/showquestionsbycontest/:contest',
-    admin.showquestionsbycontest);*/
+  router.get('/showquestionsbycontest/:contest',
+    admin.showquestionsbycontest);
 
   router.get('/showquestionsadmin',
     admin.showquestionsadmin);
@@ -70,8 +70,7 @@ module.exports = (passport)=>{
     admin.deletemoderator);
 
   router.post('/addtestcase',
-    validator(schemas.admin.addtestcase),
-    upload(file), 
+    validator(schemas.admin.addtestcase), 
     admin.addtestcase);
 
   router.delete('/deletetestcase/:id',
