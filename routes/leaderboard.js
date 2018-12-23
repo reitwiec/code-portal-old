@@ -71,21 +71,20 @@ module.exports = () => {
                         // Sort the leaderboard
                 		Leaderboard.sort((a, b) => {
                         	// Compare Function
-                        	if (a.Points > b.Points) {
+                        	if (a.points > b.points) {
                             	return -1;
                         	}
-                    		if (a.Points < b.Points) {
+                    		if (a.points < b.points) {
                             	return 1;
                         	}
                         	return 0;
                     	});
                         
                         // Assigning Rank
-
                         var Rank = 1;
                         Leaderboard[0].rank = Rank;
                         for (var i = 1; i < Leaderboard.length; i++) {
-                            if (Leaderboard[i].Points != Leaderboard[i-1].Points)
+                            if (Leaderboard[i].points != Leaderboard[i-1].points)
                                 Rank++;
                             Leaderboard[i].rank = Rank;
                         }
