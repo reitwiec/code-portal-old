@@ -44,15 +44,14 @@ module.exports = () => {
                         users.forEach((item, index) => {
                             if (LB.has(item.user)) {
                                 let temp = LB.get(item.user);
-                                LB.set(item.user, temp + item.points);
+                                LB.set(item.user, temp + item['MAX(`points`)']);
                             } else {
-                                LB.set(item.user, item.points);
+                                LB.set(item.user, item['MAX(`points`)']);
                             }
                             // console.log(item.user + ' ' + item.points);
                         });
                     })
                     .then(() => {
-                        // console.log(LB);
                         var promises = [];
                         LB.forEach((value, key, map) => {
                             // Find Username from User Table
