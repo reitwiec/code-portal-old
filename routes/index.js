@@ -76,8 +76,5 @@ module.exports = (passport)=>{
   router.delete('/deletetestcase/:id',
     admin.deletetestcase);
 
-  router.get('/test',
-    admin.test);
-
   return router;
 }
