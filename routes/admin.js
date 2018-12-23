@@ -7,7 +7,7 @@ const fs = require('fs');
 const Busboy = require('busboy');
 const path = '../questions';
 
-moderator.belongsToMany(question, { through: 'modquestion'});
+
 
 module.exports = ()=>{
   let exp = {};
@@ -126,7 +126,7 @@ module.exports = ()=>{
     return res.sendSuccess(questionobj, 'Successfully displaying question');
   };
 
-  /*exp.showquestionsbycontest = async (req, res) => {
+  exp.showquestionsbycontest = async (req, res) => {
     let err, questions;
     [err, questions] = await to(question.findAll({
       where : { contest: req.params.contest}
@@ -136,7 +136,7 @@ module.exports = ()=>{
       res.sendError(err);
     }
     return res.sendSuccess(questions, 'Successfully displaying questions');
-  };*/
+  };
   
   //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
@@ -150,6 +150,7 @@ module.exports = ()=>{
       }
       return res.sendSuccess(questions, 'Successfully displaying questions');
     }
+    moderator.belongsToMany(question, { through: 'modquestion'});
     [err,questions] = await to(question.findAll({
       include: [{
         model: moderator,
@@ -364,6 +365,10 @@ module.exports = ()=>{
     return res.sendSuccess(null, 'Test case added successfully.');    
   };*/
 
+  exp.test = async (req, res) => {
+    res.render("../index.html");
+  };
+  
   exp.addtestcase = async (req, res) => {
     let err, testobj;
     let temp = 'defaultpath';
@@ -393,8 +398,18 @@ module.exports = ()=>{
     busboy.on('finish', function() {
       console.log('Upload complete');
       //res.writeHead(200, { 'Connection': 'close' });
-    });    
-    return res.sendSuccess(null, 'Test case added');
+    });  
+    [err, testobj] = await to(testcase.update({
+      input_path: inpath,
+      output_path: outpath
+    }, {
+        where : {id: testobj.id}
+    }));
+    if(err) {
+      console.log(err);
+      res.sendError(err);
+    }  
+    return res.sendSuccess(null, 'Test case added along with file upload');
   };
 
   exp.deletetestcase = async (req, res) => {

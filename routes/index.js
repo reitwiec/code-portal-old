@@ -70,11 +70,14 @@ module.exports = (passport)=>{
     admin.deletemoderator);
 
   router.post('/addtestcase',
-    validator(schemas.admin.addtestcase),
+    validator(schemas.admin.addtestcase), 
     admin.addtestcase);
 
   router.delete('/deletetestcase/:id',
     admin.deletetestcase);
+
+  router.get('/test',
+    admin.test);
 
   return router;
 }

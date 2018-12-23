@@ -45,7 +45,7 @@ module.exports = (sequelize, Datatypes) => {
         },
         checker_path: {
             type: Datatypes.STRING(100),
-            defaultValue: null, 
+            defaultValue: 'null', 
             allowNull: false
         },
         checker_language: {
