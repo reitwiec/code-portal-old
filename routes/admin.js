@@ -1,7 +1,7 @@
 const { contest } = require('../models');
 const { question } = require('../models');
-const { moderator } = require('../models');
 const { testcase } = require('../models');
+const { moderator } = require('../models');
 const to = require('../utils/to');
 const fs = require('fs');
 const Busboy = require('busboy');
@@ -145,7 +145,6 @@ module.exports = ()=>{
       }
       return res.sendSuccess(questions, 'Successfully displaying questions');
     }
-    moderator.belongsToMany(question, { through: 'modquestion'});
     [err,questions] = await to(question.findAll({
       include: [{
         model: moderator,

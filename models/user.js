@@ -42,5 +42,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 10
     }
   });
+
+  /*User.associate = (models) => {
+    models.User.belongsToMany(models.Question, {as : "moderator"})
+  };*/
+  
   return User;
 };

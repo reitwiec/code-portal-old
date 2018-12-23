@@ -3,12 +3,20 @@ module.exports = (sequelize, Datatypes) => {
         user: {
             type: Datatypes.INTEGER,
             unique: false,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: "user",
+                key: "id"
+            }
         },
         question: {
             type: Datatypes.INTEGER,
             unique: false,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: "question",
+                key: "id"
+            }
         }
     });
     return Moderator;
