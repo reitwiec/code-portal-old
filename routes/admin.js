@@ -364,12 +364,6 @@ module.exports = ()=>{
     return res.sendSuccess(null, 'Test case added successfully.');    
   };*/
 
-  /*exp.test = async (req, res) => {
-    //res.render('index');
-    res.sendFile(Path.join(__dirname+'/index.html'));
-
-  };*/
-
   exp.addtestcase = async (req, res) => {
     let err, testobj;
     let temp = 'defaultpath';
