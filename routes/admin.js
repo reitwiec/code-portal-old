@@ -6,7 +6,7 @@ const to = require('../utils/to');
 const fs = require('fs');
 const Busboy = require('busboy');
 const path = '../questions';
-
+var Path    = require("path");
 
 
 module.exports = ()=>{
@@ -366,7 +366,8 @@ module.exports = ()=>{
   };*/
 
   exp.test = async (req, res) => {
-    res.render("../index.html");
+    //res.render("../index.html");
+    res.sendFile(Path.join(__dirname+'/index.html'));
   };
   
   exp.addtestcase = async (req, res) => {
