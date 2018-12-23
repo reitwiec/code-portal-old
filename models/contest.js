@@ -28,7 +28,8 @@ module.exports = (sequelize, Datatypes) => {
         },
         slug: {
             type: Datatypes.STRING(10),
-            allowNull: false
+            allowNull: false,
+            unique: true
         }
     });
     return Contest;

@@ -6,7 +6,7 @@ const to = require('../utils/to');
 const fs = require('fs');
 const Busboy = require('busboy');
 const path = '../questions';
-var Path    = require("path");
+const Path = require("path");
 
 module.exports = ()=>{
   let exp = {};
@@ -32,7 +32,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    if(!contestobj) res.sendError(null,'Contest doesnt exist');
+    if(!contestobj) return res.sendError(null,'Contest doesnt exist');
     return res.sendSuccess(contestobj,'Successfully displaying contest');
   };
   
@@ -66,7 +66,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    if(!contestobj) res.sendError(null,'Doesnt exist');
+    if(!contestobj) return res.sendError(null,'Doesnt exist');
     [err, contestobj] = await to(contest.update({
       id: req.body.id,
       title: req.body.title,
@@ -94,7 +94,7 @@ module.exports = ()=>{
       console.log(err);
       return res.sendError(err);
     }
-    if(!contestobj) res.sendError(null,'Doesnt exist');
+    if(!contestobj) return res.sendError(null,'Doesnt exist');
     [err, contestobj] = await to(contest.destroy({
       where: { id: req.params.id }
     }));
@@ -106,8 +106,7 @@ module.exports = ()=>{
     let err, questions;
     [err, questions] = await to(question.findAll());
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     return res.sendSuccess(questions, 'Successfully displaying questions');
   };
@@ -118,10 +117,9 @@ module.exports = ()=>{
       where : { id: req.params.id}
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
-    if(!questionobj) res.sendError(null,'Question doesnt exist');
+    if(!questionobj) return res.sendError(null,'Question doesnt exist');
     return res.sendSuccess(questionobj, 'Successfully displaying question');
   };
 
@@ -131,8 +129,7 @@ module.exports = ()=>{
       where : { contest: req.params.contest}
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     return res.sendSuccess(questions, 'Successfully displaying questions');
   };
@@ -140,12 +137,11 @@ module.exports = ()=>{
   //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
     let err, questions;
-    if(req.user.access < 20) res.sendError(null, 'Access denied');
+    if(req.user.access < 20) return res.sendError(null, 'Access denied');
     if(req.user.access==30) {
       [err, questions] = await to(question.findAll());
       if(err) {
-        console.log(err);
-        res.sendError(err);
+        return res.sendError(err);
       }
       return res.sendSuccess(questions, 'Successfully displaying questions');
     }
@@ -159,8 +155,7 @@ module.exports = ()=>{
       }]
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     return res.sendSuccess(questions, 'Successfully displaying questions');
   };
@@ -174,16 +169,14 @@ module.exports = ()=>{
       }
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
-    if(req.user.access!=30 && !modobj) res.sendError(null, 'Access denied');
+    if(req.user.access!=30 && !modobj) return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(question.findOne({
       where : { id: req.params.id}
     }));
     if(err) {
-      console.log(err);
-      res.sendError(err);
+      return res.sendError(err);
     }
     if(!questionobj) res.sendError(null,'Question doesnt exist');
     return res.sendSuccess(questionobj, 'Successfully displaying questions');
@@ -198,7 +191,7 @@ module.exports = ()=>{
       input_format: req.body.input_format,
       constraints: req.body.constraints,
       output_format: req.body.output_format,
-      author: req.body.author,
+      author: req.user.id,
       level: req.body.level,
       contest: req.body.contest,
       score: req.body.score,
@@ -364,48 +357,72 @@ module.exports = ()=>{
     return res.sendSuccess(null, 'Test case added successfully.');    
   };*/
 
-  exp.addtestcase = async (req, res) => {
-    let err, testobj;
-    let temp = 'defaultpath';
-    console.log(req.body);
-    [err, testobj] = await to(testcase.create({
-      question: req.body.question,
-      sample: req.body.sample,
-      weight: req.body.weight,
-      explanation: req.body.explanation,
-      input_path: temp,
-      output_path: temp
-    }));
-    if(err) {
-      console.log(err);
-      res.sendError(err);
-    }
-    console.log('Added to the database');    
-    let inpath = path + '/'+ req.body.question + '/input/' + testobj.id + '.txt';
-    let outpath = path + '/'+ req.body.question + '/output/' + testobj.id + '.txt';
+  // exp.addtestcase = async (req, res) => {
+  //   let err, testobj;
+  //   let temp = 'defaultpath';
+  //   console.log(req.body);
+  //   [err, testobj] = await to(testcase.create({
+  //     question: req.body.question,
+  //     sample: req.body.sample,
+  //     weight: req.body.weight,
+  //     explanation: req.body.explanation,
+  //     input_path: temp,
+  //     output_path: temp
+  //   })); 
+  //   if(err) {
+  //     console.log(err);
+  //     res.sendError(err);
+  //   }
+  //   console.log('Added to the database');    
+  //   let inpath = path + '/'+ req.body.question + '/input/' + testobj.id + '.txt';
+  //   let outpath = path + '/'+ req.body.question + '/output/' + testobj.id + '.txt';
     
-    let busboy = new Busboy({headers: req.headers});
-    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-      if(fieldname == 'inputfile')
-        file.pipe(fs.createWriteStream(inpath));
-      else if(fieldname == 'outputfile')
-        file.pipe(fs.createWriteStream(outpath));
+  //   let busboy = new Busboy({headers: req.headers});
+  //   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+  //     if(fieldname == 'inputfile')
+  //       file.pipe(fs.createWriteStream(inpath));
+  //     else if(fieldname == 'outputfile')
+  //       file.pipe(fs.createWriteStream(outpath));
+  //   });
+  //   busboy.on('finish', function() {
+  //     console.log('Upload complete');
+  //     //res.writeHead(200, { 'Connection': 'close' });
+  //   });  
+  //   [err, testobj] = await to(testcase.update({
+  //     input_path: inpath,
+  //     output_path: outpath
+  //   }, {
+  //       where : {id: testobj.id}
+  //   }));
+  //   if(err) {
+  //     console.log(err);
+  //     res.sendError(err);
+  //   }  
+  //   return res.sendSuccess(null, 'Test case added along with file upload');
+  // };
+
+  exp.addtestcase = async (req, res) => {
+    if(!req.files.inputfile || !req.files.outputfile)
+      return res.sendError(null,'Invalid query format');
+    let err, testobj;
+    [err, testobj] = await to(testcase.create(req.body));
+    if(err) return res.sendError(err);
+    let inpath = Path.join(__dirname,'..','questions',req.body.question,'input',testobj.id+'.txt');
+    let outpath = Path.join(__dirname,'..','questions',req.body.question,'output',testobj.id+'.txt');
+    req.files.inputfile.mv(inpath,async err=>{
+      if(err) return res.sendError(err);
+      req.files.outputfile.mv(outpath,async err=>{
+        if(err) return res.sendError(err);
+        [err, testobj] = await to(testcase.update({
+          input_path: inpath,
+          output_path: outpath
+        }, {
+          where: { id: testobj.id }
+        }));
+        if(err) return res.sendError(err);
+        return res.sendSuccess(null, 'Testcase added successfully');
+      });
     });
-    busboy.on('finish', function() {
-      console.log('Upload complete');
-      //res.writeHead(200, { 'Connection': 'close' });
-    });  
-    [err, testobj] = await to(testcase.update({
-      input_path: inpath,
-      output_path: outpath
-    }, {
-        where : {id: testobj.id}
-    }));
-    if(err) {
-      console.log(err);
-      res.sendError(err);
-    }  
-    return res.sendSuccess(null, 'Test case added along with file upload');
   };
 
   exp.deletetestcase = async (req, res) => {

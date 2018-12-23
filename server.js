@@ -19,7 +19,7 @@ app.use(session({
   saveUninitialized: false,
   secret: 'IECSE',
   store: redisStore,
-  cookie: { maxAge: 604800 }
+  cookie: { maxAge: 604800000 }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

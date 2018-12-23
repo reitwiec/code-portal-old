@@ -7,7 +7,11 @@ module.exports = (sequelize, Datatypes) => {
         },
         question: {
             type: Datatypes.BIGINT,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: "questions",
+                key: "id"
+            }
         },
         sample: {
             type: Datatypes.STRING.BINARY,
@@ -23,11 +27,11 @@ module.exports = (sequelize, Datatypes) => {
         },
         input_path: {
             type: Datatypes.STRING(100),
-            allowNull: false
+            allowNull: true
         },
         output_path: {
             type: Datatypes.STRING(100),
-            allowNull: false
+            allowNull: true
         }
     });
     return Testcase;

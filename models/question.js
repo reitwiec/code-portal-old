@@ -28,7 +28,11 @@ module.exports = (sequelize, Datatypes) => {
         },
         author: {
             type: Datatypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: "users",
+                key: "id"
+            }
         },
         level: {
             type: Datatypes.ENUM,
@@ -36,8 +40,12 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: false
         },
         contest: {
-            type: Datatypes.INTEGER,
-            allowNull: false
+            type: Datatypes.BIGINT,
+            allowNull: false,
+            references: {
+                model: "contests",
+                key: "id"
+            }
         },
         score: {
             type: Datatypes.INTEGER,
@@ -46,11 +54,11 @@ module.exports = (sequelize, Datatypes) => {
         checker_path: {
             type: Datatypes.STRING(100),
             defaultValue: 'null', 
-            allowNull: false
+            allowNull: true
         },
         checker_language: {
             type: Datatypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         time_limit: {
             type: Datatypes.DOUBLE,
@@ -58,7 +66,8 @@ module.exports = (sequelize, Datatypes) => {
         },
         slug: {
             type: Datatypes.STRING(50),
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         editorial: {
             type: Datatypes.INTEGER(10),
