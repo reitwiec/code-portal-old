@@ -1,6 +1,7 @@
 const { contest } = require('../models');
 const { question } = require('../models');
 const { testcase } = require('../models');
+const { moderator } = require('../models');
 const to = require('../utils/to');
 const fs = require('fs');
 const Busboy = require('busboy');
