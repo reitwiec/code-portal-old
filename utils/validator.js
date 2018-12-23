@@ -6,11 +6,13 @@ module.exports = schema => (req, res, next) => {
   if (Object.keys(req.params).length) data.params = req.params;
   if (Object.keys(req.body).length) data.body = req.body;
   Joi.validate(data, schema, { abortEarly: false }, (err, value) => {
-    if (err)
+    if (err){
+      console.log(err);
       return res.status(422).json({
         success: false,
         msg: 'Invalid input'
       });
+    }
     req.payload = value;
     next();
   });
