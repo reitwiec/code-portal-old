@@ -43,9 +43,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  User.associate = (models) => {
+  /*User.associate = (models) => {
     models.User.belongsToMany(models.Question, {as : "moderator"})
-  };
+  };*/
   
   return User;
 };
