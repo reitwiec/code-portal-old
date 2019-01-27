@@ -5,16 +5,16 @@ module.exports = (sequelize, Datatypes) => {
             unique: false,
             allowNull: false,
             references: {
-                model: "user",
+                model: "users",
                 key: "id"
             }
         },
         question: {
-            type: Datatypes.INTEGER,
+            type: Datatypes.BIGINT,
             unique: false,
             allowNull: false,
             references: {
-                model: "question",
+                model: "questions",
                 key: "id"
             }
         }

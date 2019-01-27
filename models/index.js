@@ -39,10 +39,15 @@ const sequelize = new Sequelize(
 //     db[model.name] = model;
 //   });
 const models = ['user.js','contest.js','question.js','moderator.js','testcase.js'];
-models.forEach(file => {
+// models.forEach(file => {
+//   let model = sequelize['import'](path.join(__dirname, file));
+//   db[model.name] = model;
+// });
+for(let i=0;i<models.length;i++) {
+  let file = models[i];
   let model = sequelize['import'](path.join(__dirname, file));
   db[model.name] = model;
-});
+}
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
