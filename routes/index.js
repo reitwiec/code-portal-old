@@ -7,6 +7,7 @@ const schemas = require('../schemas');
 module.exports = (passport)=>{
   const auth = require('./auth')(passport);
   const leaderboard = require('./leaderboard')(passport);
+  const subLimit = require('./subLimit')(passport);
 
   //auth routes
   router.post('/register',

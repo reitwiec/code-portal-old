@@ -23,8 +23,6 @@ module.exports = () => {
             //     member = JSON.parse(member);
             // });
 
-
-
             if (leaderboard.length == 0) {
                 let LB = new Map();
                 let Leaderboard = [];
