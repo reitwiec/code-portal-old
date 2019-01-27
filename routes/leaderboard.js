@@ -11,15 +11,17 @@ const client = require('../utils/cache');
 module.exports = () => {
     let exp = {};
     exp.showleaderboard = async (req, res) => {
-        client.zrangebyscore(req.params.contest, 1, 10000, 'LIMIT', 0, 10, (err, leaderboard) => {
+        const Page = req.query.page;
+        const toDisplay = req.query.count;
+        client.zrangebyscore(req.params.contest, 1, 10000, 'LIMIT', (Page-1)*toDisplay, toDisplay, (err, leaderboard) => {
             if (err) {
                 console.log(err);
                 return res.sendError(err);
             }
 
-            leaderboard.forEach((member) => {
-                member = JSON.parse(member);
-            });
+            // leaderboard.forEach((member) => {
+            //     member = JSON.parse(member);
+            // });
 
 
 
@@ -104,13 +106,15 @@ module.exports = () => {
                                         });
                                     });
                                     client.expire(req.params.contest, 30);
-                                    client.zrangebyscore(req.params.contest, 0, 10000, 'LIMIT', 0, 10, (err, leaderboard) => {
+                                    client.zrangebyscore(req.params.contest, 1, 10000, 'LIMIT', (Page-1)*toDisplay, toDisplay, (err, leaderboard) => {
                                         if (err) {
                                             console.log(err);
                                             return res.sendError(err);
                                         }
-
-                                        return res.sendSuccess(leaderboard);
+                                        for(let i = 0; i < leaderboard.length; i++) {
+                                            leaderboard[i] = JSON.parse(leaderboard[i]);
+                                        }
+                                        return res.sendSuccess(leaderboard, "Leaderboard just calculated.");
                                     });
                                 }
                             })
@@ -119,8 +123,12 @@ module.exports = () => {
                     })
                     .catch(err => console.log(err));
 
-            } else
-                return res.sendSuccess(leaderboard);
+            } else {
+                for(let i = 0; i < leaderboard.length; i++) {
+                    leaderboard[i] = JSON.parse(leaderboard[i]);
+                }
+                return res.sendSuccess(leaderboard, "Sent from cache.");
+            }
         });
     }
 
