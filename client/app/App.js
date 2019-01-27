@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
 import store from './store';
 
 import {
@@ -19,6 +18,9 @@ import {
 	Error,
 	Login
 } from 'components';
+
+// const AdminView = lazy(() => import('./components/admin/AdminView'));
+import AdminView from './components/admin/AdminView';
 
 const question = {
 	title: 'Bon Appétit',
@@ -51,22 +53,26 @@ class App extends Component {
 					<GlobalStyle />
 					<BrowserRouter>
 						<div className={this.props.className}>
-							<Switch>
-								<Route
-									path="/contests"
-									component={() => <ContestsPage />}
-									exact
-								/>
-								<Route
-									path="/editor"
-									component={() => <EditorView question={question} />}
-								/>
-								<Route path="/submission" component={() => <Submission />} />
-								<Route path="/questions" component={() => <Questions />} />
-								<Route path="/login" component={() => <Login />} />
-								<Route path="/" component={() => <Login />} exact />
-								<Route component={() => <Error />} />
-							</Switch>
+							<Suspense fallback={<h2>Loading</h2>}>
+								<Switch>
+									<Route
+										path="/contests"
+										component={() => <ContestsPage />}
+										exact
+									/>
+									<Route
+										path="/editor"
+										component={() => <EditorView question={question} />}
+									/>
+									<Route path="/__admin" component={() => <AdminView />} />
+									<Route path="/contests" component={() => <ContestsPage />} />
+									<Route path="/submission" component={() => <Submission />} />
+									<Route path="/questions" component={() => <Questions />} />
+									<Route path="/login" component={() => <Login />} />
+									<Route path="/" component={() => <Login />} exact />
+									<Route component={() => <Error />} />
+								</Switch>
+							</Suspense>
 
 							<Footer />
 						</div>
