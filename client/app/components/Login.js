@@ -44,7 +44,7 @@ const slide1 = keyframes`
 `;
 
 export default styled(Login)`
-	height:650px;
+	height: 650px;
 	#logo {
 		position: absolute;
 		top: -4px;
@@ -65,31 +65,27 @@ export default styled(Login)`
 
 	.alternative {
 		position: absolute;
-		bottom: 15%;  /* position the top  edge of the element at the middle of the parent */
+		bottom: 15%; /* position the top  edge of the element at the middle of the parent */
 		left: 50%; /* position the left edge of the element at the middle of the parent */
 		transform: translate(-50%, -50%);
 	}
 
-	.alternative > span{
-		margin:20px;
-		font-size:0.9em;
-		color:#9e9ebb;
-		transition:0.3s;
+	.alternative > span {
+		margin: 20px;
+		font-size: 0.9em;
+		color: #9e9ebb;
+		transition: 0.3s;
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
 		-khtml-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
-		animation: ${slide1} 1s 1 0s ease-in
-		:hover{
-			color:#fff;
-			cursor:pointer;
-			font-size:1em;
+		animation: ${slide1} 1s 1 0s ease-in;
+		:hover {
+			color: #fff;
+			cursor: pointer;
+			font-size: 1em;
 		}
-    }
-
-
-
-   
+	}
 `;
