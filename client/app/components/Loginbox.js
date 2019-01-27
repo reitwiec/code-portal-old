@@ -1,31 +1,44 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { observer, inject } from 'mobx-react';
+
 import { Button } from 'components';
+import { timingSafeEqual } from 'crypto';
+
+@inject('authStore')
+@observer
 class Loginbox extends Component {
 	render() {
+		const {
+			className,
+			authStore: { email, setEmail, password, setPassword, login }
+		} = this.props;
+
 		return (
 			<div className={this.props.className}>
 				<div className="container">
 					<h2>
 						Log into <span>CodePortal</span>{' '}
 					</h2>
-					<form action="">
-						<input
-							type="text"
-							placeholder="Email Address"
-							className="email"
-							required
-						/>
-						<input
-							type="password"
-							placeholder="Password"
-							className="password"
-							required
-						/>
-						<Button>
-							<span>Log In</span>
-						</Button>
-					</form>
+					<input
+						type="text"
+						placeholder="Email Address"
+						className="email"
+						value={email}
+						onChange={e => setEmail(e.target.value)}
+						required
+					/>
+					<input
+						type="password"
+						placeholder="Password"
+						className="password"
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+						required
+					/>
+					<Button onClick={login}>
+						<span>Log In</span>
+					</Button>
 					<div className="beauty">
 						<h1>User</h1>
 					</div>
@@ -36,21 +49,21 @@ class Loginbox extends Component {
 }
 
 const test = keyframes`
-0%{ 
-    opacity:0;
-    }
-100%{
-    opacity:1;
-    }
+	0% { 
+		opacity:0;
+	}
+	100% {
+		opacity:1;
+	}
 `;
-const test1 = keyframes`
-0%{
-    width:40%;
-    }
-100%{
 
-    width:80%;
-    }
+const test1 = keyframes`
+	0% {
+		width:40%;
+	}
+	100% {
+		width:80%;
+	}
 `;
 
 export default styled(Loginbox)`
@@ -88,16 +101,19 @@ export default styled(Loginbox)`
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#27273f', endColorstr='#1f1f33',GradientType=1 );
 		filter: drop-shadow(0 0 0.95rem #1f2032);
 	}
+
 	h2 {
 		margin-top: 20px;
 		font-weight: 100;
 		letter-spacing: 3px;
 		color: #dfdfe7;
 	}
+
 	h2 > span {
 		font-weight: 400;
 		letter-spacing: normal;
 	}
+
 	.email,
 	.password {
 		display: block;
@@ -118,6 +134,7 @@ export default styled(Loginbox)`
 		background: rgba(255, 255, 255, 0);
 		border-bottom: 1px solid rgba(223, 223, 231, 0.5);
 	}
+
 	.password {
 		margin-top: 10px;
 	}
@@ -125,6 +142,7 @@ export default styled(Loginbox)`
 	input::-webkit-input-placeholder {
 		color: rgba(223, 223, 231, 0.6);
 	}
+
 	button {
 		color: #fff;
 		font-weight: 400;
@@ -144,9 +162,11 @@ export default styled(Loginbox)`
 			cursor: pointer;
 		}
 	}
+
 	button > span {
 		font-size: 1.2em;
 	}
+
 	.beauty {
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { iecselogo } from 'assets';
 import { Loginbox } from 'components';
+import store from 'store';
 
 class Login extends Component {
 	render() {
