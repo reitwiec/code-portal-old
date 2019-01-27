@@ -1,11 +1,3 @@
-const {
-    submissions
-} = require('../models');
-const {
-    user
-} = require('../models');
-const to = require('../utils/to');
-var sequelize = require('sequelize');
 const client = require('../utils/cache');
 
 module.exports = () => {
