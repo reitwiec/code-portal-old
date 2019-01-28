@@ -1,50 +1,59 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { observer, inject } from 'mobx-react';
+import { Redirect } from 'react-router-dom';
 
 import { Button } from 'components';
-import { timingSafeEqual } from 'crypto';
 
-@inject('authStore')
+@inject('authStore', 'userStore')
 @observer
 class Loginbox extends Component {
 	render() {
 		const {
 			className,
-			authStore: { email, setEmail, password, setPassword, login }
+			authStore: { email, setEmail, password, setPassword, login, isLoggedIn },
+			userStore: { user }
 		} = this.props;
 
-		return (
-			<div className={this.props.className}>
-				<div className="container">
-					<h2>
-						Log into <span>CodePortal</span>{' '}
-					</h2>
-					<input
-						type="text"
-						placeholder="Email Address"
-						className="email"
-						value={email}
-						onChange={e => setEmail(e.target.value)}
-						required
-					/>
-					<input
-						type="password"
-						placeholder="Password"
-						className="password"
-						value={password}
-						onChange={e => setPassword(e.target.value)}
-						required
-					/>
-					<Button onClick={login}>
-						<span>Log In</span>
-					</Button>
-					<div className="beauty">
-						<h1>User</h1>
+		if (!isLoggedIn || !user) {
+			return (
+				<div className={className}>
+					<div className="container">
+						<h2>
+							Log into <span>CodePortal</span>{' '}
+						</h2>
+						<input
+							type="text"
+							placeholder="Email Address"
+							className="email"
+							value={email}
+							onChange={e => setEmail(e.target.value)}
+							required
+						/>
+						<input
+							type="password"
+							placeholder="Password"
+							className="password"
+							value={password}
+							onChange={e => setPassword(e.target.value)}
+							required
+						/>
+						<Button onClick={login}>
+							<span>Log In</span>
+						</Button>
+						<div className="beauty">
+							<h1>User</h1>
+						</div>
 					</div>
 				</div>
-			</div>
-		);
+			);
+		} else {
+			if (user && (user.access === 20 || user.access === 30)) {
+				return <Redirect to="/__admin" />;
+			} else {
+				return <Redirect to="/contests" />;
+			}
+		}
 	}
 }
 

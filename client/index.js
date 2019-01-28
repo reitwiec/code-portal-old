@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './favicon.ico';
 import App from './app/App';
 import { Provider } from 'mobx-react';
-import stores from 'store';
+import * as stores from 'store';
 
 ReactDOM.render(
 	<Provider {...stores}>
