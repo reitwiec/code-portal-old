@@ -53,13 +53,19 @@ app.use('/api',require('./routes')(passport));
 
 const port = process.env.PORT || 3000;
 
-models.sequelize.sync().then(
-  () => {
-    server.listen(port, err => {
-      console.log(err || ('Listening on port ' + port));
-    });
-  },
-  err => {
-    console.log('Could not sync models: ', err);
-  }
-)
+start(1);
+
+function start(i) {
+  if (i > 10) return console.log('Could not sync models');
+  models.sequelize.sync().then(
+    () => {
+      server.listen(port, err => {
+        console.log(err || ('Listening on port ' + port));
+      });
+    },
+    err => {
+      console.log(`DB connection trial ${i}:`, err.message);
+      setTimeout(() => start(i + 1), 20000);
+    }
+  )
+}
