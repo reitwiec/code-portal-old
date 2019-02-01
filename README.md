@@ -15,7 +15,7 @@
 	3. DB_USER
 	4. DB_PASS
 	5. REDIS_HOST
-	6. REDIS_POST
+	6. REDIS_PORT
 	7. PORT (optional)
 4. Create a database in mysql with the same name as DB_NAME
 5. run `yarn dev`
