@@ -1,6 +1,6 @@
 FROM node:10.14.2-alpine AS build
 WORKDIR /app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+COPY ["./client/package.json", "./client/package-lock.json*", "./"]
 RUN npm install
 COPY ./client/ .
 RUN npm run build:prod
