@@ -13,6 +13,12 @@ const GlobalStyle = createGlobalStyle`
 		background-color:#222437;
 	}
 
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
 	body {
 		background-color:#000;
 		background: #2b2b46; /* Old browsers */

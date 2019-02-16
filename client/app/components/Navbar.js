@@ -22,7 +22,6 @@ class Navbar extends Component {
 					<span id="logo">
 						<img src={iecselogo} alt="" id="logoimg" />
 					</span>
-
 					<Homeicon title="hello" />
 				</NavLink>
 

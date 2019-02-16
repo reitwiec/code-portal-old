@@ -41,6 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 10
     }
+  }, {
+    timestamps: false
   });
 
   /*User.associate = (models) => {

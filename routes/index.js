@@ -15,6 +15,8 @@ const access = level => (req,res,next) => {
 module.exports = (passport)=>{
   const auth = require('./auth')(passport);
   const admin = require('./admin')(passport);
+  const leaderboard = require('./leaderboard')(passport);
+  const subLimit = require('./subLimit')(passport);
 
   //auth routes
   router.post('/register',
@@ -105,6 +107,10 @@ module.exports = (passport)=>{
   router.delete('/deletetestcase/:id',
     access(20),
     admin.deletetestcase);
+  //leaderboard routes
+  router.get('/:contest/leaderboard', 
+  leaderboard.showleaderboard
+  );
 
   return router;
 }
