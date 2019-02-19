@@ -1,7 +1,2 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from '../reducers';
-
-const store = createStore(rootReducer, {}, compose(applyMiddleware(thunk)));
-
-export default store;
+export { default as authStore } from './auth';
+export { default as userStore } from './user';

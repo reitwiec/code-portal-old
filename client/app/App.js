@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
-import store from './store';
 
 import {
 	Content,
@@ -19,6 +16,9 @@ import {
 	Error,
 	Login
 } from 'components';
+
+// const AdminView = lazy(() => import('./components/admin/AdminView'));
+import AdminView from './components/admin/AdminView';
 
 const question = {
 	title: 'Bon Appétit',
@@ -46,11 +46,10 @@ b: the amount of money that Anna contributed to the bill`,
 class App extends Component {
 	render() {
 		return (
-			<Provider store={store}>
-				<>
-					<GlobalStyle />
-					<BrowserRouter>
-						<div className={this.props.className}>
+			<>
+				<BrowserRouter>
+					<div className={this.props.className}>
+						<Suspense fallback={<h2>Loading</h2>}>
 							<Switch>
 								<Route
 									path="/contests"
@@ -61,32 +60,35 @@ class App extends Component {
 									path="/editor"
 									component={() => <EditorView question={question} />}
 								/>
+								<Route path="/__admin" component={() => <AdminView />} />
+								<Route path="/contests" component={() => <ContestsPage />} />
 								<Route path="/submission" component={() => <Submission />} />
 								<Route path="/questions" component={() => <Questions />} />
 								<Route path="/login" component={() => <Login />} />
 								<Route path="/" component={() => <Login />} exact />
 								<Route component={() => <Error />} />
 							</Switch>
-
-							<Footer />
-						</div>
-					</BrowserRouter>
-				</>
-			</Provider>
+						</Suspense>
+						<Footer />
+					</div>
+				</BrowserRouter>
+				<GlobalStyle />
+			</>
 		);
 	}
 }
 
 var footerup = keyframes`
-0%{
-    transform: rotate(0) translateY(10px);
-    opacity: 0;
-    }
-100%{
+	0% {
+		transform: rotate(0) translateY(10px);
+		opacity: 0;
+	}
+100% {
     transform: rotate(0) translateY(0);
     opacity: 1;
     }
 `;
+
 export default styled(App)`
 	hr {
 		margin-top: 30px;
