@@ -1,23 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
-  let Language = sequelize.define(
-    'language',
+  let SubTestCase = sequelize.define(
+    'subtestcase',
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      code: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-        unique: true
-      },
-      name: {
-        type: DataTypes.STRING(50),
-        allowNull: false
-      },
-      multiplier: {
-        type: DataTypes.DOUBLE,
+      verdict: {
+        type: DataTypes.ENUM,
+        values: ['AC', 'WA', 'TLE', 'CE', 'RE', 'PROC'],
         allowNull: false
       },
       created_at: {
@@ -35,20 +27,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       underscored: true,
-      tableName: 'languages'
+      tableName: 'sub_test_case'
     }
   );
 
-  Language.associate = models => {
-    models.language.hasMany(models.question, {
-      as: 'Questions',
-      foreignKey: { name: 'checker_language_id' }
-    });
-    models.language.hasMany(models.submission, {
-      as: 'Submissions',
+  SubTestCase.associate = models => {
+    models.subtestcase.belongsTo(models.submission, {
+      as: 'submission',
       foreignKey: { allowNull: false }
     });
   };
 
-  return Language;
+  return SubTestCase;
 };

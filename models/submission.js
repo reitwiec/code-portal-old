@@ -1,55 +1,67 @@
 module.exports = (sequelize, DataTypes) => {
-	let Submission = sequelize.define('submission' , {
-		id: {
-			type: DataTypes.BIGINT,
-			primaryKey:true,
-			autoIncrement: true
-		},
-		user: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			references:{
-				model:"users",
-				key:"id"
-			}
-		},
-		question: {
-			type: DataTypes.BIGINT,
-			allowNull: false,
-			references:{
-				model:"questions",
-				key:"id"
-			}
-		},
-		contest: {
-			type: DataTypes.BIGINT,
-			allowNull: false,
-			references:{
-				model:"contests",
-				key:"id"
-			}
-		},
-		path: {
-			type: DataTypes.STRING(100),
-			allowNull: false,
-			unique: true
-		},
-		points: {
-			type: DataTypes.DOUBLE,
-			allowNull:false
-		},
-		verdict: {
-			type: DataTypes.ENUM('wrong','partial','correct','ce'),
-			allowNull: false
-		},
-		language: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			references:{
-				model:"languages",
-				key:"id"
-			}
-		}
-	});
-	return Submission;
-}
+  let Submission = sequelize.define(
+    'submission',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      path: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: true
+      },
+      points: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+      },
+      verdict: {
+        type: DataTypes.ENUM,
+        values: ['WRONG', 'PARTIAL', 'CORRECT', 'CE'],
+        allowNull: false
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal(
+          'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+        ),
+        allowNull: false
+      }
+    },
+    {
+      underscored: true,
+      tableName: 'submissions'
+    }
+  );
+
+  Submission.associate = models => {
+    models.submission.belongsTo(models.question, {
+      as: 'question',
+      foreignKey: { allowNull: false }
+    });
+    models.submission.belongsTo(models.language, {
+      as: 'language',
+      foreignKey: { allowNull: false }
+    });
+    models.submission.belongsTo(models.user, {
+      as: 'user',
+      foreignKey: { allowNull: false }
+    });
+    models.submission.belongsTo(models.contest, {
+      as: 'contest',
+      foreignKey: { allowNull: false }
+    });
+    models.submission.hasMany(models.subtestcase, {
+      as: 'SubTestCases',
+      foreignKey: { allowNull: false }
+    });
+  };
+
+  return Submission;
+};

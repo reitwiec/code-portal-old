@@ -32,7 +32,7 @@ services:
       - MYSQL_DATABASE=codeportal
   redis:
     image: redis
-    container_name: code-portal-cache
+    container_name: code-portal-redis
     restart: unless-stopped
     networks:
       - code-portal-network

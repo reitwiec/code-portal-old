@@ -1,53 +1,86 @@
 module.exports = (sequelize, DataTypes) => {
-  let User = sequelize.define('user', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+  let User = sequelize.define(
+    'user',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      name: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+      },
+      password: {
+        type: DataTypes.STRING
+      },
+      uname: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        unique: true
+      },
+      email: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true
+        }
+      },
+      organisation: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: true
+      },
+      regno: {
+        type: DataTypes.STRING(20)
+      },
+      phone: {
+        type: DataTypes.STRING(20)
+      },
+      rating: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1500
+      },
+      access: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 10
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal(
+          'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+        ),
+        allowNull: false
+      }
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    organisation: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-      unique: true
-    },
-    regno: {
-      type: DataTypes.STRING(20),
-      allowNull: true
-    },
-    phone: {
-      type: DataTypes.STRING(20),
-      allowNull: true
-    },
-    rating: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1500
-    },
-    access: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 10
+    {
+      underscored: true,
+      tableName: 'users'
     }
-  }, {
-    timestamps: false
-  });
+  );
 
-  /*User.associate = (models) => {
-    models.User.belongsToMany(models.Question, {as : "moderator"})
-  };*/
-  
+  User.associate = models => {
+    models.user.hasMany(models.submission, {
+      as: 'Submissions',
+      foreignKey: { allowNull: false }
+    });
+    models.user.hasMany(models.question, {
+      as: 'Questions',
+      foreignKey: { name: 'author_id', allowNull: false }
+    });
+    models.user.belongsToMany(models.question, {
+      through: 'moderators',
+      foreignKey: 'user_id'
+    });
+  };
+
   return User;
 };

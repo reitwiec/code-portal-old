@@ -1,81 +1,103 @@
-module.exports = (sequelize, Datatypes) => {
-    let Question = sequelize.define('question', {
-        id: {
-            type: Datatypes.BIGINT,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        title: {
-            type: Datatypes.STRING(50),
-            allowNull: false
-        },
-        body: {
-            type: Datatypes.TEXT,
-            allowNull: false
-        },
-        input_format: {
-            type: Datatypes.TEXT,
-            allowNull: false
-        },
-        constraints: {
-            type: Datatypes.TEXT,
-            allowNull: false
-        },
-        output_format: {
-            type: Datatypes.TEXT,
-            allowNull: false
-        },
-        author: {
-            type: Datatypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: "users",
-                key: "id"
-            }
-        },
-        level: {
-            type: Datatypes.ENUM,
-            values: ['easy', 'medium', 'hard'],
-            allowNull: false
-        },
-        contest: {
-            type: Datatypes.BIGINT,
-            allowNull: false,
-            references: {
-                model: "contests",
-                key: "id"
-            }
-        },
-        score: {
-            type: Datatypes.INTEGER,
-            allowNull: false
-        },
-        checker_path: {
-            type: Datatypes.STRING(100),
-            defaultValue: 'null', 
-            allowNull: true
-        },
-        checker_language: {
-            type: Datatypes.INTEGER,
-            allowNull: true
-        },
-        time_limit: {
-            type: Datatypes.DOUBLE,
-            allowNull: false
-        },
-        slug: {
-            type: Datatypes.STRING(50),
-            allowNull: false,
-            unique: true
-        },
-        editorial: {
-            type: Datatypes.INTEGER(10),
-            allowNull: true
-        },
-        is_practice: {
-            type: Datatypes.STRING.BINARY,
-            allowNull: false
-        }
+module.exports = (sequelize, DataTypes) => {
+  let Question = sequelize.define(
+    'question',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      title: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+      },
+      body: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      input_format: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      constraints: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      output_format: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      level: {
+        type: DataTypes.ENUM,
+        values: ['EASY', 'MEDIUM', 'HARD'],
+        allowNull: false
+      },
+      score: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      checker_path: {
+        type: DataTypes.STRING(100)
+      },
+      time_limit: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+      },
+      slug: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        unique: true
+      },
+      //   editorial: {
+      //     type: DataTypes.INTEGER
+      //   },
+      is_practice: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal(
+          'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+        ),
+        allowNull: false
+      }
+    },
+    {
+      underscored: true,
+      tableName: 'questions'
+    }
+  );
+
+  Question.associate = models => {
+    models.question.belongsTo(models.user, {
+      as: 'author',
+      foreignKey: { allowNull: false }
     });
-    return Question;
+    models.question.belongsTo(models.language, {
+      as: 'checker_language'
+    });
+    models.question.belongsTo(models.contest, {
+      as: 'contest'
+    });
+    models.question.hasMany(models.testcase, {
+      as: 'TestCases',
+      foreignKey: { allowNull: false }
+    });
+    models.question.hasMany(models.submission, {
+      as: 'Submissions',
+      foreignKey: { allowNull: false }
+    });
+    models.question.belongsToMany(models.user, {
+      through: 'moderators',
+      foreignKey: 'question_id'
+    });
+  };
+
+  return Question;
 };
