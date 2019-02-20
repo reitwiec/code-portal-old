@@ -12,8 +12,7 @@ const addcontest = Joi.object({
     end: Joi.date()
       .iso()
       .required(),
-    description: Joi.string()
-      .optional(),
+    description: Joi.string().optional(),
     visibility: Joi.binary()
       .max(1)
       .required(),
@@ -38,8 +37,7 @@ const updatecontest = Joi.object({
     end: Joi.date()
       .iso()
       .required(),
-    description: Joi.string()
-      .optional(),
+    description: Joi.string().optional(),
     visibility: Joi.binary()
       .max(1)
       .required(),
@@ -66,14 +64,10 @@ const addquestion = Joi.object({
       .max(50)
       .min(5)
       .required(),
-    body: Joi.string()
-      .required(),
-    input_format: Joi.string()
-      .required(),
-    constraints: Joi.string()
-      .required(),
-    output_format: Joi.string()
-      .required(),
+    body: Joi.string().required(),
+    input_format: Joi.string().required(),
+    constraints: Joi.string().required(),
+    output_format: Joi.string().required(),
     level: Joi.string()
       .valid(['easy', 'medium', 'hard'])
       .required(),
@@ -86,8 +80,7 @@ const addquestion = Joi.object({
     checker_language: Joi.number()
       .integer()
       .required(),
-    time_limit: Joi.number()
-      .required(),
+    time_limit: Joi.number().required(),
     slug: Joi.string()
       .max(50)
       .required(),
@@ -109,14 +102,10 @@ const updatequestion = Joi.object({
       .max(50)
       .min(5)
       .required(),
-    body: Joi.string()
-      .required(),
-    input_format: Joi.string()
-      .required(),
-    constraints: Joi.string()
-      .required(),
-    output_format: Joi.string()
-      .required(),
+    body: Joi.string().required(),
+    input_format: Joi.string().required(),
+    constraints: Joi.string().required(),
+    output_format: Joi.string().required(),
     level: Joi.string()
       .valid(['easy', 'medium', 'hard'])
       .required(),
@@ -132,8 +121,7 @@ const updatequestion = Joi.object({
     checker_language: Joi.number()
       .integer()
       .required(),
-    time_limit: Joi.number()
-      .required(),
+    time_limit: Joi.number().required(),
     slug: Joi.string()
       .max(50)
       .required(),
@@ -154,10 +142,8 @@ const addtestcase = Joi.object({
     sample: Joi.binary()
       .max(1)
       .required(),
-    explanation: Joi.string()
-      .optional(),
-    weight: Joi.number()
-      .required()
+    explanation: Joi.string().optional(),
+    weight: Joi.number().required()
   })
 });
 
