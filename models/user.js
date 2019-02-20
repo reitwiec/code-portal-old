@@ -29,8 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       organisation: {
         type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: true
+        allowNull: false
       },
       regno: {
         type: DataTypes.STRING(20)
@@ -47,18 +46,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 10
-      },
-      created_at: {
-        type: DataTypes.DATE,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-        allowNull: false
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        defaultValue: sequelize.literal(
-          'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
-        ),
-        allowNull: false
       }
     },
     {

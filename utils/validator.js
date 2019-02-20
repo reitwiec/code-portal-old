@@ -10,7 +10,14 @@ module.exports = schema => (req, res, next) => {
       console.log(err);
       return res.status(422).json({
         success: false,
-        msg: 'Invalid input'
+        msg:
+          process.env.NODE_ENV === 'production'
+            ? 'Invalid input'
+            : err.details
+                .map(({ message, path }) => {
+                  return `${message}${path ? ` (${path})` : ''}`;
+                })
+                .toString()
       });
     }
     req.payload = value;

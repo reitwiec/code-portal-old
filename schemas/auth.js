@@ -3,14 +3,21 @@ const Joi = require('joi');
 const register = Joi.object({
   body: Joi.object({
     name: Joi.string()
-      .max(256)
+      .max(50)
       .required(),
-    password: Joi.string().required(),
-    confirm_pass: Joi.string().required(),
+    password: Joi.string()
+      .min(8)
+      .required(),
+    confirm_pass: Joi.string()
+      .min(8)
+      .required(),
     email: Joi.string()
       .email()
+      .max(100)
       .required(),
-    organisation: Joi.string().max(100),
+    organisation: Joi.string()
+      .max(100)
+      .required(),
     regno: Joi.string().max(20),
     uname: Joi.string().required(),
     phone: Joi.string().max(20)

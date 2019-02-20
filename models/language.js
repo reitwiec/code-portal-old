@@ -19,18 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       multiplier: {
         type: DataTypes.DOUBLE,
         allowNull: false
-      },
-      created_at: {
-        type: DataTypes.DATE,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-        allowNull: false
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        defaultValue: sequelize.literal(
-          'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
-        ),
-        allowNull: false
       }
     },
     {
