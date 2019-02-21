@@ -46,7 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       slug: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        unique: true
+        unique: {
+          args: true,
+          msg: 'Slug already in use'
+        }
       },
       //   editorial: {
       //     type: DataTypes.INTEGER
@@ -70,9 +73,7 @@ module.exports = (sequelize, DataTypes) => {
     models.question.belongsTo(models.language, {
       as: 'checker_language'
     });
-    models.question.belongsTo(models.contest, {
-      as: 'contest'
-    });
+    models.question.belongsTo(models.contest);
     models.question.hasMany(models.testcase, {
       as: 'TestCases',
       foreignKey: { allowNull: false }

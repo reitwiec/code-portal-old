@@ -9,8 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       title: {
         type: DataTypes.STRING(50),
-        unique: true,
-        allowNull: false
+        allowNull: false,
+        unique: {
+          args: true,
+          msg: 'Title already in use'
+        }
       },
       start: {
         type: DataTypes.DATE,
@@ -26,12 +29,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       visibility: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
       },
       slug: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        unique: true
+        unique: {
+          args: true,
+          msg: 'Slug already in use'
+        }
       }
     },
     {
@@ -42,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Contest.associate = models => {
     models.contest.hasMany(models.question, {
-      as: 'Questions',
+      as: 'question',
       foreignKey: { allowNull: false }
     });
     models.contest.hasMany(models.submission, {

@@ -33,7 +33,7 @@ module.exports = passport => {
     admin.addcontest
   );
 
-  router.post(
+  router.put(
     '/updatecontest',
     access(30),
     validator(schemas.admin.updatecontest),
@@ -47,7 +47,7 @@ module.exports = passport => {
   router.get('/showquestions/:id', access(20), admin.showquestionbyid);
 
   router.get(
-    '/showquestionsbycontest/:contest',
+    '/showquestionsbycontest/:contest_id',
     access(30),
     admin.showquestionsbycontest
   );

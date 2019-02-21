@@ -13,13 +13,11 @@ const addcontest = Joi.object({
       .iso()
       .required(),
     description: Joi.string().optional(),
-    visibility: Joi.binary()
-      .max(1)
-      .required(),
+    visibility: Joi.boolean().optional(),
     slug: Joi.string()
       .max(10)
       .required()
-  })
+  }).required()
 });
 
 const updatecontest = Joi.object({
@@ -38,13 +36,11 @@ const updatecontest = Joi.object({
       .iso()
       .required(),
     description: Joi.string().optional(),
-    visibility: Joi.binary()
-      .max(1)
-      .required(),
+    visibility: Joi.boolean().optional(),
     slug: Joi.string()
       .max(10)
       .required()
-  })
+  }).required()
 });
 
 const addmoderator = Joi.object({

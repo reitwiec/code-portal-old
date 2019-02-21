@@ -7,7 +7,6 @@ const session = require('express-session');
 const passport = require('passport');
 const sharedsession = require('express-socket.io-session');
 
-
 const models = require('./models');
 const redisStore = require('./config/redis')(session);
 const response = require('./utils/response');
@@ -17,7 +16,6 @@ require('./config/passport')(passport);
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-
 
 const sess = session({
   resave: false,
@@ -37,19 +35,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(response);
 io.use(sharedsession(sess));
 
-io.on('connection', socket =>{
-  try{
-    if(!socket.handshake.session.passport.user){
+io.on('connection', socket => {
+  try {
+    if (!socket.handshake.session.passport.user) {
       console.log('disconnecting socket connection');
       socket.disconnect(true);
     }
-  }catch (err){
+  } catch (err) {
     console.log('disconnecting socket connection');
     socket.disconnect(true);
   }
-})
+});
 
-app.use('/api',require('./routes')(passport));
+app.use('/api', require('./routes')(passport));
 
 const port = process.env.PORT || 3000;
 
@@ -60,12 +58,12 @@ function start(i) {
   models.sequelize.sync().then(
     () => {
       server.listen(port, err => {
-        console.log(err || ('Listening on port ' + port));
+        console.log(err || 'Listening on port ' + port);
       });
     },
     err => {
       console.log(`DB connection trial ${i}:`, err.message);
       setTimeout(() => start(i + 1), 20000);
     }
-  )
+  );
 }

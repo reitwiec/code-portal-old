@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       code: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        unique: true
+        unique: {
+          args: true,
+          msg: 'Language code already in use'
+        }
       },
       name: {
         type: DataTypes.STRING(50),

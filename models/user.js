@@ -17,12 +17,18 @@ module.exports = (sequelize, DataTypes) => {
       uname: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        unique: true
+        unique: {
+          args: true,
+          msg: 'Username already in use'
+        }
       },
       email: {
         type: DataTypes.STRING(100),
         allowNull: false,
-        unique: true,
+        unique: {
+          args: true,
+          msg: 'Email already in use'
+        },
         validate: {
           isEmail: true
         }
