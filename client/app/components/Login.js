@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { iecselogo } from 'assets';
 import { Loginbox } from 'components';
 import store from 'store';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
 	render() {
@@ -12,9 +13,15 @@ class Login extends Component {
 					<img src={iecselogo} alt="" id="logoimg" />
 				</span>
 				<div className="alternative">
-					<span>Create an Account</span>
-					<span>Recover Account</span>
-					<span id="google">Log in with Google</span>
+					<Link className="link" to={'/register'}>
+						Create an Account
+					</Link>
+					<Link className="link" to={'/forgotpassword'}>
+						Recover Account
+					</Link>
+					<Link className="link" to={'/register'} id="google">
+						Log in with Google
+					</Link>
 				</div>
 				<Loginbox />
 			</div>
@@ -71,7 +78,7 @@ export default styled(Login)`
 		transform: translate(-50%, -50%);
 	}
 
-	.alternative > span {
+	.alternative > .link {
 		margin: 20px;
 		font-size: 0.9em;
 		color: #9e9ebb;
@@ -83,6 +90,7 @@ export default styled(Login)`
 		-ms-user-select: none;
 		user-select: none;
 		animation: ${slide1} 1s 1 0s ease-in;
+		text-decoration: none;
 		:hover {
 			color: #fff;
 			cursor: pointer;

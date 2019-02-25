@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { iecselogo } from 'assets';
 import { Registerbox } from 'components';
 import store from 'store';
+import { Link } from 'react-router-dom';
 
 class Register extends Component {
 	render() {
@@ -13,8 +14,12 @@ class Register extends Component {
 				</span>
 				<Registerbox />
 				<div className="alternative">
-					<span>Login</span>
-					<span>Recover Account</span>
+					<Link className="link" to={'/login'}>
+						Login
+					</Link>
+					<Link className="link" to={'/forgotpassword'}>
+						Recover Account
+					</Link>
 				</div>
 			</div>
 		);
@@ -68,7 +73,7 @@ export default styled(Register)`
 		margin-bottom: 30px;
 	}
 
-	.alternative > span {
+	.alternative > .link {
 		margin: 20px;
 		font-size: 0.9em;
 		color: #9e9ebb;
@@ -80,6 +85,7 @@ export default styled(Register)`
 		-ms-user-select: none;
 		user-select: none;
 		animation: ${slide1} 1s 1 0s ease-in;
+		text-decoration: none;
 		:hover {
 			color: #fff;
 			cursor: pointer;
