@@ -23,5 +23,8 @@ export { default as Questions } from './Questions';
 export { default as Gauge } from './Gauge';
 export { default as Error } from './Error';
 export { default as Login } from './Login';
+export { default as Register } from './Register';
 export { default as Loginbox } from './Loginbox';
+export { default as Registerbox } from './Registerbox';
 export { default as TextArea } from './TextArea';
+export { default as FormInput } from './FormInput';

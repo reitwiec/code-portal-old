@@ -92,6 +92,8 @@ module.exports = () => {
     res.sendSuccess(questions, 'Successfully displaying questions');
   };
 
+// Reafactored till here *****************************************************************
+
   //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
     let err, questions;

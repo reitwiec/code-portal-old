@@ -14,7 +14,8 @@ import {
 	Submission,
 	Questions,
 	Error,
-	Login
+	Login,
+	Register
 } from 'components';
 
 // const AdminView = lazy(() => import('./components/admin/AdminView'));
@@ -65,6 +66,7 @@ class App extends Component {
 								<Route path="/submission" component={() => <Submission />} />
 								<Route path="/questions" component={() => <Questions />} />
 								<Route path="/login" component={() => <Login />} />
+								<Route path="/register" component={() => <Register />} />
 								<Route path="/" component={() => <Login />} exact />
 								<Route component={() => <Error />} />
 							</Switch>

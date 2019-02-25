@@ -11,23 +11,23 @@ module.exports = passport => {
       user.findOne({
         where: Sequelize.or(
           { email: req.body.email },
-          { uname: req.body.uname }
+          { username: req.body.username }
         )
       })
     );
     if (err) return res.sendError(err);
     if (myUser && myUser.email === req.body.email)
       return res.sendError(null, 'A user with this email already exists', 409);
-    if (myUser && myUser.uname === req.body.uname)
+    if (myUser && myUser.username === req.body.username)
       return res.sendError(null, 'This username is already taken', 409);
-    if (req.body.password !== req.body.confirm_pass)
+    if (req.body.password !== req.body.password_confirmation)
       return res.sendError(null, 'Passwords do not match', 409);
     //Salting and hashing
     [err, salt] = await to(bcrypt.genSalt(10));
     if (err) return res.sendError(err);
     [err, hash] = await to(bcrypt.hash(req.body.password, salt));
     if (err) return res.sendError(err);
-    const { confirm_pass, ...userData } = req.body;
+    const { password_confirmation, ...userData } = req.body;
     [err, newUser] = await to(
       user.create({
         ...userData,
