@@ -24,7 +24,8 @@ class RegisterStore {
 	@observable
 	meta = {
 		isValid: true,
-		error: null
+		msg: null,
+		success: null
 	};
 
 	@action
@@ -70,7 +71,10 @@ class RegisterStore {
 			body: JSON.stringify(postData)
 		})
 			.then(res => res.json())
-			.then(({ success, user }) => {});
+			.then(({ success, msg }) => {
+				this.meta.success = success;
+				this.meta.msg = msg;
+			});
 	};
 }
 

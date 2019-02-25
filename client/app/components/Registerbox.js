@@ -101,7 +101,15 @@ class Registerbox extends Component {
 								placeholder="Phone number"
 							/>
 
-							{meta.error && <div> {meta.error} </div>}
+							{meta.msg && (
+								<div
+									className={`meta ${
+										meta.success ? 'meta-success' : 'meta-error'
+									}`}>
+									{' '}
+									{meta.msg}{' '}
+								</div>
+							)}
 
 							<button disabled={!meta.isValid} value="Continue" type="submit">
 								Register
@@ -284,5 +292,17 @@ export default styled(Registerbox)`
 		font-size: 80px;
 		position: absolute;
 		opacity: 0.015;
+	}
+
+	.meta {
+		margin-top: 20px;
+	}
+
+	.meta-success {
+		color: green;
+	}
+
+	.meta-error {
+		color: rgba(255, 0, 0, 0.7);
 	}
 `;

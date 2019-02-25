@@ -21,11 +21,15 @@ const register = Joi.object({
     organisation: Joi.string()
       .max(100)
       .required(),
-    regno: Joi.string().max(20),
+    regno: Joi.string()
+      .allow('')
+      .max(20),
     username: Joi.string()
       .max(50)
       .required(),
-    phone: Joi.string().max(20)
+    phone: Joi.string()
+      .allow('')
+      .max(20)
   }).required()
 });
 
