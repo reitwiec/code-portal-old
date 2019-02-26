@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 
 import { Button } from 'components';
+import { format } from 'util';
 
 @inject('authStore', 'userStore')
 @observer
@@ -11,7 +12,15 @@ class Loginbox extends Component {
 	render() {
 		const {
 			className,
-			authStore: { email, setEmail, password, setPassword, login, isLoggedIn },
+			authStore: {
+				email,
+				setEmail,
+				password,
+				setPassword,
+				login,
+				isLoggedIn,
+				meta
+			},
 			userStore: { user }
 		} = this.props;
 
@@ -20,27 +29,38 @@ class Loginbox extends Component {
 				<div className={className}>
 					<div className="container">
 						<h2>
-							Log into <span>CodePortal</span>{' '}
+							Log into <span>CodePortal</span>
 						</h2>
-						<input
-							type="text"
-							placeholder="Email Address"
-							className="email"
-							value={email}
-							onChange={e => setEmail(e.target.value)}
-							required
-						/>
-						<input
-							type="password"
-							placeholder="Password"
-							className="password"
-							value={password}
-							onChange={e => setPassword(e.target.value)}
-							required
-						/>
-						<Button onClick={login}>
-							<span>Log In</span>
-						</Button>
+						<form onSubmit={login}>
+							<input
+								type="text"
+								placeholder="Email Address"
+								className="email"
+								value={email}
+								onChange={e => setEmail(e.target.value)}
+								required
+							/>
+							<input
+								type="password"
+								placeholder="Password"
+								className="password"
+								value={password}
+								onChange={e => setPassword(e.target.value)}
+								required
+							/>
+							{meta.msg && (
+								<div
+									className={`meta ${
+										meta.success ? 'meta-success' : 'meta-error'
+									}`}>
+									{' '}
+									{meta.msg}{' '}
+								</div>
+							)}
+							<Button onClick={login}>
+								<span>Log In</span>
+							</Button>
+						</form>
 						<div className="beauty">
 							<h1>User</h1>
 						</div>
@@ -190,5 +210,17 @@ export default styled(Loginbox)`
 		font-size: 80px;
 		position: absolute;
 		opacity: 0.015;
+	}
+
+	.meta {
+		margin-top: 20px;
+	}
+
+	.meta-success {
+		color: green;
+	}
+
+	.meta-error {
+		color: rgba(255, 0, 0, 0.7);
 	}
 `;
