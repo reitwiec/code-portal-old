@@ -1,6 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import {
 	Content,
@@ -20,6 +21,8 @@ import {
 
 // const AdminView = lazy(() => import('./components/admin/AdminView'));
 import AdminView from './components/admin/AdminView';
+
+import { observer, inject } from 'mobx-react';
 
 const question = {
 	title: 'Bon Appétit',
@@ -44,8 +47,24 @@ b: the amount of money that Anna contributed to the bill`,
 	submissions: 1289
 };
 
+@inject('userStore')
+@observer
 class App extends Component {
+	componentDidMount() {
+		this.props.userStore.fetchUser();
+	}
+
+	loginRequired = Component =>
+		this.props.userStore.user ? Component : <Redirect to="/" />;
+
+	redirectLoggedin = Component =>
+		this.props.userStore.user ? <Redirect to="/contests" /> : Component;
+
 	render() {
+		const {
+			userStore: { user }
+		} = this.props;
+
 		return (
 			<>
 				<BrowserRouter>
@@ -54,20 +73,44 @@ class App extends Component {
 							<Switch>
 								<Route
 									path="/contests"
-									component={() => <ContestsPage />}
+									component={() => this.loginRequired(<ContestsPage />)}
 									exact
 								/>
 								<Route
 									path="/editor"
-									component={() => <EditorView question={question} />}
+									component={() =>
+										this.loginRequired(<EditorView question={question} />)
+									}
 								/>
-								<Route path="/__admin" component={() => <AdminView />} />
-								<Route path="/contests" component={() => <ContestsPage />} />
-								<Route path="/submission" component={() => <Submission />} />
-								<Route path="/questions" component={() => <Questions />} />
-								<Route path="/login" component={() => <Login />} />
-								<Route path="/register" component={() => <Register />} />
-								<Route path="/" component={() => <Login />} exact />
+								<Route
+									path="/__admin"
+									component={() => this.loginRequired(<AdminView />)}
+								/>
+								<Route
+									path="/contests"
+									component={() => this.loginRequired(<ContestsPage />)}
+								/>
+								<Route
+									path="/submission"
+									component={() => this.loginRequired(<Submission />)}
+								/>
+								<Route
+									path="/questions"
+									component={() => this.loginRequired(<Questions />)}
+								/>
+								<Route
+									path="/login"
+									component={() => this.redirectLoggedin(<Login />)}
+								/>
+								<Route
+									path="/register"
+									component={() => this.redirectLoggedin(<Register />)}
+								/>
+								<Route
+									path="/"
+									component={() => this.redirectLoggedin(<Login />)}
+									exact
+								/>
 								<Route component={() => <Error />} />
 							</Switch>
 						</Suspense>

@@ -68,7 +68,8 @@ class RegisterStore {
 		fetch('/api/register', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(postData)
+			body: JSON.stringify(postData),
+			credentials: 'same-origin'
 		})
 			.then(res => res.json())
 			.then(({ success, msg }) => {

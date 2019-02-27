@@ -39,7 +39,8 @@ class AuthStore {
 		fetch('/api/login', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ email: this.email, password: this.password })
+			body: JSON.stringify({ email: this.email, password: this.password }),
+			credentials: 'same-origin'
 		})
 			.then(res => res.json())
 			.then(({ success, user, msg }) => {

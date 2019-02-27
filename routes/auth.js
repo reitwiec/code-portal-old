@@ -5,6 +5,12 @@ const Sequelize = require('sequelize');
 
 module.exports = passport => {
   let exp = {};
+
+  exp.userData = async (req, res) =>
+    res.sendSuccess({
+      loggedIn: !!req.user
+    });
+
   exp.register = async (req, res) => {
     let err, myUser, salt, hash, newUser;
     [err, myUser] = await to(
