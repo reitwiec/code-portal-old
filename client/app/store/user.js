@@ -3,6 +3,7 @@ import { authStore } from 'store';
 
 class UserStore {
 	@observable user = null;
+	@observable loading = true;
 
 	@action setUser = user => {
 		this.user = user;
@@ -19,6 +20,7 @@ class UserStore {
 					this.user = null;
 					authStore._setLoginState(false);
 				}
+				this.loading = false;
 			});
 	};
 }

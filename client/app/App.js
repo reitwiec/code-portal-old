@@ -55,68 +55,74 @@ class App extends Component {
 	}
 
 	loginRequired = Component =>
-		this.props.userStore.user ? Component : <Redirect to="/" />;
+		this.props.userStore.user ? Component : <Redirect to="/contests" />;
 
 	redirectLoggedin = Component =>
 		this.props.userStore.user ? <Redirect to="/contests" /> : Component;
 
 	render() {
 		const {
-			userStore: { user }
+			userStore: { user, loading }
 		} = this.props;
 
 		return (
 			<>
-				<BrowserRouter>
-					<div className={this.props.className}>
-						<Suspense fallback={<h2>Loading</h2>}>
-							<Switch>
-								<Route
-									path="/contests"
-									component={() => this.loginRequired(<ContestsPage />)}
-									exact
-								/>
-								<Route
-									path="/editor"
-									component={() =>
-										this.loginRequired(<EditorView question={question} />)
-									}
-								/>
-								<Route
-									path="/__admin"
-									component={() => this.loginRequired(<AdminView />)}
-								/>
-								<Route
-									path="/contests"
-									component={() => this.loginRequired(<ContestsPage />)}
-								/>
-								<Route
-									path="/submission"
-									component={() => this.loginRequired(<Submission />)}
-								/>
-								<Route
-									path="/questions"
-									component={() => this.loginRequired(<Questions />)}
-								/>
-								<Route
-									path="/login"
-									component={() => this.redirectLoggedin(<Login />)}
-								/>
-								<Route
-									path="/register"
-									component={() => this.redirectLoggedin(<Register />)}
-								/>
-								<Route
-									path="/"
-									component={() => this.redirectLoggedin(<Login />)}
-									exact
-								/>
-								<Route component={() => <Error />} />
-							</Switch>
-						</Suspense>
-						<Footer />
-					</div>
-				</BrowserRouter>
+				{loading ? (
+					<div />
+				) : (
+					<BrowserRouter>
+						<div className={this.props.className}>
+							<Suspense fallback={<h2>Loading</h2>}>
+								<Switch>
+									<Route
+										path="/contests"
+										component={() => this.loginRequired(<ContestsPage />)}
+										exact
+									/>
+									<Route
+										path="/editor"
+										component={() =>
+											this.loginRequired(<EditorView question={question} />)
+										}
+									/>
+									<Route
+										path="/__admin"
+										component={() => this.loginRequired(<AdminView />)}
+									/>
+									<Route
+										path="/contests"
+										component={() => this.loginRequired(<ContestsPage />)}
+									/>
+									<Route
+										path="/submission"
+										component={() => this.loginRequired(<Submission />)}
+									/>
+									<Route
+										path="/contest/:slug"
+										render={({ match }) =>
+											this.loginRequired(<Questions slug={match.params.slug} />)
+										}
+									/>
+									<Route
+										path="/login"
+										component={() => this.redirectLoggedin(<Login />)}
+									/>
+									<Route
+										path="/register"
+										component={() => this.redirectLoggedin(<Register />)}
+									/>
+									<Route
+										path="/"
+										component={() => this.redirectLoggedin(<Login />)}
+										exact
+									/>
+									<Route component={() => <Error />} />
+								</Switch>
+							</Suspense>
+							<Footer />
+						</div>
+					</BrowserRouter>
+				)}
 				<GlobalStyle />
 			</>
 		);

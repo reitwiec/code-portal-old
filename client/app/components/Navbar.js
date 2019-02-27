@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
 
 import {
 	Homeicon,
@@ -12,10 +13,15 @@ import {
 
 import { iecselogo, avatar } from 'assets';
 
-var x = 'Reitwiec S';
-
+@inject('userStore')
+@observer
 class Navbar extends Component {
 	render() {
+		const {
+			userStore: {
+				user: { name }
+			}
+		} = this.props;
 		return (
 			<div className={this.props.className}>
 				<NavLink to="/">
@@ -29,7 +35,7 @@ class Navbar extends Component {
 					<span id="avatar">
 						<img src={avatar} alt="" id="avatarimg" />
 					</span>
-					<span id="unamenav">{x}</span>
+					<span id="unamenav">{name}</span>
 					<Notif />
 				</NavLink>
 

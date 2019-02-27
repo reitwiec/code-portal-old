@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 class Questions extends Component {
 	render() {
+		const { slug } = this.props;
 		return (
 			<div className={this.props.className}>
 				<Navbar />
@@ -15,7 +16,7 @@ class Questions extends Component {
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
 						<NavLink to="/questions">
-							<span className="navigation">101 Hack 55</span>
+							<span className="navigation">{slug}</span>
 						</NavLink>
 					</div>
 
