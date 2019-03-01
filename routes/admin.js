@@ -8,25 +8,33 @@ const Busboy = require('busboy');
 const path = '../questions';
 const Path = require('path');
 const shell = require('shelljs');
+const Sequelize = require('sequelize');
 
 module.exports = () => {
   let exp = {};
-
+  const Op = Sequelize.Op;
   exp.showcontests = async (req, res) => {
     let [err, contests] = await to(contest.findAll());
     if (err) return res.sendError(err);
     res.sendSuccess(contests, 'Successfully displaying contests');
   };
 
-  exp.showcontestbyid = async (req, res) => {
+  exp.showcontestbyslug = async (req, res) => {
     let [err, contestobj] = await to(
       contest.findOne({
-        where: { id: req.params.id }
+        where: { slug: req.params.slug }
       })
     );
     if (err) return res.sendError(err);
     if (!contestobj) return res.sendError(null, 'Contest does not exist', 404);
-    res.sendSuccess(contestobj, 'Successfully displaying contest');
+    let questions;
+    [err, questions] = await to(
+      question.findAll({
+        where: { contest_id: contestobj.id }
+      })
+    );
+    if (err) return res.sendError(err);
+    res.sendSuccess(contestobj, questions, 'Successfully displaying contest');
   };
 
   exp.addcontest = async (req, res) => {
@@ -40,7 +48,7 @@ module.exports = () => {
   exp.updatecontest = async (req, res) => {
     let [err, contestobj] = await to(
       contest.update(req.body, {
-        where: { id: req.body.id }
+        where: { slug: req.body.slug }
       })
     );
     if (err && err.name === 'SequelizeUniqueConstraintError')
@@ -54,7 +62,7 @@ module.exports = () => {
   exp.deletecontest = async (req, res) => {
     let [err, contestobj] = await to(
       contest.destroy({
-        where: { id: req.params.id }
+        where: { slug: req.params.slug }
       })
     );
     if (err) return res.sendError(err);
@@ -65,15 +73,22 @@ module.exports = () => {
 
   exp.showquestions = async (req, res) => {
     let err, questions;
-    [err, questions] = await to(question.findAll());
+    [err, questions] = await to(
+      question.findAll({
+        where: { is_practice: true }
+      })
+    );
     if (err) return res.sendError(err);
     res.sendSuccess(questions, 'Successfully displaying questions');
   };
 
-  exp.showquestionbyid = async (req, res) => {
+  exp.showquestionbyslug = async (req, res) => {
     let [err, questionobj] = await to(
       question.findOne({
-        where: { id: req.params.id }
+        where: {
+          slug: req.params.slug,
+          is_practice: true
+        }
       })
     );
     if (err) return res.sendError(err);
@@ -81,7 +96,7 @@ module.exports = () => {
     res.sendSuccess(questionobj, 'Successfully displaying question');
   };
 
-  exp.showquestionsbycontest = async (req, res) => {
+  /*exp.showquestionsbycontest = async (req, res) => {
     let [err, questions] = await to(
       question.findAll({
         where: { contest_id: req.params.contest_id },
@@ -90,118 +105,79 @@ module.exports = () => {
     );
     if (err) return res.sendError(err);
     res.sendSuccess(questions, 'Successfully displaying questions');
-  };
+  };*/
 
-// Reafactored till here *****************************************************************
-
-  //have to use joins as shreyansh said
   exp.showquestionsadmin = async (req, res) => {
-    let err, questions;
     if (req.user.access < 20) return res.sendError(null, 'Access denied');
-    if (req.user.access == 30) {
-      [err, questions] = await to(question.findAll());
-      if (err) {
-        return res.sendError(err);
-      }
+    let err, questions;
+    if (req.user.access < 30) {
+      [err, questions] = await to(
+        question.findAll({
+          include: [
+            {
+              model: moderators,
+              where: { user_id: req.user.id }
+              //[Op.or] : [{ user_id: req.user.id }, { question.author_id: req.user.id }]
+            }
+          ]
+        })
+      );
+      if (err) return res.sendError(err);
       return res.sendSuccess(questions, 'Successfully displaying questions');
     }
-    [err, questions] = await to(
-      question.findAll({
-        include: [
-          {
-            model: moderator,
-            through: {
-              where: ['question = id', (user = req.user.id)]
-            }
-          }
-        ]
-      })
-    );
-    if (err) {
-      return res.sendError(err);
-    }
-    return res.sendSuccess(questions, 'Successfully displaying questions');
+    [err, questions] = await to(question.findAll());
+    if (err) return res.sendError(err);
+    res.sendSuccess(questions, 'Successfully displaying questions');
   };
 
-  exp.showquestionbyidadmin = async (req, res) => {
-    let err, questionobj, modobj;
-    [err, modobj] = await to(
-      moderator.findOne({
-        where: {
-          user: req.user.id,
-          question: req.params.id
-        }
-      })
-    );
-    if (err) {
-      return res.sendError(err);
+  exp.showquestionbyslugadmin = async (req, res) => {
+    if (req.user.access < 20) return res.sendError(null, 'Access denied');
+    let err, questionobj;
+    if (req.user.access < 30) {
+      [err, questionobj] = await to(
+        question.findOne({
+          include: [
+            {
+              model: moderators,
+              where: { user_id: req.user.id }
+            }
+          ],
+          where: { slug: req.params.slug }
+        })
+      );
+      if (err) return res.sendError(err);
+      if (questionobj === 0)
+        return res.sendError(null, 'Question doesnt exist');
+      return res.sendSuccess(questionobj, 'Successfully displaying question');
     }
-    if (req.user.access != 30 && !modobj)
-      return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(
       question.findOne({
-        where: { id: req.params.id }
+        where: { slug: req.params.slug }
       })
     );
-    if (err) {
-      return res.sendError(err);
-    }
-    if (!questionobj) return res.sendError(null, 'Question doesnt exist');
-    return res.sendSuccess(questionobj, 'Successfully displaying questions');
+    if (err) return res.sendError(err);
+    if (questionobj === 0) return res.sendError(null, 'Question doesnt exist');
+    res.sendSuccess(questionobj, 'Successfully displaying question');
   };
 
   exp.addquestion = async (req, res) => {
-    let err, questionobj, modobj;
-    if (req.user.access < 20) return res.sendError(null, 'Access denied');
-    [err, questionobj] = await to(
-      question.create({
-        body: req.body.body,
-        title: req.body.title,
-        input_format: req.body.input_format,
-        constraints: req.body.constraints,
-        output_format: req.body.output_format,
-        author: req.user.id,
-        level: req.body.level,
-        contest: req.body.contest,
-        score: req.body.score,
-        checker_language: req.body.checker_language,
-        time_limit: req.body.time_limit,
-        slug: req.body.slug,
-        editorial: req.body.editorial,
-        is_practice: req.body.is_practice
-      })
-    );
-    if (err) {
-      return res.sendError(err);
-    }
+    let [err, questionobj] = await to(question.create(req.body));
+    if (err && err.name === 'SequelizeUniqueConstraintError')
+      return res.sendError(null, err.message, 409);
+    if (err) return res.sendError(err);
     [err, questionobj] = await to(
       question.update(
         {
-          checker_path: path + '/' + questionobj.id
+          checker_path: path + '/' + questionobj.id,
+          author_id: req.user.id
         },
         {
           where: { id: questionobj.id }
         }
       )
     );
-    if (err) {
-      return res.sendError(err);
-    }
-    if (req.user.access == 30)
-      return res.sendSuccess(questionobj, 'Successfully added question');
-    [err, modobj] = await to(
-      moderator.create({
-        user: req.user.id,
-        question: questionobj.id
-      })
-    );
-    if (err) {
-      return res.sendError(err);
-    }
-    return res.sendSuccess(
-      null,
-      'Successfully added question and moderator for it'
-    );
+    if (err) return res.sendError(err);
+    return res.sendSuccess(null, 'Successfully added question');
   };
 
   exp.updatequestion = async (req, res) => {
@@ -209,44 +185,23 @@ module.exports = () => {
     [err, modobj] = await to(
       moderator.findOne({
         where: {
-          user: req.user.id,
-          question: req.body.id
+          user_id: req.user.id,
+          question_id: req.body.id
         }
       })
     );
-    if (err) {
-      return res.sendError(err);
-    }
-    if (req.user.access != 30 && !modobj)
+    if (err) return res.sendError(err);
+    if (req.user.access < 30 && modobj === 0)
       return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(
-      question.update(
-        {
-          id: req.body.id,
-          body: req.body.body,
-          title: req.body.title,
-          input_format: req.body.input_format,
-          constraints: req.body.constraints,
-          output_format: req.body.output_format,
-          level: req.body.level,
-          contest: req.body.contest,
-          score: req.body.score,
-          checker_path: req.body.checker_path,
-          checker_language: req.body.checker_language,
-          time_limit: req.body.time_limit,
-          slug: req.body.slug,
-          editorial: req.body.editorial,
-          is_practice: req.body.is_practice
-        },
-        {
-          where: { id: req.body.id }
-        }
-      )
+      question.update(req.body, {
+        where: { id: req.body.id }
+      })
     );
-    if (err) {
-      return res.sendError(err);
-    }
-    return res.sendSuccess(null, 'Successfully updated question');
+    if (err && err.name === 'SequelizeUniqueConstraintError')
+      return res.sendError(null, err.message, 409);
+    if (err) return res.sendError(err);
+    res.sendSuccess(null, 'Successfully updated question');
   };
 
   exp.deletequestion = async (req, res) => {
@@ -259,61 +214,40 @@ module.exports = () => {
         }
       })
     );
-    if (err) {
-      return res.sendError(err);
-    }
-    if (req.user.access != 30 && !modobj)
+    if (err) return res.sendError(err);
+    if (req.user.access != 30 && modobj === 0)
       return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(
       question.destroy({
-        where: { id: req.params.id }
+        where: { slug: req.params.slug }
       })
     );
-    if (err) {
-      return res.sendError(err);
-    }
-    return res.sendSuccess(null, 'Successfully deleted question');
+    if (err) return res.sendError(err);
+    if (questionobj === 0)
+      return res.sendError(null, 'Question does not exist', 404);
+    res.sendSuccess(null, 'Successfully deleted question');
   };
 
   exp.addmoderator = async (req, res) => {
-    let modobj, err;
-    if (req.user.access != 30)
-      return res.sendError(null, 'Access denied for user');
-    [err, modobj] = await to(
-      moderator.create({
-        user: req.body.user,
-        question: req.body.question
-      })
-    );
-    if (err) {
-      console.log(err);
-      return res.sendError(err);
-    }
+    let [err, modobj] = await to(moderator.create(req.body));
+    if (err && err.name === 'SequelizeUniqueConstraintError')
+      return res.sendError(null, err.message, 409);
+    if (err) return res.sendError(err);
     return res.sendSuccess(modobj, 'Moderator added successfully');
   };
 
   exp.deletemoderator = async (req, res) => {
-    let err, modobj;
-    if (req.user.access != 30)
-      return res.sendError(null, 'Access denied for user');
-    [err, modobj] = await to(
-      moderator.findOne({
-        where: { user: req.params.id }
-      })
-    );
-    if (err) {
-      console.log(err);
-      return res.sendError(err);
-    }
-    if (!modobj) return res.sendError(null, 'Doesnt exist');
-    [err, modobj] = await to(
+    let [err, modobj] = await to(
       moderator.destroy({
         where: { user: req.params.id }
       })
     );
     if (err) return res.sendError(err);
+    if (modobj === 0) return res.sendError(null, 'Moderator doesnt exist');
     return res.sendSuccess(null, 'Successfully deleted moderator');
   };
+
+  // Refactored till here *****************************************************************
 
   /*exp.addtestcase = async (req, res) =>{
     let err, testobj;

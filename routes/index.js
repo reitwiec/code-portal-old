@@ -25,7 +25,7 @@ module.exports = passport => {
   //admin routes
   router.get('/showcontests', admin.showcontests);
 
-  router.get('/showcontests/:id', admin.showcontestbyid);
+  router.get('/showcontest/:slug', admin.showcontestbyslug);
 
   router.post(
     '/addcontest',
@@ -41,22 +41,22 @@ module.exports = passport => {
     admin.updatecontest
   );
 
-  router.delete('/deletecontest/:id', access(30), admin.deletecontest);
+  router.delete('/deletecontest/:slug', access(30), admin.deletecontest);
 
-  router.get('/showquestions', access(20), admin.showquestions);
+  router.get('/showquestions', admin.showquestions);
 
-  router.get('/showquestions/:id', access(20), admin.showquestionbyid);
+  router.get('/showquestions/:slug', admin.showquestionbyslug);
 
-  router.get(
+  /*router.get(
     '/showquestionsbycontest/:contest_id',
     access(30),
     admin.showquestionsbycontest
-  );
+  );*/
 
   router.get('/showquestionsadmin', access(20), admin.showquestionsadmin);
 
   router.get(
-    '/showquestionsadmin/:id',
+    '/showquestionsadmin/:slug',
     access(20),
     admin.showquestionbyidadmin
   );
@@ -75,7 +75,7 @@ module.exports = passport => {
     admin.updatequestion
   );
 
-  router.delete('/deletequestion/:id', access(20), admin.deletequestion);
+  router.delete('/deletequestion/:slug', access(20), admin.deletequestion);
 
   router.post(
     '/addmoderator',
