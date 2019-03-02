@@ -80,18 +80,14 @@ class App extends Component {
 										exact
 									/>
 									<Route
-										path="/editor"
-										component={() =>
-											this.loginRequired(<EditorView question={question} />)
+										path="/question/:slug"
+										component={({match}) =>
+											this.loginRequired(<EditorView question={match.params.slug} />)
 										}
 									/>
 									<Route
 										path="/__admin"
 										component={() => this.loginRequired(<AdminView />)}
-									/>
-									<Route
-										path="/contests"
-										component={() => this.loginRequired(<ContestsPage />)}
 									/>
 									<Route
 										path="/submission"

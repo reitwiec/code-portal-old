@@ -1,25 +1,21 @@
 import { observable, action } from 'mobx';
+import { contestsStore } from 'store';
 
 class QuestionsStore {
 	@observable
-	questions = {};
+	questions = [];
 
 	@action fetchQuestions = slug => {
-		console.log('asdasdasd');
-		fetch(`/api/showquestionsbycontest/${slug}`, { credentials: 'same-origin' })
+		fetch(`/api/showcontest/${slug}`, { credentials: 'same-origin' })
 			.then(resp => resp.json())
 			.then(data => {
 				if (data.success) {
-					this.questions = data.data.reduce(
-						(a, c) => ({ ...a, [c.id]: c }),
-						{}
-					);
+					contestsStore.setTitle(data.data.contest.title);
+					contestsStore.setSlug(data.data.contest.slug);
+					this.questions = data.data.questions;
 				}
 			});
 	};
-
-	@action getQuestions = () =>
-		Object.keys(this.questions).map(id => this.questions[id]);
 }
 
 export default new QuestionsStore();

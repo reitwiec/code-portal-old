@@ -43,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
         allowNull: false
       },
+      visibility: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       slug: {
         type: DataTypes.STRING(50),
         allowNull: false,
@@ -51,9 +56,6 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Slug already in use'
         }
       },
-      //   editorial: {
-      //     type: DataTypes.INTEGER
-      //   },
       is_practice: {
         type: DataTypes.BOOLEAN,
         allowNull: false
@@ -68,19 +70,21 @@ module.exports = (sequelize, DataTypes) => {
   Question.associate = models => {
     models.question.belongsTo(models.user, {
       as: 'author',
-      foreignKey: { allowNull: false }
+      foreignKey: { name: 'author_id', allowNull: false }
     });
     models.question.belongsTo(models.language, {
       as: 'checker_language'
     });
-    models.question.belongsTo(models.contest);
+    models.question.belongsTo(models.contest, {
+      foreignKey: 'contest_id'
+    });
     models.question.hasMany(models.testcase, {
-      as: 'TestCases',
-      foreignKey: { allowNull: false }
+      as: 'test_cases',
+      foreignKey: { name: 'question_id', allowNull: false }
     });
     models.question.hasMany(models.submission, {
-      as: 'Submissions',
-      foreignKey: { allowNull: false }
+      as: 'submissions',
+      foreignKey: { name: 'question_id', allowNull: false }
     });
     models.question.belongsToMany(models.user, {
       through: 'moderators',

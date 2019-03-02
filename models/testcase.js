@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   Testcase.associate = models => {
     models.testcase.belongsTo(models.question, {
       as: 'question',
-      foreignKey: { allowNull: false }
+      foreignKey: { name: 'question_id', allowNull: false }
     });
   };
 

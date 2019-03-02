@@ -58,7 +58,7 @@ module.exports = passport => {
   router.get(
     '/showquestionsadmin/:slug',
     access(20),
-    admin.showquestionbyidadmin
+    admin.showquestionbyslugadmin
   );
 
   router.post(

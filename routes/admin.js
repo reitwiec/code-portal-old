@@ -30,11 +30,20 @@ module.exports = () => {
     let questions;
     [err, questions] = await to(
       question.findAll({
-        where: { contest_id: contestobj.id }
+        where: {
+          contest_id: contestobj.id,
+          ...(req.user.access < 30 && { visibility: true })
+        },
+        ...(req.user.access < 30 && {
+          attributes: ['title', 'slug', 'score', 'level', 'id']
+        })
       })
     );
     if (err) return res.sendError(err);
-    res.sendSuccess(contestobj, questions, 'Successfully displaying contest');
+    res.sendSuccess(
+      { contest: contestobj, questions },
+      'Successfully displaying contest'
+    );
   };
 
   exp.addcontest = async (req, res) => {
@@ -98,9 +107,15 @@ module.exports = () => {
 
   /*exp.showquestionsbycontest = async (req, res) => {
     let [err, questions] = await to(
-      question.findAll({
-        where: { contest_id: req.params.contest_id },
-        include: { all: true }
+      contest.findAll({
+        where: { slug: req.params.contest_id },
+        include: [
+          {
+            model: question,
+            as: 'questions',
+            attributes: ['id', 'title', 'body']
+          }
+        ]
       })
     );
     if (err) return res.sendError(err);

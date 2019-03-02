@@ -49,12 +49,12 @@ module.exports = (sequelize, DataTypes) => {
 
   Contest.associate = models => {
     models.contest.hasMany(models.question, {
-      as: 'question',
-      foreignKey: { allowNull: false }
+      as: 'questions',
+      foreignKey: { name: 'contest_id', allowNull: false }
     });
     models.contest.hasMany(models.submission, {
-      as: 'Submissions',
-      foreignKey: { allowNull: false }
+      as: 'submissions',
+      foreignKey: { name: 'contest_id', allowNull: false }
     });
   };
 

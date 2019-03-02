@@ -62,11 +62,11 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = models => {
     models.user.hasMany(models.submission, {
-      as: 'Submissions',
-      foreignKey: { allowNull: false }
+      as: 'submissions',
+      foreignKey: { name: 'user_id', allowNull: false }
     });
     models.user.hasMany(models.question, {
-      as: 'Questions',
+      as: 'questions',
       foreignKey: { name: 'author_id', allowNull: false }
     });
     models.user.belongsToMany(models.question, {

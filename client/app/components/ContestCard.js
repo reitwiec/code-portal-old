@@ -26,6 +26,7 @@ export default styled(ContestCard)`
 	width: 60%;
 	text-align: left;
 	padding: 1em;
+	cursor: pointer;
 
 	filter: drop-shadow(8px 9px 8px rgba(0, 0, 0, 0.13));
 

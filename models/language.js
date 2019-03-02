@@ -32,12 +32,12 @@ module.exports = (sequelize, DataTypes) => {
 
   Language.associate = models => {
     models.language.hasMany(models.question, {
-      as: 'Questions',
+      as: 'questions',
       foreignKey: { name: 'checker_language_id' }
     });
     models.language.hasMany(models.submission, {
-      as: 'Submissions',
-      foreignKey: { allowNull: false }
+      as: 'submissions',
+      foreignKey: { name: 'language_id', allowNull: false }
     });
   };
 

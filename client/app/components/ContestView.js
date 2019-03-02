@@ -15,14 +15,14 @@ class ContestView extends Component {
 
 	render() {
 		const {
-			contestsStore: { fetchContests, getContests, contests }
+			contestsStore: { fetchContests, contests }
 		} = this.props;
 		return (
 			<div className={this.props.className}>
 				<h1>Contests</h1>
 				<span>Overview</span>
 				<div>
-					{getContests().map((contest, i) => (
+					{contests.map((contest, i) => (
 						<ContestCard
 							onClick={this.onClick}
 							contest={contest}

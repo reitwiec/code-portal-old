@@ -2,10 +2,20 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Navbar, Button, Content } from 'components';
 import { NavLink } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
 
+@inject('questionsStore', 'contestsStore')
+@observer
 class Questions extends Component {
+	componentDidMount() {
+		this.props.questionsStore.fetchQuestions(this.props.slug);
+	}
+
 	render() {
-		const { slug } = this.props;
+		const {
+			questionsStore: { questions },
+			contestsStore: { title, slug }
+		} = this.props;
 		return (
 			<div className={this.props.className}>
 				<Navbar />
@@ -23,67 +33,20 @@ class Questions extends Component {
 					<div className="area">
 						<div className="container">
 							<div className="heading">
-								<h1>101 Hack 55</h1>
+								<h1>{title}</h1>
 								<span className="fadebg1">Head</span>
 							</div>
 							<div className="content">
-								<div className="questions">
-									<section>Bon Appétit</section>
-									<span className="details">Max Score: 15</span>
-									<span className="strength">Difficulty: Easy</span>
-									<NavLink to="./editor">
-										<Button>Solve</Button>
-									</NavLink>
-								</div>
-								<div className="questions">
-									<section>Save the Queen!</section>
-									<span className="details">Max Score: 15</span>
-									<span className="strength">Difficulty: Easy</span>
-									<NavLink to="./editor">
-										<Button>Solve</Button>
-									</NavLink>
-								</div>
-								<div className="questions">
-									<section>Hanging Posters</section>
-									<span className="details">Max Score: 30</span>
-									<span className="strength">Difficulty: Medium</span>
-									<NavLink to="./editor">
-										<Button>Solve</Button>
-									</NavLink>
-								</div>
-								<div className="questions">
-									<section>Basketball tournament</section>
-									<span className="details">Max Score: 40</span>
-									<span className="strength">Difficulty: Advanced</span>
-									<NavLink to="./editor">
-										<Button>Solve</Button>
-									</NavLink>
-								</div>
-
-								<div className="questions">
-									<section>Save the Queen!</section>
-									<span className="details">Max Score: 15</span>
-									<span className="strength">Difficulty: Easy</span>
-									<NavLink to="./editor">
-										<Button>Solve</Button>
-									</NavLink>
-								</div>
-								<div className="questions">
-									<section>Save the Queen!</section>
-									<span className="details">Max Score: 15</span>
-									<span className="strength">Difficulty: Easy</span>
-									<NavLink to="./editor">
-										<Button>Solve</Button>
-									</NavLink>
-								</div>
-								<div className="questions">
-									<section>Save the Queen!</section>
-									<span className="details">Max Score: 15</span>
-									<span className="strength">Difficulty: Easy</span>
-									<NavLink to="./editor">
-										<Button>Solve</Button>
-									</NavLink>
-								</div>
+								{questions.map((question, i) => (
+									<div className="questions" key={`question_${i}`}>
+										<section>{question.title}</section>
+										<span className="details">Max Score: {question.score}</span>
+										<span className="strength">Difficulty: {question.level}</span>
+										<NavLink to={`/question/${question.slug}`}>
+											<Button>Solve</Button>
+										</NavLink>
+									</div>
+								))}
 							</div>
 						</div>
 

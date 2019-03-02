@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   SubTestCase.associate = models => {
     models.subtestcase.belongsTo(models.submission, {
       as: 'submission',
-      foreignKey: { allowNull: false }
+      foreignKey: { name: 'submission_id', allowNull: false }
     });
   };
 

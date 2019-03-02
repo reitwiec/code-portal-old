@@ -31,23 +31,23 @@ module.exports = (sequelize, DataTypes) => {
   Submission.associate = models => {
     models.submission.belongsTo(models.question, {
       as: 'question',
-      foreignKey: { allowNull: false }
+      foreignKey: { name: 'question_id', allowNull: false }
     });
     models.submission.belongsTo(models.language, {
       as: 'language',
-      foreignKey: { allowNull: false }
+      foreignKey: { name: 'language_id', allowNull: false }
     });
     models.submission.belongsTo(models.user, {
       as: 'user',
-      foreignKey: { allowNull: false }
+      foreignKey: { name: 'user_id', allowNull: false }
     });
     models.submission.belongsTo(models.contest, {
       as: 'contest',
-      foreignKey: { allowNull: false }
+      foreignKey: { name: 'contest_id', allowNull: false }
     });
     models.submission.hasMany(models.subtestcase, {
-      as: 'SubTestCases',
-      foreignKey: { allowNull: false }
+      as: 'sub_test_cases',
+      foreignKey: { name: 'submission_id', allowNull: false }
     });
   };
 

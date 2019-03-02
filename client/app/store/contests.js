@@ -2,20 +2,26 @@ import { observable, action } from 'mobx';
 
 class ContestsStore {
 	@observable
-	contests = {};
+	contests = [];
+
+	@observable
+	title = '';
+
+	@observable
+	slug = '';
+
+	@action setTitle = title => (this.title = title);
+	@action setSlug = slug => (this.slug = slug);
 
 	@action fetchContests = () => {
 		fetch('/api/showcontests', { credentials: 'same-origin' })
 			.then(resp => resp.json())
 			.then(data => {
 				if (data.success) {
-					this.contests = data.data.reduce((a, c) => ({ ...a, [c.id]: c }), {});
+					this.contests = data.data;
 				}
 			});
 	};
-
-	@action getContests = () =>
-		Object.keys(this.contests).map(id => this.contests[id]);
 }
 
 export default new ContestsStore();
