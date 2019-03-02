@@ -14,7 +14,11 @@ module.exports = () => {
   let exp = {};
   const Op = Sequelize.Op;
   exp.showcontests = async (req, res) => {
-    let [err, contests] = await to(contest.findAll());
+    let [err, contests] = await to(
+      contest.findAll({
+        ...(req.user.access < 30 && { where: { visibility: true } })
+      })
+    );
     if (err) return res.sendError(err);
     res.sendSuccess(contests, 'Successfully displaying contests');
   };

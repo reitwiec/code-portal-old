@@ -25,8 +25,8 @@ class Questions extends Component {
 							<span className="navigation">All Contests</span>
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
-						<NavLink to="/questions">
-							<span className="navigation">{slug}</span>
+						<NavLink to={`/contest/${slug}`}>
+							<span className="navigation">{title}</span>
 						</NavLink>
 					</div>
 
@@ -41,7 +41,9 @@ class Questions extends Component {
 									<div className="questions" key={`question_${i}`}>
 										<section>{question.title}</section>
 										<span className="details">Max Score: {question.score}</span>
-										<span className="strength">Difficulty: {question.level}</span>
+										<span className="strength">
+											Difficulty: {question.level}
+										</span>
 										<NavLink to={`/question/${question.slug}`}>
 											<Button>Solve</Button>
 										</NavLink>
