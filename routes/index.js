@@ -11,10 +11,11 @@ const access = level => (req, res, next) => {
   return res.sendError(null, 'Unauthorized access');
 };
 
-module.exports = passport => {
+module.exports = (passport,io) => {
   const auth = require('./auth')(passport);
   const admin = require('./admin')(passport);
   const leaderboard = require('./leaderboard')(passport);
+  const submissions = require('./submissions')(io);
   const subLimit = require('./subLimit')(passport);
 
   //auth routes
@@ -90,7 +91,9 @@ module.exports = passport => {
     '/addtestcase',
     access(20),
     fileUpload({
-      limits: { fileSize: 10 * 1024 * 1024 },
+      limits: {
+        fileSize: 10 * 1024 * 1024
+      },
       safeFileNames: true,
       preserveExtension: true,
       createParentPath: true,
@@ -103,6 +106,9 @@ module.exports = passport => {
   router.delete('/deletetestcase/:id', access(20), admin.deletetestcase);
   //leaderboard routes
   router.get('/:contest/leaderboard', leaderboard.showleaderboard);
+
+  router.post('/submit',access(10), validator(schemas.submissions.submit), submissions.submit);
+  router.get('/submission',access(10), validator(schemas.submissions.details), submissions.get_submission);
 
   return router;
 };

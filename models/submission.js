@@ -14,12 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       points: {
         type: DataTypes.DOUBLE,
-        allowNull: false
+        allowNull: false,
+        default: 0
       },
       verdict: {
         type: DataTypes.ENUM,
-        values: ['WRONG', 'PARTIAL', 'CORRECT', 'CE'],
-        allowNull: false
+        values: ['WRONG', 'PARTIAL', 'CORRECT', 'CE', 'PROCESSING'],
+        allowNull: false,
+        default: 'PROCESSING'
       }
     },
     {
