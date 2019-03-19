@@ -2,9 +2,18 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Content, Button, Gauge, Navbar } from 'components';
 import { NavLink } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
 
-const ans = { right: 'fa fa-check-circle', wrong: 'fa fa-times-circle' };
+const ans = { proc: 'fas fa-spinner fa-pulse', tle: 'fa fa-clock', right: 'fa fa-check-circle', wrong: 'fa fa-times-circle' };
 
+function pad(num, size) {
+	var s = num+"";
+	while (s.length < size) s = "0" + s;
+	return s;
+}
+
+@inject('questionsStore', 'contestsStore')
+@observer
 class Submission extends Component {
 	constructor(props) {
 		super(props);
@@ -15,35 +24,49 @@ class Submission extends Component {
 	}
 
 	componentDidMount() {
-		var x = 1;
-		var elem = document.getElementById('accuracy');
-		var id = setInterval(frame, 30);
-		function frame() {
-			if (x >= 73) {
-				clearInterval(id);
-			} else {
-				x = x + 2;
-				elem.innerText = x;
-			}
-			elem.innerText = x + '%';
-		}
-		this.interval = setInterval(
-			() =>
-				this.state.val_1 >= 73
-					? clearInterval(this.interval)
-					: this.setState({ val_1: this.state.val_1 + 1 }),
-			10
-		);
-		this.interval = setInterval(
-			() =>
-				this.state.val_2 >= 9.35
-					? clearInterval(this.interval)
-					: this.setState({ val_2: this.state.val_2 + 0.3 }),
-			10
-		);
+		// var x = 1;
+		// var elem = document.getElementById('accuracy');
+		// var id = setInterval(frame, 30);
+		// function frame() {
+		// 	if (x >= 73) {
+		// 		clearInterval(id);
+		// 	} else {
+		// 		x = x + 2;
+		// 		elem.innerText = x;
+		// 	}
+		// 	elem.innerText = x + '%';
+		// }
+		// this.interval = setInterval(
+		// 	() =>
+		// 		this.state.val_1 >= 73
+		// 			? clearInterval(this.interval)
+		// 			: this.setState({ val_1: this.state.val_1 + 1 }),
+		// 	10
+		// );
+		// this.interval = setInterval(
+		// 	() =>
+		// 		this.state.val_2 >= 9.35
+		// 			? clearInterval(this.interval)
+		// 			: this.setState({ val_2: this.state.val_2 + 0.3 }),
+		// 	10
+		// );
 	}
 
+
 	render() {
+		const {
+			questionsStore: {
+				points,
+				verdict,
+				cases,
+				score,
+				slug,
+				title
+			}
+		} = this.props;
+
+		const contestSlug = this.props.contestsStore.slug;
+		const contestTitle = this.props.contestsStore.title;
 		return (
 			<div className={this.props.className}>
 				<Navbar />
@@ -53,126 +76,37 @@ class Submission extends Component {
 							<span className="navigation">All Contests</span>
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
-						<NavLink to="/questions">
-							<span className="navigation">101 Hack 55</span>
+						<NavLink to={`/contest/${contestSlug}`}>
+							<span className="navigation">{contestTitle}</span>
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
 						<NavLink to="/editor">
-							<span className="navigation">Bon Appétit</span>
+							<span className="navigation">{title}</span>
 						</NavLink>
-						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
 						<NavLink to="/submission">
 							<span className="navigation">Result</span>
 						</NavLink>
 					</div>
 					<h1 className="test">Test Cases Result</h1>
-					<div className="container">
-						<div className="column">
-							<span>
-								01<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								02<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								03<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								04<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								05<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-						</div>
-						<div className="column">
-							<span>
-								06<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								07<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-							<span>
-								08<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								09<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-							<span>
-								10<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-						</div>
-						<div className="column">
-							<span>
-								11<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								12<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-							<span>
-								13<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								14<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-							<span>
-								15<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-						</div>
-						<div className="column">
-							<span>
-								16<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-							<span>
-								17<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								18<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								19<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								20<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-						</div>
-						<div className="column">
-							<span>
-								21<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								22<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								23<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								24<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								25<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-						</div>
-						<div className="column">
-							<span>
-								26<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								27<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-							<span>
-								28<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								29<i className={ans.right} aria-hidden="true" id="1" />
-							</span>
-							<span>
-								30<i className={ans.wrong} aria-hidden="true" id="2" />
-							</span>
-						</div>
+					<div className="flex-container">
+						{cases.map((c, i) =>
+							<div className="fa-3x result" key={`result_${i}`}>
+								{pad(i + 1, (cases.length + '').length)}
+								<i className={
+									c.verdict === 'PROC'
+										? ans.proc
+										: c.verdict === 'TLE'
+											? ans.tle
+											: c.verdict === 'AC'
+												? ans.right
+												: ans.wrong
+								} aria-hidden="true" />
+							</div>
+						)}
 					</div>
 					<hr />
 
-					<div className="container1">
+					{/* <div className="container1">
 						<div className="column">
 							<h3>Your Score</h3>
 							<section id="score">9.35/15</section>
@@ -200,7 +134,7 @@ class Submission extends Component {
 
 					<NavLink to="/editor">
 						<Button>Back</Button>
-					</NavLink>
+					</NavLink> */}
 					<div className="beauty">
 						<h1>Result</h1>
 					</div>
@@ -211,6 +145,25 @@ class Submission extends Component {
 }
 
 export default styled(Submission)`
+	.flex-container {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		width: 70%;
+	}
+
+	.result {
+		margin: 10px;
+		width: calc(100% / 5);
+		font-size: 1rem;
+		color: #fff;
+	}
+
+	.fa-spinner,
+	.fa-clock {
+		margin-left: 10px;
+	}
+
 	hr {
 		opacity: 0.5;
 		width: 60%;
@@ -319,4 +272,5 @@ export default styled(Submission)`
 	.column > span {
 		margin: 2px 0 2px 0;
 	}
+
 `;

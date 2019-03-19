@@ -103,6 +103,7 @@ class QuestionsStore {
 				.then(({ success, user, data }) => {
 					if (success) {
 						this.submission = data;
+						console.log('submission', this.submission);
 						this.fetchSubmission()
 					}
 				});
@@ -110,16 +111,29 @@ class QuestionsStore {
 
 		socket.on('testcase_result', data => {
 			console.log('testcase_result', data);
+			this.cases.forEach((c, i) => {
+				if(c.id === data.id)
+					this.cases[i] = { ...this.cases[i], ...data };
+			})
 		});
 
 		socket.on('submission_result_ce', data => {
 			console.log('submission_result_ce', data);
+			if (data.id !== this.submission) return;
+			console.log('disconnecting...');
 			socket.disconnect();
+			this.submission = null;
 		});
 
 		socket.on('submission_result', data => {
 			console.log('submission_result', data);
+			if (data.id !== this.submission) return;
+			// this.cases.forEach(case => {
+			// 	if(case.id === data.)
+			// });
+			console.log('disconnecting...');
 			socket.disconnect();
+			this.submission = null;
 		});
 		socket.on('disconnect', () => {
 			console.log('disconnected');
