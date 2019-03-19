@@ -3,10 +3,15 @@ import styled, { keyframes } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 import { Button, Content, Editor, Navbar } from 'components';
+import { observer, inject } from 'mobx-react';
 
 const hello = () => console.log('You just submitted');
+
+@inject('questionsStore', 'contestsStore')
+@observer
 class EditorView extends Component {
 	componentDidMount() {
+		this.props.questionsStore.fetchQuestion(this.props.slug);
 		var elem = document.getElementById('myBar');
 		var width = 1;
 		var id = setInterval(frame, 10);
@@ -21,6 +26,23 @@ class EditorView extends Component {
 	}
 
 	render() {
+		const {
+			questionsStore: {
+				body,
+				constraints,
+				id,
+				input_format,
+				level,
+				output_format,
+				score,
+				slug,
+				title
+			}
+		} = this.props;
+
+		const contestSlug = this.props.contestsStore.slug;
+		const contestTitle = this.props.contestsStore.title;
+
 		return (
 			<div className={this.props.className}>
 				<Navbar />
@@ -30,27 +52,28 @@ class EditorView extends Component {
 							<span className="navigation">All Contests</span>
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
-						<NavLink to="/questions">
-							<span className="navigation">101 Hack 55</span>
+						<NavLink to={`/contest/${contestSlug}`}>
+							<span className="navigation">{contestTitle}</span>
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
 						<NavLink to="/editor">
-							<span className="navigation">{this.props.question.title}</span>
+							<span className="navigation">{title}</span>
 						</NavLink>
 					</div>
 
 					<div>
 						<div className="box">
-							<h2>{this.props.question.title}</h2>
+							<h2>{title}</h2>
 							<span className="fadebg1">{this.props.question.submissions}</span>
 						</div>
 						<div id="myProgress">
 							<div id="myBar" />
 						</div>
 						<span className="difficulty">
-							<strong>Difficulty: </strong> Easy
+							<strong>Difficulty: </strong>{' '}
+							<span className="level">{level.toLowerCase()}</span>
 						</span>
-						<section>{this.props.question.body}</section>
+						<section>{body}</section>
 						<hr />
 
 						<div className="box1">
@@ -61,18 +84,18 @@ class EditorView extends Component {
 							</svg>
 						</div>
 
-						<section>{this.props.question.input_format}</section>
+						<section>{input_format}</section>
 						<div className="box1">
 							<h3>Constraints</h3>
 						</div>
 
-						<section>{this.props.question.constraints}</section>
+						<section>{constraints}</section>
 
 						<div className="box1">
 							<h3>Output Format</h3>
 						</div>
 
-						<section>{this.props.question.output_format}</section>
+						<section>{output_format}</section>
 					</div>
 					<Editor />
 					<NavLink to="/submission">
@@ -186,6 +209,10 @@ export default styled(EditorView)`
 		padding-top: 15px;
 		padding-right: 10px;
 		margin-bottom: 200px;
+	}
+
+	.level {
+		text-transform: capitalize;
 	}
 
 	hr {

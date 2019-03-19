@@ -81,8 +81,13 @@ class App extends Component {
 									/>
 									<Route
 										path="/question/:slug"
-										component={({match}) =>
-											this.loginRequired(<EditorView question={match.params.slug} />)
+										component={({ match }) =>
+											this.loginRequired(
+												<EditorView
+													question={question}
+													slug={match.params.slug}
+												/>
+											)
 										}
 									/>
 									<Route

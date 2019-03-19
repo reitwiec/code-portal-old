@@ -100,8 +100,25 @@ module.exports = () => {
       question.findOne({
         where: {
           slug: req.params.slug,
-          is_practice: true
-        }
+          ...(req.user.access < 30 && { visibility: true })
+        },
+        ...(req.user.access < 30 && {
+          attributes: [
+            'body',
+            'constraints',
+            'id',
+            'input_format',
+            'level',
+            'output_format',
+            'score',
+            'slug',
+            'title'
+          ],
+          include: {
+            model: contest,
+            attributes: ['slug', 'title']
+          }
+        })
       })
     );
     if (err) return res.sendError(err);
