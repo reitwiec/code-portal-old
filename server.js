@@ -47,7 +47,7 @@ io.on('connection', socket => {
   }
 });
 
-app.use('/api', require('./routes')(passport));
+app.use('/api', require('./routes')(passport,io));
 
 const port = process.env.PORT || 3000;
 

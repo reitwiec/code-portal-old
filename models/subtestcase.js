@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       underscored: true,
-      tableName: 'sub_test_case'
+      tableName: 'sub_test_cases'
     }
   );
 
@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
     models.subtestcase.belongsTo(models.submission, {
       as: 'submission',
       foreignKey: { name: 'submission_id', allowNull: false }
+    });
+    models.subtestcase.belongsTo(models.testcase, {
+      as: 'testcase',
+      foreignKey: { name: 'testcase_id', allowNull: false }
     });
   };
 
