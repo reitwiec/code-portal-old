@@ -16,12 +16,12 @@ class Login extends Component {
 					<Link className="link" to={'/register'}>
 						Create an Account
 					</Link>
-					<Link className="link" to={'/forgotpassword'}>
+					{/* <Link className="link" to={'/forgotpassword'}>
 						Recover Account
 					</Link>
 					<Link className="link" to={'/register'} id="google">
 						Log in with Google
-					</Link>
+					</Link> */}
 				</div>
 				<Loginbox />
 			</div>

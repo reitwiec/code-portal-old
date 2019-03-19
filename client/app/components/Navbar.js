@@ -47,7 +47,7 @@ class Navbar extends Component {
 					<Practiceicon />
 				</NavLink>
 
-				<Searchbar />
+				{/* <Searchbar /> */}
 			</div>
 		);
 	}

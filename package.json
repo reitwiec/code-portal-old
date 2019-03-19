@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "nodemon server"
+    "dev": "nodemon server --ignore 'client/*'"
   },
   "dependencies": {
     "axios": "^0.18.0",

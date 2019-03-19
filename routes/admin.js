@@ -116,6 +116,7 @@ module.exports = () => {
           ],
           include: {
             model: contest,
+            as: 'contest',
             attributes: ['slug', 'title']
           }
         })
@@ -197,7 +198,9 @@ module.exports = () => {
   };
 
   exp.addquestion = async (req, res) => {
-    let [err, questionobj] = await to(question.create(req.body));
+    let [err, questionobj] = await to(
+      question.create({ ...req.body, author_id: req.user.id })
+    );
     if (err && err.name === 'SequelizeUniqueConstraintError')
       return res.sendError(null, err.message, 409);
     if (err) return res.sendError(err);
@@ -371,14 +374,14 @@ module.exports = () => {
       __dirname,
       '..',
       'questions',
-      req.body.question,
+      req.body.question_id,
       'input'
     );
     let outpath = Path.join(
       __dirname,
       '..',
       'questions',
-      req.body.question,
+      req.body.question_id,
       'output'
     );
     shell.mkdir('-p', inpath);

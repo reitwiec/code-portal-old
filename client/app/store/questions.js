@@ -1,5 +1,7 @@
 import { observable, action } from 'mobx';
 import { contestsStore } from 'store';
+import io from 'socket.io-client';
+
 
 class QuestionsStore {
 	@observable
@@ -32,6 +34,21 @@ class QuestionsStore {
 	@observable
 	title = '';
 
+	source = '';
+
+	language = 1;
+
+	submission = null;
+
+	@observable
+	points = 0;
+
+	@observable
+	verdict = '';
+
+	@observable
+	cases = []
+
 	@action fetchQuestions = slug => {
 		fetch(`/api/showcontest/${slug}`, { credentials: 'same-origin' })
 			.then(resp => resp.json())
@@ -54,6 +71,67 @@ class QuestionsStore {
 					contestsStore.setSlug(data.data.contest.slug);
 				}
 			});
+	};
+
+	fetchSubmission() {
+		fetch(`/api/submission?id=${this.submission}`, {
+			credentials: 'same-origin'
+		})
+			.then(res => res.json())
+			.then(data => {
+				if (data.success) {
+					this.points = data.data.sub.points;
+					this.verdict = data.data.sub.verdict;
+					this.cases = data.data.cases;
+					console.log(this.points, this.verdict, this.cases);
+				}
+			});
+	}
+
+	@action submitAnswer = () => {
+		console.log(this.id, this.source, this.language);
+
+		const socket = io.connect('http://localhost:3000');
+		socket.on('connect', () => {
+			fetch('/api/submit', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({question: this.id, source: this.source, language: this.language}),
+				credentials: 'same-origin'
+			})
+				.then(res => res.json())
+				.then(({ success, user, data }) => {
+					if (success) {
+						this.submission = data;
+						this.fetchSubmission()
+					}
+				});
+		});
+
+		socket.on('testcase_result', data => {
+			console.log('testcase_result', data);
+		});
+
+		socket.on('submission_result_ce', data => {
+			console.log('submission_result_ce', data);
+			socket.disconnect();
+		});
+
+		socket.on('submission_result', data => {
+			console.log('submission_result', data);
+			socket.disconnect();
+		});
+		socket.on('disconnect', () => {
+			console.log('disconnected');
+		});
+	};
+
+	@action updateCode = (editor, data, value) => {
+		this.source = value;
+	};
+
+	@action updateLanguage = language => {
+		this.language = 1;//language;
 	};
 }
 

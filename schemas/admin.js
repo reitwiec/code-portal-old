@@ -67,7 +67,7 @@ const addquestion = Joi.object({
     level: Joi.string()
       .valid(['easy', 'medium', 'hard'])
       .required(),
-    contest: Joi.number()
+    contest_id: Joi.number()
       .integer()
       .required(),
     score: Joi.number()
@@ -132,7 +132,7 @@ const updatequestion = Joi.object({
 
 const addtestcase = Joi.object({
   body: Joi.object({
-    question: Joi.number()
+    question_id: Joi.number()
       .integer()
       .required(),
     sample: Joi.binary()

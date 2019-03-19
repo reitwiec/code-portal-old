@@ -19,7 +19,7 @@ const read_file_promise = source => {
       return resolve(data);
     });
   });
-}
+};
 
 module.exports = io => {
   let exp = {};
@@ -40,7 +40,7 @@ module.exports = io => {
         casesJSON[element.id] = element;
         totalWeight += parseFloat(element.weight);
       });
-      console.log(cases);
+      // console.log(cases);
       let src = req.body.source;
       let src_path = path.join(submissions_dir, uuid() + '.txt');
       fs.writeFile(src_path, src, async err => {
@@ -60,7 +60,7 @@ module.exports = io => {
               verdict: 'PROC',
               submission_id: sub.id,
               testcase_id: e.id
-            }
+            };
           });
           await subtestcase.bulkCreate(subcases);
           res.sendSuccess(sub.id);
@@ -69,39 +69,49 @@ module.exports = io => {
               submission_id: sub.id
             }
           });
-          console.log(subcases);
+          // console.log(subcases);
           let score = 0,
             i;
           for (i = 0; i < subcases.length; i++) {
             let subcase = subcases[i];
-            let input = await read_file_promise(casesJSON[subcase.testcase_id].input_path);
-            let output = await read_file_promise(casesJSON[subcase.testcase_id].output_path);
-            let result = await axios.post('https://api.judge0.com/submissions/?wait=true', {
-              source_code: req.body.source,
-              language_id: lang.code,
-              stdin: input,
-              expected_output: output,
-              cpu_time_limit: lang.multiplier * ques.time_limit
-            });
-            console.log(result);
+            let input = await read_file_promise(
+              casesJSON[subcase.testcase_id].input_path
+            );
+            let output = await read_file_promise(
+              casesJSON[subcase.testcase_id].output_path
+            );
+            let result = await axios.post(
+              'https://api.judge0.com/submissions/?wait=true',
+              {
+                source_code: req.body.source,
+                language_id: lang.code,
+                stdin: input,
+                expected_output: output,
+                cpu_time_limit: lang.multiplier * ques.time_limit
+              }
+            );
+            // console.log(result);
             let status = result.data.status.id;
             let verdict = 'PROC';
             if (status == 3) {
               verdict = 'AC';
               score += casesJSON[subcase.testcase_id].weight;
-            } else if (status == 4) verdict = 'WA'
-            else if (status == 5) verdict = 'TLE'
+            } else if (status == 4) verdict = 'WA';
+            else if (status == 5) verdict = 'TLE';
             else if (status == 6) {
               verdict = 'CE';
               break;
             } else verdict = 'RE';
-            await subtestcase.update({
-              verdict
-            }, {
-              where: {
-                id: subcase.id
+            await subtestcase.update(
+              {
+                verdict
+              },
+              {
+                where: {
+                  id: subcase.id
+                }
               }
-            });
+            );
             io.emit('testcase_result', {
               id: subcase.id,
               verdict
@@ -109,40 +119,51 @@ module.exports = io => {
           }
           // Compilation Error exits and does not do compilation everytime
           if (i < subcases.length) {
-            await subtestcase.update({
-              verdict: 'CE',
-              points: 0
-            }, {
-              where: {
-                submission_id: sub.id
+            await subtestcase.update(
+              {
+                verdict: 'CE',
+                points: 0
+              },
+              {
+                where: {
+                  submission_id: sub.id
+                }
               }
-            });
-            await submission.update({
-              verdict: 'CE'
-            }, {
-              where: {
-                id: sub.id
+            );
+            await submission.update(
+              {
+                verdict: 'CE'
+              },
+              {
+                where: {
+                  id: sub.id
+                }
               }
-            });
+            );
             io.emit('submission_result_ce', {
               id: sub.id
             });
-          } else { //other cases
+          } else {
+            //other cases
             let verdict = 'PARTIAL';
             if (score == 0) verdict = 'WRONG';
             else if (score == totalWeight) verdict = 'CORRECT';
-            score = score / totalWeight * maxScore;
-            await submission.update({
-              verdict,
-              points: score
-            }, {
-              where: {
-                id: sub.id
+            score = (score / totalWeight) * maxScore;
+            await submission.update(
+              {
+                verdict,
+                points: score
+              },
+              {
+                where: {
+                  id: sub.id
+                }
               }
-            });
+            );
             io.emit('submission_result', {
               id: sub.id,
-              points: score
+              points: score,
+              verdict
             });
           }
         } catch (err) {
@@ -152,7 +173,7 @@ module.exports = io => {
     } catch (err) {
       return res.sendError(err);
     }
-  }
+  };
 
   exp.get_submission = async (req, res) => {
     let sub = await submission.findByPk(req.query.id);
@@ -168,7 +189,7 @@ module.exports = io => {
       sub,
       cases
     });
-  }
-  
+  };
+
   return exp;
-}
+};

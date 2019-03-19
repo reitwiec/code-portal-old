@@ -17,9 +17,9 @@ class Register extends Component {
 					<Link className="link" to={'/login'}>
 						Login
 					</Link>
-					<Link className="link" to={'/forgotpassword'}>
+					{/* <Link className="link" to={'/forgotpassword'}>
 						Recover Account
-					</Link>
+					</Link> */}
 				</div>
 			</div>
 		);

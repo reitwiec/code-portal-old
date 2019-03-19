@@ -5,8 +5,6 @@ import { NavLink } from 'react-router-dom';
 import { Button, Content, Editor, Navbar } from 'components';
 import { observer, inject } from 'mobx-react';
 
-const hello = () => console.log('You just submitted');
-
 @inject('questionsStore', 'contestsStore')
 @observer
 class EditorView extends Component {
@@ -36,7 +34,8 @@ class EditorView extends Component {
 				output_format,
 				score,
 				slug,
-				title
+				title,
+				submitAnswer
 			}
 		} = this.props;
 
@@ -99,7 +98,7 @@ class EditorView extends Component {
 					</div>
 					<Editor />
 					<NavLink to="/submission">
-						<Button onClick={hello}>Submit</Button>
+						<Button onClick={submitAnswer}>Submit</Button>
 					</NavLink>
 					<div className="beauty">
 						<h1>Edit</h1>

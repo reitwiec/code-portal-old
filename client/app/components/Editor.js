@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { inject } from 'mobx-react';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/duotone-dark.css';
@@ -12,7 +13,7 @@ const languages = {
 		name: 'C++',
 		mode: 'text/x-c++src',
 		boilerplate: `#include <iostream>
-	
+
 using namespace std;
 
 int main() {
@@ -41,7 +42,7 @@ if __name__ == '__main__':
 	main()`
 	}
 };
-
+@inject('questionsStore')
 class Editor extends Component {
 	constructor(props) {
 		super(props);
@@ -52,9 +53,20 @@ class Editor extends Component {
 
 	onLanguageChange = e => {
 		this.setState({ language: e.target.value });
+		this.props.questionsStore.updateLanguage(e.target.value);
+		this.props.questionsStore.updateCode(null, null, languages[this.state.language].boilerplate);
 	};
 
+	componentDidMount() {
+		this.props.questionsStore.updateCode(null, null, languages[this.state.language].boilerplate);
+	}
+
 	render() {
+		const {
+			questionsStore: {
+				updateCode
+			}
+		} = this.props;
 		return (
 			<div className={this.props.className}>
 				<div>
@@ -68,6 +80,7 @@ class Editor extends Component {
 				</div>
 				<CodeMirror
 					value={languages[this.state.language].boilerplate}
+					onChange={updateCode}
 					options={{
 						theme: 'duotone-dark',
 						lineNumbers: true,

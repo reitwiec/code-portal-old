@@ -76,6 +76,7 @@ module.exports = (sequelize, DataTypes) => {
       as: 'checker_language'
     });
     models.question.belongsTo(models.contest, {
+      as: 'contest',
       foreignKey: 'contest_id'
     });
     models.question.hasMany(models.testcase, {
