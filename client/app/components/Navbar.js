@@ -42,10 +42,10 @@ class Navbar extends Component {
 				<NavLink to="/contests">
 					<Contesticon />
 				</NavLink>
-
+{/*
 				<NavLink to="/practice">
 					<Practiceicon />
-				</NavLink>
+				</NavLink> */}
 
 				{/* <Searchbar /> */}
 			</div>

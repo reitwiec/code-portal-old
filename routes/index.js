@@ -11,12 +11,13 @@ const access = level => (req, res, next) => {
   return res.sendError(null, 'Unauthorized access');
 };
 
-module.exports = (passport,io) => {
+module.exports = (passport, io) => {
   const auth = require('./auth')(passport);
   const admin = require('./admin')(passport);
   const leaderboard = require('./leaderboard')(passport);
   const submissions = require('./submissions')(io);
   const subLimit = require('./subLimit')(passport);
+  const user = require('./user')(passport);
 
   //auth routes
   router.post('/register', validator(schemas.auth.register), auth.register);
@@ -107,8 +108,19 @@ module.exports = (passport,io) => {
   //leaderboard routes
   router.get('/:contest/leaderboard', leaderboard.showleaderboard);
 
-  router.post('/submit',access(10), validator(schemas.submissions.submit), submissions.submit);
-  router.get('/submission',access(10), validator(schemas.submissions.details), submissions.get_submission);
+  router.post(
+    '/submit',
+    access(10),
+    validator(schemas.submissions.submit),
+    submissions.submit
+  );
+  router.get(
+    '/submission',
+    access(10),
+    validator(schemas.submissions.details),
+    submissions.get_submission
+  );
+  router.get('/profile/:username', access(10), user.profile);
 
   return router;
 };

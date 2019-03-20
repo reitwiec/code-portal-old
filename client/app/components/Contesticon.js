@@ -20,8 +20,8 @@ const ContestIcon = ({ className }) => (
 
 export default styled(ContestIcon)`
 	position: absolute;
-	top: 14px;
-	right: 215px;
+	top: 16px;
+	right: 160px;
 	float: right;
 	height: 20px;
 	width: 20px;
