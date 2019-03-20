@@ -81,13 +81,19 @@ module.exports = io => {
             let output = await read_file_promise(
               casesJSON[subcase.testcase_id].output_path
             );
-            let result = await axios.post(process.env.JUDGE_API, {
-              source_code: req.body.source,
-              language_id: lang.code,
-              stdin: input,
-              expected_output: output,
-              cpu_time_limit: lang.multiplier * ques.time_limit
-            });
+            let result = await axios.post(
+              process.env.JUDGE_API,
+              {
+                source_code: req.body.source,
+                language_id: lang.code,
+                stdin: input,
+                expected_output: output,
+                cpu_time_limit: lang.multiplier * ques.time_limit
+              },
+              {
+                maxContentLength: 52428890
+              }
+            );
             // console.log(result);
             let status = result.data.status.id;
             let verdict = 'PROC';

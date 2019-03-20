@@ -102,6 +102,11 @@ module.exports = () => {
           slug: req.params.slug,
           ...(req.user.access < 30 && { visibility: true })
         },
+        include: {
+          model: contest,
+          as: 'contest',
+          attributes: ['slug', 'title']
+        },
         ...(req.user.access < 30 && {
           attributes: [
             'body',
@@ -113,12 +118,7 @@ module.exports = () => {
             'score',
             'slug',
             'title'
-          ],
-          include: {
-            model: contest,
-            as: 'contest',
-            attributes: ['slug', 'title']
-          }
+          ]
         })
       })
     );
