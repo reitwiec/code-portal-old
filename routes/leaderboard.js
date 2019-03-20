@@ -1,4 +1,4 @@
-const { submissions } = require('../models');
+const { submission, contest } = require('../models');
 const { user } = require('../models');
 const to = require('../utils/to');
 var sequelize = require('sequelize');
@@ -9,8 +9,14 @@ module.exports = () => {
   exp.showleaderboard = async (req, res) => {
     const Page = req.query.page;
     const toDisplay = req.query.count;
+    const [err, contestObj] = await to(
+      contest.findOne({ where: { slug: req.params.contest } })
+    );
+    if (err) return res.sendError();
+    if (!contestObj) return res.sendError(null, 'Contest not found', 404);
+    const contest_id = contestObj.id;
     client.zrangebyscore(
-      req.params.contest,
+      contest_id,
       1,
       10000,
       'LIMIT',
@@ -29,28 +35,32 @@ module.exports = () => {
         if (leaderboard.length == 0) {
           let LB = new Map();
           let Leaderboard = [];
-          submissions
+          submission
             .findAll({
               where: {
-                contest: req.params.contest
+                contest_id: contest_id
               },
               raw: true,
-              attributes: {
-                include: [sequelize.fn('MAX', sequelize.col('points'))],
-                exclude: []
-              },
-              group: ['user', 'question']
+              attributes: [
+                'user_id',
+                'question_id',
+                sequelize.fn('MAX', sequelize.col('points'))
+              ],
+              // {
+              //   include: ,
+              //   exclude: []
+              // }
+              group: ['user_id', 'question_id']
             })
             .then(users => {
               // Iterate in users and calculate total score for each user
               users.forEach((item, index) => {
-                if (LB.has(item.user)) {
-                  let temp = LB.get(item.user);
-                  LB.set(item.user, temp + item['MAX(`points`)']);
+                if (LB.has(item.user_id)) {
+                  let temp = LB.get(item.user_id);
+                  LB.set(item.user_id, temp + item['MAX(`points`)']);
                 } else {
-                  LB.set(item.user, item['MAX(`points`)']);
+                  LB.set(item.user_id, item['MAX(`points`)']);
                 }
-                // console.log(item.user + ' ' + item.points);
               });
             })
             .then(() => {
@@ -79,7 +89,8 @@ module.exports = () => {
                   for (var i in users) {
                     Leaderboard.push({
                       userid: users[i].id,
-                      username: users[i].name,
+                      name: users[i].name,
+                      username: users[i].username,
                       points: LB.get(users[i].id)
                     });
                   }
@@ -108,7 +119,7 @@ module.exports = () => {
                   if (Leaderboard.length != 0) {
                     Leaderboard.forEach(member => {
                       client.zadd(
-                        req.params.contest,
+                        contest_id,
                         member.rank,
                         JSON.stringify(member),
                         (err, response) => {
@@ -116,9 +127,9 @@ module.exports = () => {
                         }
                       );
                     });
-                    client.expire(req.params.contest, 30);
+                    client.expire(contest_id, 30);
                     client.zrangebyscore(
-                      req.params.contest,
+                      contest_id,
                       1,
                       10000,
                       'LIMIT',
