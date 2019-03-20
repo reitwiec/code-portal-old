@@ -26,7 +26,7 @@ class QuestionsStore {
 	output_format = '';
 
 	@observable
-	score = null;
+	score = 0;
 
 	@observable
 	slug = '';
@@ -99,13 +99,20 @@ class QuestionsStore {
 			.then(res => res.json())
 			.then(data => {
 				if (data.success) {
-					this.points = data.data.sub.points;
+					// this.points = data.data.sub.points;
+					let animInterval = setInterval(() => {
+						if(this.points >= data.data.sub.points)
+							clearInterval(animInterval);
+						else
+							this.points++;
+					}, 5);
 					this.setVerdict(data.data.sub.verdict);
 					this.cases = data.data.cases;
 					contestsStore.setTitle(data.data.sub.contest.title);
 					contestsStore.setSlug(data.data.sub.contest.slug);
 					this.title = data.data.sub.question.title;
 					this.slug = data.data.sub.question.slug;
+					this.score = data.data.sub.question.score;
 					console.log(this.points, this.verdict, this.cases);
 				} else
 					window.location.href = '/';
@@ -136,8 +143,15 @@ class QuestionsStore {
 		socket.on('testcase_result', data => {
 			console.log('testcase_result', data);
 			this.cases.forEach((c, i) => {
-				if(c.id === data.id)
+				if(c.id === data.id) {
 					this.cases[i] = { ...this.cases[i], ...data };
+				let animInterval = setInterval(() => {
+					if(this.points >= data.points)
+						clearInterval(animInterval);
+					else
+						this.points++;
+				}, 15);
+				}
 			})
 		});
 

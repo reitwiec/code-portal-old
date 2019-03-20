@@ -27,7 +27,7 @@ class ContestView extends Component {
 							onClick={this.onClick}
 							contest={contest}
 							key={`contest_${i}`}
-							joined={i % 2}
+							joined={(i + 1) % 2}
 						/>
 					))}
 				</div>

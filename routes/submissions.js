@@ -118,6 +118,7 @@ module.exports = io => {
             );
             io.emit('testcase_result', {
               id: subcase.id,
+              points: ((score / totalWeight) * maxScore).toFixed(0),
               verdict
             });
           }
@@ -190,7 +191,7 @@ module.exports = io => {
         {
           model: question,
           as: 'question',
-          attributes: ['title', 'slug']
+          attributes: ['title', 'slug', 'score']
         }
       ]
     });

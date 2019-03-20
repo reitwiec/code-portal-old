@@ -13,12 +13,26 @@ class EditorView extends Component {
 		this.props.questionsStore.fetchQuestion(this.props.slug);
 		var elem = document.getElementById('myBar');
 		var width = 1;
-		var id = setInterval(frame, 10);
+		var id = setInterval(frame.bind(this), 10);
+
+		var levels = {
+			EASY: 10,
+			MEDIUM: 50,
+			HARD: 90
+		};
+
+		var speed = {
+			EASY: 0.2,
+			MEDIUM: 0.5,
+			HARD: 0.8
+		};
+
+
 		function frame() {
-			if (width >= 30) {
+			if (width >= levels[this.props.questionsStore.level]) {
 				clearInterval(id);
 			} else {
-				width = width + 0.2;
+				width = width + speed[this.props.questionsStore.level];
 				elem.style.width = width + '%';
 			}
 		}
@@ -73,15 +87,15 @@ class EditorView extends Component {
 							<strong>Difficulty: </strong>{' '}
 							<span className="level">{level.toLowerCase()}</span>
 						</span>
-						<section>{body}</section>
+						<section className="question-body">{body}</section>
 						<hr />
 
 						<div className="box1">
 							<h3>Input Format</h3>
-							<svg viewBox="0 0 1500 1500" className="input" fill="white">
+							{/* <svg viewBox="0 0 1500 1500" className="input" fill="white">
 								<path d="M62.43,824.15c6.85-15.72,19.37-20.55,35.78-20.39,47.26.46,94.53,0,141.79.22,27,.11,34.89,8.2,34.91,35.09q.07,131.76,0,263.54V1120h951v-18.12q0-130.22,0-260.45c0-30.31,7-37.43,37.15-37.49q69.36-.13,138.71,0c28.13.1,35.59,7.73,35.6,35.8,0,152.57-.17,305.15.26,457.72,0,16-4.25,27.94-18.78,35.34H62.43Z" />
 								<path d="M592.12,592.7V572.6q0-170.23,0-340.48c0-42.5,19.51-62,62.08-62.07q97-.12,194.11,0c40.12.08,60.73,20.61,60.77,60.72q.17,171,0,342v19.9h18.14c64.19,0,128.39-.23,192.58.19,30.46.21,50.81,20,53.69,50.3,1.67,17.54-6.75,30.34-18.49,42q-65.52,65.21-130.77,130.68-116,116-232.07,232c-27.93,27.92-55.44,28-83,.48Q528.37,867.56,347.36,686.9c-17.89-17.8-25.66-36.66-16.05-60.85,9.19-23.13,25.75-33.25,55-33.31q93.21-.16,186.41,0Z" />
-							</svg>
+							</svg> */}
 						</div>
 
 						<section>{input_format}</section>
@@ -155,7 +169,8 @@ export default styled(EditorView)`
 		margin-bottom: 0.5em;
 	}
 	section {
-		margin-top: 20px;
+		padding-left: 10px;
+		margin-bottom: 10px;
 		line-height: 2;
 		color: #c8c8d1;
 		font-weight: 400;
@@ -223,6 +238,7 @@ export default styled(EditorView)`
 		height: 5px;
 		width: 10%;
 		background-color: #2e2e4a;
+		margin: 10px 0;
 	}
 
 	#myBar {
@@ -261,5 +277,9 @@ export default styled(EditorView)`
 	}
 	.navigation:hover {
 		color: #fff;
+	}
+
+	.question-body {
+		margin-top: 30px;
 	}
 `;

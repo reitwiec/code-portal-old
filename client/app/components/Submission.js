@@ -123,11 +123,11 @@ class Submission extends Component {
 					<div className="container1">
 						<div className="column">
 							<h3>Your Score</h3>
-							<section id="score">9.35/15</section>
+							<section id="score">{points}/{score}</section>
 							<Gauge
 								color="#ea2d78"
 								size="3em"
-								percentage={this.state.val_2 / 15.0}
+								percentage={points / score}
 							/>
 						</div>
 {/*
