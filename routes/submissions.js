@@ -15,7 +15,7 @@ const submissions_dir = path.join(__dirname, '..', 'submissions');
 
 const read_file_promise = source => {
   return new Promise((resolve, reject) => {
-    fs.readFile(source, (err, data) => {
+    fs.readFile(source, 'utf8', (err, data) => {
       if (err) return reject(err);
       return resolve(data);
     });
@@ -81,16 +81,13 @@ module.exports = io => {
             let output = await read_file_promise(
               casesJSON[subcase.testcase_id].output_path
             );
-            let result = await axios.post(
-              'https://api.judge0.com/submissions/?wait=true',
-              {
-                source_code: req.body.source,
-                language_id: lang.code,
-                stdin: input,
-                expected_output: output,
-                cpu_time_limit: lang.multiplier * ques.time_limit
-              }
-            );
+            let result = await axios.post(process.env.JUDGE_API, {
+              source_code: req.body.source,
+              language_id: lang.code,
+              stdin: input,
+              expected_output: output,
+              cpu_time_limit: lang.multiplier * ques.time_limit
+            });
             // console.log(result);
             let status = result.data.status.id;
             let verdict = 'PROC';

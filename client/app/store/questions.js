@@ -115,7 +115,7 @@ class QuestionsStore {
 	@action submitAnswer = () => {
 		console.log(this.id, this.source, this.language);
 
-		const socket = io.connect('http://localhost:3000');
+		const socket = io.connect(process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '/');
 		socket.on('connect', () => {
 			fetch('/api/submit', {
 				method: 'POST',
