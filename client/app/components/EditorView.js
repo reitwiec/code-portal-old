@@ -9,6 +9,7 @@ import { observer, inject } from 'mobx-react';
 @observer
 class EditorView extends Component {
 	componentDidMount() {
+		this.props.questionsStore.setSubmission(null);
 		this.props.questionsStore.fetchQuestion(this.props.slug);
 		var elem = document.getElementById('myBar');
 		var width = 1;
@@ -97,7 +98,7 @@ class EditorView extends Component {
 						<section>{output_format}</section>
 					</div>
 					<Editor />
-					<NavLink to="/submission">
+					<NavLink to="/submission/processing">
 						<Button onClick={submitAnswer}>Submit</Button>
 					</NavLink>
 					<div className="beauty">

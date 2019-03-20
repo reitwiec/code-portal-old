@@ -10,6 +10,7 @@ import 'codemirror/mode/python/python';
 
 const languages = {
 	cpp: {
+		id: 2,
 		name: 'C++',
 		mode: 'text/x-c++src',
 		boilerplate: `#include <iostream>
@@ -22,6 +23,7 @@ int main() {
 }`
 	},
 	java: {
+		id: 1,
 		name: 'Java',
 		mode: 'text/x-java',
 		boilerplate: `import java.util.Scanner;
@@ -33,6 +35,7 @@ public class Main {
 }`
 	},
 	python: {
+		id: 3,
 		name: 'Python',
 		mode: 'text/x-python',
 		boilerplate: `def main():
@@ -53,8 +56,8 @@ class Editor extends Component {
 
 	onLanguageChange = e => {
 		this.setState({ language: e.target.value });
-		this.props.questionsStore.updateLanguage(e.target.value);
-		this.props.questionsStore.updateCode(null, null, languages[this.state.language].boilerplate);
+		this.props.questionsStore.updateLanguage(languages[e.target.value].id);
+		this.props.questionsStore.updateCode(null, null, languages[e.target.value].boilerplate);
 	};
 
 	componentDidMount() {

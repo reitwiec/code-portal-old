@@ -3,7 +3,8 @@ const {
   subtestcase,
   language,
   question,
-  testcase
+  testcase,
+  contest
 } = require('../models');
 const uuid = require('uuid/v4');
 const path = require('path');
@@ -176,7 +177,20 @@ module.exports = io => {
   };
 
   exp.get_submission = async (req, res) => {
-    let sub = await submission.findByPk(req.query.id);
+    let sub = await submission.findByPk(req.query.id, {
+      include: [
+        {
+          model: contest,
+          as: 'contest',
+          attributes: ['title', 'slug']
+        },
+        {
+          model: question,
+          as: 'question',
+          attributes: ['title', 'slug']
+        }
+      ]
+    });
     if (!sub) return res.sendError(null, 'Invalid Input');
     if (sub.user_id != req.user.id) return res.sendError(null, 'Access Denied');
     delete sub.path;
@@ -185,6 +199,8 @@ module.exports = io => {
         submission_id: req.query.id
       }
     });
+    sub.path = undefined;
+    delete sub.path;
     return res.sendSuccess({
       sub,
       cases

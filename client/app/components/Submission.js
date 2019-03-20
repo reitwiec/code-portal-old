@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Content, Button, Gauge, Navbar } from 'components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
-const ans = { proc: 'fas fa-spinner fa-pulse', tle: 'fa fa-clock', right: 'fa fa-check-circle', wrong: 'fa fa-times-circle' };
+const ans = {
+	proc: 'fas fa-spinner fa-pulse',
+	tle: 'fa fa-clock',
+	right: 'fa fa-check-circle',
+	wrong: 'fa fa-times-circle'
+};
 
 function pad(num, size) {
 	var s = num+"";
@@ -24,6 +29,9 @@ class Submission extends Component {
 	}
 
 	componentDidMount() {
+		if(!this.props.questionsStore.submission && this.props.submissionId !== 'processing')
+			this.props.questionsStore.setSubmission(this.props.submissionId);
+
 		// var x = 1;
 		// var elem = document.getElementById('accuracy');
 		// var id = setInterval(frame, 30);
@@ -61,12 +69,17 @@ class Submission extends Component {
 				cases,
 				score,
 				slug,
-				title
+				title,
+				submission
 			}
 		} = this.props;
 
 		const contestSlug = this.props.contestsStore.slug;
 		const contestTitle = this.props.contestsStore.title;
+
+		if(submission && this.props.submissionId === 'processing')
+			return <Redirect to={`/submission/${submission}`} />
+
 		return (
 			<div className={this.props.className}>
 				<Navbar />
@@ -80,9 +93,10 @@ class Submission extends Component {
 							<span className="navigation">{contestTitle}</span>
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
-						<NavLink to="/editor">
+						<NavLink to={`/question/${slug}`}>
 							<span className="navigation">{title}</span>
 						</NavLink>
+						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
 						<NavLink to="/submission">
 							<span className="navigation">Result</span>
 						</NavLink>
@@ -106,7 +120,7 @@ class Submission extends Component {
 					</div>
 					<hr />
 
-					{/* <div className="container1">
+					<div className="container1">
 						<div className="column">
 							<h3>Your Score</h3>
 							<section id="score">9.35/15</section>
@@ -116,7 +130,7 @@ class Submission extends Component {
 								percentage={this.state.val_2 / 15.0}
 							/>
 						</div>
-
+{/*
 						<div className="column">
 							<h3>Your Accuracy</h3>
 							<section id="accuracy" />
@@ -125,16 +139,18 @@ class Submission extends Component {
 								size="3em"
 								percentage={this.state.val_1 / 100.0}
 							/>
-						</div>
-					</div>
-					<div className="run">
-						<h3>Run Time</h3>
-						<section>2.3ms</section>
+						</div> */}
 					</div>
 
-					<NavLink to="/editor">
+					<div className="run">
+						<h3>Verdict</h3>
+						<section>{verdict}</section>
+					</div>
+
+					<NavLink to={`/question/${slug}`}>
 						<Button>Back</Button>
-					</NavLink> */}
+					</NavLink>
+
 					<div className="beauty">
 						<h1>Result</h1>
 					</div>
@@ -157,11 +173,6 @@ export default styled(Submission)`
 		width: calc(100% / 5);
 		font-size: 1rem;
 		color: #fff;
-	}
-
-	.fa-spinner,
-	.fa-clock {
-		margin-left: 10px;
 	}
 
 	hr {
@@ -254,19 +265,20 @@ export default styled(Submission)`
 	.test {
 		margin-top: 20px;
 	}
-	.fa {
+	.fa, .fas {
 		color: #fff;
+		margin-top: 3px;
+		margin-left: 10px;
+
 		&.fa-check-circle {
 			color: #00e048;
-			margin-top: 3px;
-			margin-left: 10px;
 		}
 
-		&.fa-times-circle {
+		&.fa-times-circle,
+		&.fa-clock {
 			color: #ff0100;
-			margin-top: 3px;
-			margin-left: 10px;
 		}
+
 	}
 
 	.column > span {

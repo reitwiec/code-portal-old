@@ -36,18 +36,30 @@ class QuestionsStore {
 
 	source = '';
 
-	language = 1;
+	language = 2;
 
+	@observable
 	submission = null;
 
 	@observable
 	points = 0;
 
 	@observable
-	verdict = '';
+	verdict = 'PROCESSING';
 
 	@observable
 	cases = []
+
+	@action setSubmission = submission => {
+		this.submission = submission;
+		if(!submission) {
+			this.points = 0;
+			this.verdict = 'PROCESSING';
+			this.cases = [];
+			return;
+		}
+		this.fetchSubmission();
+	}
 
 	@action fetchQuestions = slug => {
 		fetch(`/api/showcontest/${slug}`, { credentials: 'same-origin' })
@@ -73,6 +85,13 @@ class QuestionsStore {
 			});
 	};
 
+	setVerdict(verdict) {
+		if (verdict === 'CE')
+			this.verdict = 'COMPILE TIME ERROR';
+		else
+			this.verdict = verdict;
+	}
+
 	fetchSubmission() {
 		fetch(`/api/submission?id=${this.submission}`, {
 			credentials: 'same-origin'
@@ -81,10 +100,15 @@ class QuestionsStore {
 			.then(data => {
 				if (data.success) {
 					this.points = data.data.sub.points;
-					this.verdict = data.data.sub.verdict;
+					this.setVerdict(data.data.sub.verdict);
 					this.cases = data.data.cases;
+					contestsStore.setTitle(data.data.sub.contest.title);
+					contestsStore.setSlug(data.data.sub.contest.slug);
+					this.title = data.data.sub.question.title;
+					this.slug = data.data.sub.question.slug;
 					console.log(this.points, this.verdict, this.cases);
-				}
+				} else
+					window.location.href = '/';
 			});
 	}
 
@@ -120,6 +144,10 @@ class QuestionsStore {
 		socket.on('submission_result_ce', data => {
 			console.log('submission_result_ce', data);
 			if (data.id !== this.submission) return;
+			this.cases.forEach((c, i) => {
+				this.cases[i] = { ...this.cases[i], verdict: 'CE' };
+			});
+			this.verdict = 'COMPILE TIME ERROR'
 			console.log('disconnecting...');
 			socket.disconnect();
 			this.submission = null;
@@ -128,9 +156,7 @@ class QuestionsStore {
 		socket.on('submission_result', data => {
 			console.log('submission_result', data);
 			if (data.id !== this.submission) return;
-			// this.cases.forEach(case => {
-			// 	if(case.id === data.)
-			// });
+			this.setVerdict(data.verdict);
 			console.log('disconnecting...');
 			socket.disconnect();
 			this.submission = null;
@@ -145,7 +171,7 @@ class QuestionsStore {
 	};
 
 	@action updateLanguage = language => {
-		this.language = 1;//language;
+		this.language = language;
 	};
 }
 
