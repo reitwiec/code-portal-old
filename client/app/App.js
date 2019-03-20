@@ -16,7 +16,8 @@ import {
 	Questions,
 	Error,
 	Login,
-	Register
+	Register,
+	Leaderboard
 } from 'components';
 
 // const AdminView = lazy(() => import('./components/admin/AdminView'));
@@ -71,6 +72,17 @@ class App extends Component {
 											this.loginRequired(
 												<EditorView
 													question={question}
+													slug={match.params.slug}
+												/>
+											)
+										}
+									/>
+									/>
+									<Route
+										path="/leaderboard/:slug"
+										component={({ match }) =>
+											this.loginRequired(
+												<Leaderboard
 													slug={match.params.slug}
 												/>
 											)

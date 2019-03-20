@@ -19,7 +19,7 @@ class Navbar extends Component {
 	render() {
 		const {
 			userStore: {
-				user: { name }
+				user: { name, username }
 			}
 		} = this.props;
 		return (
@@ -28,10 +28,10 @@ class Navbar extends Component {
 					<span id="logo">
 						<img src={iecselogo} alt="" id="logoimg" />
 					</span>
-					<Homeicon title="hello" />
+					{/* <Homeicon title="hello" /> */}
 				</NavLink>
 
-				<NavLink to="/profile">
+				<NavLink to={`/profile/${username}`}>
 					<span id="avatar">
 						<img src={avatar} alt="" id="avatarimg" />
 					</span>

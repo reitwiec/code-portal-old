@@ -70,7 +70,7 @@ class EditorView extends Component {
 							<span className="navigation">{contestTitle}</span>
 						</NavLink>
 						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
-						<NavLink to="/editor">
+						<NavLink to={`/question/${slug}`}>
 							<span className="navigation">{title}</span>
 						</NavLink>
 					</div>
@@ -78,7 +78,7 @@ class EditorView extends Component {
 					<div>
 						<div className="box">
 							<h2>{title}</h2>
-							<span className="fadebg1">{this.props.question.submissions}</span>
+							<span className="fadebg1">{score}</span>
 						</div>
 						<div id="myProgress">
 							<div id="myBar" />

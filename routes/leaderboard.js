@@ -144,7 +144,10 @@ module.exports = () => {
                           leaderboard[i] = JSON.parse(leaderboard[i]);
                         }
                         return res.sendSuccess(
-                          leaderboard,
+                          {
+                            contest: contestObj,
+                            leaderboard
+                          },
                           'Leaderboard just calculated.'
                         );
                       }
@@ -158,7 +161,10 @@ module.exports = () => {
           for (let i = 0; i < leaderboard.length; i++) {
             leaderboard[i] = JSON.parse(leaderboard[i]);
           }
-          return res.sendSuccess(leaderboard, 'Sent from cache.');
+          return res.sendSuccess(
+            { contest: contestObj, leaderboard },
+            'Sent from cache.'
+          );
         }
       }
     );
