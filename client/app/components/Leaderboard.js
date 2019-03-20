@@ -181,7 +181,9 @@ export default styled(Leaderboard)`
 		right: 10px;
 		transition: 0.4s;
 		position: absolute;
-    background: #fd6b9a;
+		background: #fd6b9a;
+		width: auto;
+		padding: 0 10px;
 	}
 	${Button}:hover {
 		background: #f77f6e;

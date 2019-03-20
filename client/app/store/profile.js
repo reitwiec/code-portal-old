@@ -17,6 +17,7 @@ class ProfileStore {
   activities = [];
 
 	@action fetchProfile = slug => {
+    Object.keys(this.profile).forEach(key => this.profile[key] = '');
 		fetch(`/api/profile/${slug}`, { credentials: 'same-origin' })
 			.then(resp => resp.json())
 			.then(data => {
