@@ -5,10 +5,12 @@ import { NavLink, Redirect } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
 const ans = {
-	proc: 'fas fa-spinner fa-pulse',
-	tle: 'fa fa-clock',
-	right: 'fa fa-check-circle',
-	wrong: 'fa fa-times-circle'
+	AC: 'fa fa-check-circle',
+	WA: 'fa fa-times-circle',
+	TLE: 'fa fa-clock',
+	CE: 'fa fa-times-circle',
+	RE: 'fas fa-exclamation-triangle',
+	PROC: 'fas fa-spinner fa-pulse'
 };
 
 function pad(num, size) {
@@ -106,15 +108,7 @@ class Submission extends Component {
 						{cases.map((c, i) =>
 							<div className="fa-3x result" key={`result_${i}`}>
 								{pad(i + 1, (cases.length + '').length)}
-								<i className={
-									c.verdict === 'PROC'
-										? ans.proc
-										: c.verdict === 'TLE'
-											? ans.tle
-											: c.verdict === 'AC'
-												? ans.right
-												: ans.wrong
-								} aria-hidden="true" />
+								<i className={ans[c.verdict]} aria-hidden="true" />
 							</div>
 						)}
 					</div>
@@ -274,6 +268,7 @@ export default styled(Submission)`
 			color: #00e048;
 		}
 
+		&.fa-exclamation-triangle,
 		&.fa-times-circle,
 		&.fa-clock {
 			color: #ff0100;

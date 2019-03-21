@@ -10,7 +10,7 @@ import 'codemirror/mode/python/python';
 
 const languages = {
 	cpp: {
-		id: 2,
+		id: 1,
 		name: 'C++',
 		mode: 'text/x-c++src',
 		boilerplate: `#include <iostream>
@@ -23,7 +23,7 @@ int main() {
 }`
 	},
 	java: {
-		id: 1,
+		id: 2,
 		name: 'Java',
 		mode: 'text/x-java',
 		boilerplate: `import java.util.Scanner;
