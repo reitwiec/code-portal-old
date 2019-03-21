@@ -43,7 +43,7 @@ class App extends Component {
 	}
 
 	loginRequired = Component =>
-		this.props.userStore.user ? Component : <Redirect to="/contests" />;
+		this.props.userStore.user ? Component : <Redirect to="/login" />;
 
 	redirectLoggedin = Component =>
 		this.props.userStore.user ? <Redirect to="/contests" /> : Component;

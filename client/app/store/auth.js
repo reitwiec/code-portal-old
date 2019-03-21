@@ -22,6 +22,19 @@ class AuthStore {
 		this.password = value;
 	};
 
+	logout = e => {
+		fetch('/api/logout', {
+			credentials: 'same-origin'
+		})
+			.then(res => res.json())
+			.then(({ success }) => {
+				if (success) {
+					this._setLoginState(false);
+					userStore.setUser(null);
+				} else this.meta.msg = msg;
+			});
+	};
+
 	login = e => {
 		e.preventDefault();
 		const validation = new Validator({ email: this.email }, { email: 'email' });
@@ -47,6 +60,8 @@ class AuthStore {
 				this._setLoginState(success);
 				if (success) {
 					userStore.setUser(user);
+					this.email = '';
+					this.password = '';
 				} else this.meta.msg = msg;
 			});
 	};

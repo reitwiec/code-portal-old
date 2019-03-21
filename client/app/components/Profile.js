@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 
 import { avatarLarge } from 'assets';
 
-@inject('profileStore')
+@inject('authStore', 'profileStore')
 @observer
 class Profile extends Component {
 	componentDidMount() {
@@ -24,9 +24,12 @@ class Profile extends Component {
           regno,
           phone,
           rating
-        },
+				},
         activities
-      }
+      },
+			authStore: {
+				logout
+			},
     } = this.props;
 
 		return (
@@ -38,6 +41,9 @@ class Profile extends Component {
               <div>{email && <div><span className="lead">Email</span><span className="follow long">{email}</span></div>}</div>
               <div>{phone && <div><span className="lead">Phone</span><span className="follow">{phone}</span></div>}
               {regno && <div><span className="lead">Regno</span><span className="follow">{regno}</span></div>}</div>
+            </div>
+            <div className="personal-data">
+              <div>{email && <div><Button onClick={logout}>Logout</Button></div>}</div>
             </div>
           </div>
 					<div className="area">
@@ -186,8 +192,8 @@ export default styled(Profile)`
 		top: 20px;
 		right: 10px;
 		transition: 0.4s;
-		position: absolute;
-    background: #fd6b9a;
+		position: relative;
+		background: #fd6b9a;
 	}
 	${Button}:hover {
 		background: #f77f6e;

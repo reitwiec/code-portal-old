@@ -22,6 +22,7 @@ module.exports = (passport, io) => {
   //auth routes
   router.post('/register', validator(schemas.auth.register), auth.register);
   router.post('/login', validator(schemas.auth.login), auth.login);
+  router.get('/logout', auth.logout);
   router.get('/userdata', auth.userData);
 
   //admin routes

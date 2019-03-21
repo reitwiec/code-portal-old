@@ -75,6 +75,8 @@ class RegisterStore {
 			.then(({ success, msg }) => {
 				this.meta.success = success;
 				this.meta.msg = msg;
+				if(success)
+					Object.keys(this.fields).forEach(key => this.fields[key].value = '');
 			});
 	};
 }

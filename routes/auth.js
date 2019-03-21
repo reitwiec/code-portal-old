@@ -67,5 +67,13 @@ module.exports = passport => {
     });
   };
 
+  exp.logout = async (req, res) => {
+    req.session.destroy(err => {
+      if (err) return res.sendError(err);
+      req.logout();
+      res.sendSuccess();
+    });
+  };
+
   return exp;
 };
