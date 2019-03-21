@@ -77,9 +77,9 @@ module.exports = () => {
                 );
               });
 
-              if (LB.length == 0) {
+              if (LB.keys.length == 0) {
                 return res.sendSuccess(
-                  null,
+                  { contest: contestObj, leaderboard: [] },
                   'No submissions have been made yet'
                 );
               }

@@ -37,7 +37,7 @@ class Leaderboard extends Component {
 								<span className="fadebg1">{title}</span>
 							</div>
 							<div className="content">
-								{leaderboard.map((leader, i) => (
+								{leaderboard.length === 0 ? <div className="fallback">No submissions made yet</div> : leaderboard.map((leader, i) => (
 									<div className="questions" key={`leader_${i}`}>
 										<section>{leader.name}</section>
 										<span className="details">Score: {leader.points}</span>
@@ -380,5 +380,11 @@ export default styled(Leaderboard)`
 	}
 	.navigation:hover {
 		color: #fff;
+	}
+	.fallback {
+		text-align: center;
+		color: rgba(255, 255, 255, 0.8);
+		font-weight: bold;
+		margin: 100px 0;
 	}
 `;
