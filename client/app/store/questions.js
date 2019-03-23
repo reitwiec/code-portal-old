@@ -73,7 +73,7 @@ class QuestionsStore {
 			});
 	};
 
-	@action fetchQuestion = slug => {
+	@action fetchQuestion = (slug, callback = () => {}) => {
 		fetch(`/api/showquestions/${slug}`, { credentials: 'same-origin' })
 			.then(resp => resp.json())
 			.then(data => {
@@ -81,6 +81,7 @@ class QuestionsStore {
 					Object.keys(data.data).forEach(key => (this[key] = data.data[key]));
 					contestsStore.setTitle(data.data.contest.title);
 					contestsStore.setSlug(data.data.contest.slug);
+					callback();
 				}
 			});
 	};

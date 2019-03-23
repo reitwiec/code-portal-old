@@ -10,10 +10,6 @@ import { observer, inject } from 'mobx-react';
 class EditorView extends Component {
 	componentDidMount() {
 		this.props.questionsStore.setSubmission(null);
-		this.props.questionsStore.fetchQuestion(this.props.slug);
-		var elem = document.getElementById('myBar');
-		var width = 1;
-		var id = setInterval(frame.bind(this), 10);
 
 		var levels = {
 			EASY: 10,
@@ -26,16 +22,23 @@ class EditorView extends Component {
 			MEDIUM: 0.5,
 			HARD: 0.8
 		};
+		var elem = document.getElementById('myBar');
+		// var width = 1;
+		// var id = setInterval(frame.bind(this), 10);
 
+		this.props.questionsStore.fetchQuestion(this.props.slug, () => {
+			elem.style.width = levels[this.props.questionsStore.level] + '%';
+			console.log(levels[this.props.questionsStore.level] + '%');
+		});
 
-		function frame() {
-			if (width >= levels[this.props.questionsStore.level]) {
-				clearInterval(id);
-			} else {
-				width = width + speed[this.props.questionsStore.level];
-				elem.style.width = width + '%';
-			}
-		}
+		// function frame() {
+		// 	if (width >= levels[this.props.questionsStore.level]) {
+		// 		clearInterval(id);
+		// 	} else {
+		// 		width = width + speed[this.props.questionsStore.level];
+		// 		elem.style.width = width + '%';
+		// 	}
+		// }
 	}
 
 	render() {
@@ -242,8 +245,9 @@ export default styled(EditorView)`
 	}
 
 	#myBar {
+		transition: width 1.5s ease;
 		border-radius: 3px 0 0 3px;
-		width: 30%;
+		width: 0%;
 		height: 5px;
 		background-color: #6b9cfd;
 	}
