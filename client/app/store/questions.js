@@ -114,14 +114,14 @@ class QuestionsStore {
 					this.title = data.data.sub.question.title;
 					this.slug = data.data.sub.question.slug;
 					this.score = data.data.sub.question.score;
-					console.log(this.points, this.verdict, this.cases);
+					// console.log(this.points, this.verdict, this.cases);
 				} else
 					window.location.href = '/';
 			});
 	}
 
 	@action submitAnswer = () => {
-		console.log(this.id, this.source, this.language);
+		// console.log(this.id, this.source, this.language);
 
 		const socket = io.connect(process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '/');
 		socket.on('connect', () => {
@@ -135,14 +135,14 @@ class QuestionsStore {
 				.then(({ success, user, data }) => {
 					if (success) {
 						this.submission = data;
-						console.log('submission', this.submission);
+						// console.log('submission', this.submission);
 						this.fetchSubmission()
 					}
 				});
 		});
 
 		socket.on('testcase_result', data => {
-			console.log('testcase_result', data);
+			// console.log('testcase_result', data);
 			this.cases.forEach((c, i) => {
 				if(c.id === data.id) {
 					this.cases[i] = { ...this.cases[i], ...data };
@@ -157,27 +157,27 @@ class QuestionsStore {
 		});
 
 		socket.on('submission_result_ce', data => {
-			console.log('submission_result_ce', data);
+			// console.log('submission_result_ce', data);
 			if (data.id !== this.submission) return;
 			this.cases.forEach((c, i) => {
 				this.cases[i] = { ...this.cases[i], verdict: 'CE' };
 			});
 			this.verdict = 'COMPILE TIME ERROR'
-			console.log('disconnecting...');
+			// console.log('disconnecting...');
 			socket.disconnect();
 			this.submission = null;
 		});
 
 		socket.on('submission_result', data => {
-			console.log('submission_result', data);
+			// console.log('submission_result', data);
 			if (data.id !== this.submission) return;
 			this.setVerdict(data.verdict);
-			console.log('disconnecting...');
+			// console.log('disconnecting...');
 			socket.disconnect();
 			this.submission = null;
 		});
 		socket.on('disconnect', () => {
-			console.log('disconnected');
+			// console.log('disconnected');
 		});
 	};
 

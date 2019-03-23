@@ -28,6 +28,8 @@ class Leaderboard extends Component {
 						<NavLink to={`/contest/${slug}`}>
 							<span className="navigation">{title}</span>
 						</NavLink>
+						<span className="navigation1">&nbsp;&nbsp;>&nbsp;&nbsp;</span>
+						<span className="navigation">Leaderboard</span>
 					</div>
 
 					<div className="area">
