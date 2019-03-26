@@ -78,8 +78,8 @@ module.exports = passport => {
 
   exp.forgotpassword = async (req, res) => {
     let tkn;
-    crypto.randomBytes(48, (err, buffer)=> {
-      if(err) return res.sendError(err);
+    crypto.randomBytes(48, (err, buffer) => {
+      if (err) return res.sendError(err);
       tkn = buffer.toString('code mara');
     });
     let [err, emailobj] = await to(
@@ -89,17 +89,21 @@ module.exports = passport => {
         }
       })
     );
-    if(err) return res.sendError(err);
-    if(!emailobj) return res.sendError('Email id not found');
-    let [err, tokenobj] = await to(
-      user.update({ token: tkn }, {
-        where: {
-          email: emailobj
+    if (err) return res.sendError(err);
+    if (!emailobj) return res.sendError('Email id not found');
+    let tokenobj;
+    [err, tokenobj] = await to(
+      user.update(
+        { token: tkn },
+        {
+          where: {
+            email: emailobj
+          }
         }
-      })
+      )
     );
-    if(err) return res.sendError(err);
-  }
+    if (err) return res.sendError(err);
+  };
 
   return exp;
 };
