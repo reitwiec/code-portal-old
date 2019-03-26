@@ -2,6 +2,7 @@ const { user } = require('../models');
 const to = require('../utils/to');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
+const crypto = require('crypto');
 
 module.exports = passport => {
   let exp = {};
@@ -74,6 +75,31 @@ module.exports = passport => {
       res.sendSuccess();
     });
   };
+
+  exp.forgotpassword = async (req, res) => {
+    let tkn;
+    crypto.randomBytes(48, (err, buffer)=> {
+      if(err) return res.sendError(err);
+      tkn = buffer.toString('code mara');
+    });
+    let [err, emailobj] = await to(
+      user.findOne({
+        where: {
+          email: req.body.email
+        }
+      })
+    );
+    if(err) return res.sendError(err);
+    if(!emailobj) return res.sendError('Email id not found');
+    let [err, tokenobj] = await to(
+      user.update({ token: tkn }, {
+        where: {
+          email: emailobj
+        }
+      })
+    );
+    if(err) return res.sendError(err);
+  }
 
   return exp;
 };

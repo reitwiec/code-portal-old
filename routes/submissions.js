@@ -211,5 +211,19 @@ module.exports = io => {
     });
   };
 
+  exp.view_submissions = async (req, res) => {
+    let [err, submissions] = await to(
+      submission.findAll({
+        where: {
+          user_id: req.user,
+          question_id: req.body.question_id
+        }
+      })
+    );
+    if(err) return res.sendError(err);
+    if(!submissions) return res.sendError('No submissions yet');
+    res.sendSuccess(submissions);
+  }; 
+
   return exp;
 };

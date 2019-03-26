@@ -52,6 +52,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 10
+      },
+      token: {
+        type: DataTypes.STRING(20),
+        allowNull: true,
+        defaultValue: null
       }
     },
     {

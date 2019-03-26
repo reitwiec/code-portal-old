@@ -2,6 +2,7 @@ const { contest } = require('../models');
 const { question } = require('../models');
 const { testcase } = require('../models');
 const { moderator } = require('../models');
+const { submission } = require('../models')
 const to = require('../utils/to');
 const fs = require('fs');
 const Busboy = require('busboy');
@@ -44,6 +45,17 @@ module.exports = () => {
       })
     );
     if (err) return res.sendError(err);
+    for(let i = 0; i < questions.length; i++) {
+      let [err, obtained_score] = await to(
+        submission.max('score', {
+          where: {
+          user_id: req.user,
+          question_id: questions[i].id
+          }
+        })
+      );
+        questions[i]['obtained_score'] = obtained_score;
+    }
     res.sendSuccess(
       { contest: contestobj, questions },
       'Successfully displaying contest'

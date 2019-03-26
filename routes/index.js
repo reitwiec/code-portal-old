@@ -121,6 +121,11 @@ module.exports = (passport, io) => {
     validator(schemas.submissions.details),
     submissions.get_submission
   );
+  router.get(
+    '/viewsubmissions',
+    access(10),
+    submissions.view_submissions
+  );
   router.get('/profile/:username', access(10), user.profile);
 
   return router;
