@@ -53,8 +53,9 @@ module.exports = () => {
           question_id: questions[i].id
           }
         })
-      );
-        questions[i]['obtained_score'] = obtained_score;
+        );
+      if(err) return res.sendError(err);
+      questions[i]['obtained_score'] = obtained_score;
     }
     res.sendSuccess(
       { contest: contestobj, questions },
