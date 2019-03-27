@@ -16,19 +16,22 @@ module.exports = (passport, io) => {
   const admin = require('./admin')(passport);
   const leaderboard = require('./leaderboard')(passport);
   const submissions = require('./submissions')(io);
-  const subLimit = require('./subLimit')(passport);
+  const subLimit = require('./subLimit');
+  const captcha = require('../utils/captcha');
   const user = require('./user')(passport);
 
   //auth routes
-  router.post('/register', validator(schemas.auth.register), auth.register);
+  router.post('/register', validator(schemas.auth.register), captcha, auth.register);
   router.post('/login', validator(schemas.auth.login), auth.login);
   router.get('/logout', auth.logout);
   router.get('/userdata', auth.userData);
+  router.post('/forgotpass', validator(schemas.auth.forgotpass), captcha, auth.forgotpassword);
+  router.post('/resetpass', validator(schemas.auth.resetpass), captcha, auth.resetPassword);
 
   //admin routes
   router.get('/showcontests', admin.showcontests);
 
-  router.get('/showcontest/:slug', admin.showcontestbyslug);
+  router.get('/showcontest/:slug', access(10), admin.showcontestbyslug);
 
   router.post(
     '/addcontest',
@@ -113,6 +116,7 @@ module.exports = (passport, io) => {
     '/submit',
     access(10),
     validator(schemas.submissions.submit),
+    subLimit,
     submissions.submit
   );
   router.get(

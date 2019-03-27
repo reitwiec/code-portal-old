@@ -1,8 +1,11 @@
-const { user } = require('../models');
+const {
+  user
+} = require('../models');
 const to = require('../utils/to');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
 const crypto = require('crypto');
+const axios = require('axios');
 
 module.exports = passport => {
   let exp = {};
@@ -16,10 +19,11 @@ module.exports = passport => {
     let err, myUser, salt, hash, newUser;
     [err, myUser] = await to(
       user.findOne({
-        where: Sequelize.or(
-          { email: req.body.email },
-          { username: req.body.username }
-        )
+        where: Sequelize.or({
+          email: req.body.email
+        }, {
+          username: req.body.username
+        })
       })
     );
     if (err) return res.sendError(err);
@@ -34,7 +38,10 @@ module.exports = passport => {
     if (err) return res.sendError(err);
     [err, hash] = await to(bcrypt.hash(req.body.password, salt));
     if (err) return res.sendError(err);
-    const { password_confirmation, ...userData } = req.body;
+    const {
+      password_confirmation,
+      ...userData
+    } = req.body;
     [err, newUser] = await to(
       user.create({
         ...userData,
@@ -49,7 +56,9 @@ module.exports = passport => {
     let err, userData, result;
     [err, userData] = await to(
       user.findOne({
-        where: { email: req.body.email }
+        where: {
+          email: req.body.email
+        }
       })
     );
     if (err) return res.sendError(err);
@@ -77,33 +86,64 @@ module.exports = passport => {
   };
 
   exp.forgotpassword = async (req, res) => {
-    let tkn;
-    crypto.randomBytes(48, (err, buffer) => {
+    let tkn, emailobj;
+    let [e1, usr] = await to(user.findOne({
+      where: {
+        email: req.body.email
+      }
+    }));
+    if (e1) return res.sendError(e1);
+    if (!usr) return res.sendError(null, 'Invalid Email');
+    crypto.randomBytes(20, async (err, buffer) => {
       if (err) return res.sendError(err);
-      tkn = buffer.toString('code mara');
+      tkn = buffer.toString('hex');
+      let tokenobj;
+      [err, tokenobj] = await to(
+        user.update({
+          token: tkn
+        }, {
+          where: {
+            email: req.body.email
+          }
+        })
+      );
+      if (err) return res.sendError(err);
+      // TODO : Fix Malier Call
+      axios.post('https://mailer.iecsemanipal.com/codeportal/forgotpassword', {
+          toEmail: req.body.email,
+          name: usr.name,
+          url: 'https://code.iecsemanipal.com/reset?token=' + tkn
+        }, {
+          headers: {
+            Authorization: "thisisthecodeportalauthtoken"
+          }
+        })
+        .then(response => {})
+        .catch(console.log);
+      return res.sendSuccess(null, 'Please check email for link to change your password');
     });
-    let [err, emailobj] = await to(
-      user.findOne({
+  };
+
+  exp.resetPassword = async (req, res) => {
+    let err, salt, hash, result;
+    [err, salt] = await to(bcrypt.genSalt(10));
+    if (err) return res.sendError(err);
+    [err, hash] = await to(bcrypt.hash(req.body.newpass, salt));
+    if (err) return res.sendError(err);
+    [err, result] = await to(
+      user.update({
+        token: null,
+        password: hash
+      }, {
         where: {
-          email: req.body.email
+          token: req.body.token
         }
       })
     );
     if (err) return res.sendError(err);
-    if (!emailobj) return res.sendError('Email id not found');
-    let tokenobj;
-    [err, tokenobj] = await to(
-      user.update(
-        { token: tkn },
-        {
-          where: {
-            email: emailobj
-          }
-        }
-      )
-    );
-    if (err) return res.sendError(err);
-  };
+    if (result[0] == 0) return res.sendError(null, 'Link Invalid or Expired');
+    return res.sendSuccess(null, 'Successfully changed password');
+  }
 
   return exp;
 };

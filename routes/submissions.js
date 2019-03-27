@@ -29,6 +29,8 @@ module.exports = io => {
       let ques = await question.findByPk(req.body.question);
       let lang = await language.findByPk(req.body.language);
       if (!ques || !lang) return res.sendError(null, 'Invalid Input');
+      let cont = await contest.findByPk(ques.contest_id);
+      if(new Date(cont.start) > new Date()) return res.sendError(null,'Contest not yet started');
       let totalWeight = 0;
       let maxScore = parseFloat(ques.score);
       let cases = await testcase.findAll({

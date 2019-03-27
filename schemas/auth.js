@@ -29,7 +29,10 @@ const register = Joi.object({
       .required(),
     phone: Joi.string()
       .allow('')
-      .max(20)
+      .max(20),
+    "g-recaptcha-response": Joi.string()
+      .max(50)
+      .required()
   }).required()
 });
 
@@ -42,7 +45,29 @@ const login = Joi.object({
   }).required()
 });
 
+const forgotpass = Joi.object({
+  body: Joi.object({
+    email: Joi.string()
+      .email()
+      .required(),
+    "g-recaptcha-response": Joi.string()
+      .max(50)
+      .required()
+  }).required()
+});
+
+const resetpass = Joi.object({
+  body: Joi.object({
+    token: Joi.string()
+      .required(),
+    newpass: Joi.string()
+      .required()
+  }).required()
+});
+
 module.exports = {
   register,
-  login
+  login,
+  forgotpass,
+  resetpass
 };
