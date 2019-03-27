@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
+import Markdown from 'react-remarkable';
 import { NavLink } from 'react-router-dom';
-
 import { Button, Content, Editor, Navbar } from 'components';
 import { observer, inject } from 'mobx-react';
+
+function MarkdownWrapper(source) {
+	return <Markdown
+	source={source}
+	options={{
+		html: true,
+		linkify: true,
+		langPrefix: 'code-block language-',
+		highlight: function(str, lang) {
+			if (lang && hljs.getLanguage(lang)) {
+				try {
+					return hljs.highlight(lang, str).value;
+				} catch (err) {
+					console.log(err);
+				}
+			}
+			try {
+				return hljs.highlightAuto(str).value;
+			} catch (err) {
+				console.log(err);
+			}
+			return '';
+		}
+	}}
+/>
+}
 
 @inject('questionsStore', 'contestsStore')
 @observer
@@ -90,7 +116,9 @@ class EditorView extends Component {
 							<strong>Difficulty: </strong>{' '}
 							<span className="level">{level.toLowerCase()}</span>
 						</span>
-						<section className="question-body">{body}</section>
+						<section className="question-body">
+							{MarkdownWrapper(body)}
+						</section>
 						<hr />
 
 						<div className="box1">
@@ -101,18 +129,18 @@ class EditorView extends Component {
 							</svg> */}
 						</div>
 
-						<section>{input_format}</section>
+						<section>{MarkdownWrapper(input_format)}</section>
 						<div className="box1">
 							<h3>Constraints</h3>
 						</div>
 
-						<section>{constraints}</section>
+						<section>{MarkdownWrapper(constraints)}</section>
 
 						<div className="box1">
 							<h3>Output Format</h3>
 						</div>
 
-						<section>{output_format}</section>
+						<section>{MarkdownWrapper(output_format)}</section>
 					</div>
 					<Editor />
 					<NavLink to="/submission/processing">
