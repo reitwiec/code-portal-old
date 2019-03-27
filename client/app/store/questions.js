@@ -36,7 +36,7 @@ class QuestionsStore {
 
 	source = '';
 
-	language = 2;
+	language = 1;
 
 	@observable
 	submission = null;

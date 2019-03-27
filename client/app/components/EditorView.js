@@ -172,6 +172,7 @@ export default styled(EditorView)`
 		margin-bottom: 0.5em;
 	}
 	section {
+		white-space: pre-line;
 		padding-left: 10px;
 		margin-bottom: 10px;
 		line-height: 2;
