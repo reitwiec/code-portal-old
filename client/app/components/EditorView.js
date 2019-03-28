@@ -112,10 +112,15 @@ class EditorView extends Component {
 						<div id="myProgress">
 							<div id="myBar" />
 						</div>
-						<span className="difficulty">
-							<strong>Difficulty: </strong>{' '}
-							<span className="level">{level.toLowerCase()}</span>
-						</span>
+						<div className="question-details">
+							<span className="difficulty">
+								<strong>Difficulty: </strong>{' '}
+								<span className="level">{level.toLowerCase()}</span>
+							</span>
+							<NavLink to={`/submissions/${slug}`} className="view-submissions">
+								<strong>View Submissions</strong>{' '}
+							</NavLink>
+						</div>
 						<section className="question-body">
 							{MarkdownWrapper(body)}
 						</section>
@@ -314,5 +319,16 @@ export default styled(EditorView)`
 
 	.question-body {
 		margin-top: 30px;
+	}
+
+	.question-details {
+		display: flex;
+		max-height: 35px;
+	}
+
+	.view-submissions {
+		margin-left: auto;
+		color: #699AFB;
+		cursor: pointer;
 	}
 `;

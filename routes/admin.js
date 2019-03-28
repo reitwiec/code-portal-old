@@ -1,18 +1,8 @@
-const {
-  contest
-} = require('../models');
-const {
-  question
-} = require('../models');
-const {
-  testcase
-} = require('../models');
-const {
-  moderator
-} = require('../models');
-const {
-  submission
-} = require('../models')
+const { contest } = require('../models');
+const { question } = require('../models');
+const { testcase } = require('../models');
+const { moderator } = require('../models');
+const { submission } = require('../models');
 const to = require('../utils/to');
 const fs = require('fs');
 const Busboy = require('busboy');
@@ -48,7 +38,8 @@ module.exports = () => {
     );
     if (err) return res.sendError(err);
     if (!contestobj) return res.sendError(null, 'Contest does not exist', 404);
-    if (new Date(contestobj.start) > new Date() && req.user.access < 30) return res.sendError(null, 'Contest not yet started', 200);
+    if (new Date(contestobj.start) > new Date() && req.user.access < 30)
+      return res.sendError(null, 'Contest not yet started', 200);
     let questions;
     [err, questions] = await to(
       question.findAll({
@@ -64,7 +55,8 @@ module.exports = () => {
       })
     );
     if (err) return res.sendError(err);
-    let obtained_score,scores = {};
+    let obtained_score,
+      scores = {};
     [err, obtained_score] = await to(
       submission.findAll({
         where: {
@@ -73,24 +65,25 @@ module.exports = () => {
         },
         attributes: [
           'question_id',
-          [Sequelize.fn('MAX',Sequelize.col('points')),'points']
+          [Sequelize.fn('MAX', Sequelize.col('points')), 'points']
         ],
         group: ['question_id']
       })
     );
     if (err) return res.sendError(err);
-    for(let i=0;i<obtained_score.length;i++) {
+    for (let i = 0; i < obtained_score.length; i++) {
       scores[obtained_score[i].question_id] = obtained_score[i].points;
     }
-    for(let i=0;i<questions.length;i++) {
-      if(scores[questions[i].id]) {
+    for (let i = 0; i < questions.length; i++) {
+      if (scores[questions[i].id]) {
         questions[i]['dataValues']['attempted'] = true;
         questions[i]['dataValues']['obtained_score'] = scores[questions[i].id];
       } else {
         questions[i]['dataValues']['attempted'] = false;
       }
     }
-    res.sendSuccess({
+    res.sendSuccess(
+      {
         contest: contestobj,
         questions
       },
@@ -206,13 +199,15 @@ module.exports = () => {
     if (req.user.access < 30) {
       [err, questions] = await to(
         question.findAll({
-          include: [{
-            model: moderators,
-            where: {
-              user_id: req.user.id
+          include: [
+            {
+              model: moderators,
+              where: {
+                user_id: req.user.id
+              }
+              //[Op.or] : [{ user_id: req.user.id }, { question.author_id: req.user.id }]
             }
-            //[Op.or] : [{ user_id: req.user.id }, { question.author_id: req.user.id }]
-          }]
+          ]
         })
       );
       if (err) return res.sendError(err);
@@ -229,12 +224,14 @@ module.exports = () => {
     if (req.user.access < 30) {
       [err, questionobj] = await to(
         question.findOne({
-          include: [{
-            model: moderators,
-            where: {
-              user_id: req.user.id
+          include: [
+            {
+              model: moderators,
+              where: {
+                user_id: req.user.id
+              }
             }
-          }],
+          ],
           where: {
             slug: req.params.slug
           }
@@ -268,14 +265,17 @@ module.exports = () => {
       return res.sendError(null, err.message, 409);
     if (err) return res.sendError(err);
     [err, questionobj] = await to(
-      question.update({
-        checker_path: path + '/' + questionobj.id,
-        author_id: req.user.id
-      }, {
-        where: {
-          id: questionobj.id
+      question.update(
+        {
+          checker_path: path + '/' + questionobj.id,
+          author_id: req.user.id
+        },
+        {
+          where: {
+            id: questionobj.id
+          }
         }
-      })
+      )
     );
     if (err) return res.sendError(err);
     return res.sendSuccess(null, 'Successfully added question');
@@ -461,14 +461,17 @@ module.exports = () => {
       req.files.outputfile.mv(outpath, async err => {
         if (err) return res.sendError(err);
         [err, testobj] = await to(
-          testcase.update({
-            input_path: inpath,
-            output_path: outpath
-          }, {
-            where: {
-              id: testobj.id
+          testcase.update(
+            {
+              input_path: inpath,
+              output_path: outpath
+            },
+            {
+              where: {
+                id: testobj.id
+              }
             }
-          })
+          )
         );
         if (err) return res.sendError(err);
         return res.sendSuccess(null, 'Testcase added successfully');

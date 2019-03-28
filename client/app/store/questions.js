@@ -8,6 +8,9 @@ class QuestionsStore {
 	questions = [];
 
 	@observable
+	submissions = [];
+
+	@observable
 	body = '';
 
 	@observable
@@ -82,6 +85,22 @@ class QuestionsStore {
 					contestsStore.setTitle(data.data.contest.title);
 					contestsStore.setSlug(data.data.contest.slug);
 					callback();
+				}
+			});
+	};
+
+	@action fetchSubmissions = (slug) => {
+		console.log('asd')
+		fetch(`/api/viewsubmissions/${slug}`, { credentials: 'same-origin' })
+			.then(resp => resp.json())
+			.then(data => {
+				if (data.success) {
+					contestsStore.setTitle(data.data.question.contest.title);
+					contestsStore.setSlug(data.data.question.contest.slug);
+					this.submissions = data.data.submissions;
+					this.slug = data.data.question.slug;
+					this.title = data.data.question.title;
+					this.score = data.data.question.score;
 				}
 			});
 	};

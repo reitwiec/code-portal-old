@@ -30,7 +30,8 @@ module.exports = io => {
       let lang = await language.findByPk(req.body.language);
       if (!ques || !lang) return res.sendError(null, 'Invalid Input');
       let cont = await contest.findByPk(ques.contest_id);
-      if(new Date(cont.start) > new Date()) return res.sendError(null,'Contest not yet started');
+      if (new Date(cont.start) > new Date())
+        return res.sendError(null, 'Contest not yet started');
       let totalWeight = 0;
       let maxScore = parseFloat(ques.score);
       let cases = await testcase.findAll({
@@ -214,18 +215,41 @@ module.exports = io => {
   };
 
   exp.view_submissions = async (req, res) => {
-    let [err, submissions] = await to(
-      submission.findAll({
+    let err, result, submissions;
+    [err, result] = await to(
+      question.findOne({
         where: {
-          user_id: req.user,
-          question_id: req.body.question_id
-        }
+          slug: req.params.question_slug,
+          ...(req.user.access < 30 && {
+            visibility: true
+          })
+        },
+        include: {
+          model: contest,
+          as: 'contest',
+          attributes: ['slug', 'title']
+        },
+        ...(req.user.access < 30 && {
+          attributes: ['id', 'score', 'slug', 'title']
+        })
       })
     );
-    if(err) return res.sendError(err);
-    if(!submissions) return res.sendError('No submissions yet');
-    res.sendSuccess(submissions);
-  }; 
+    if (err) return res.sendError(err);
+    if (!result) return res.sendError(null, 'Question not found');
+
+    [err, submissions] = await to(
+      submission.findAll({
+        where: {
+          user_id: req.user.id,
+          question_id: result.id
+        },
+        attributes: ['id', 'points', 'verdict', 'created_at']
+      })
+    );
+    if (err) return res.sendError(err);
+    if (!submissions) return res.sendError(null, 'No submissions yet');
+    res.sendSuccess({ submissions, question: result });
+  };
 
   return exp;
 };

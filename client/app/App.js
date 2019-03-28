@@ -18,7 +18,8 @@ import {
 	Login,
 	Register,
 	Leaderboard,
-	Profile
+	Profile,
+	SubmissionsView
 } from 'components';
 
 // const AdminView = lazy(() => import('./components/admin/AdminView'));
@@ -113,6 +114,12 @@ class App extends Component {
 										path="/contest/:slug"
 										render={({ match }) =>
 											this.loginRequired(<Questions slug={match.params.slug} />)
+										}
+									/>
+									<Route
+										path="/submissions/:slug"
+										render={({ match }) =>
+											this.loginRequired(<SubmissionsView slug={match.params.slug} />)
 										}
 									/>
 									<Route

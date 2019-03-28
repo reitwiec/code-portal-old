@@ -31,7 +31,7 @@ class Submission extends Component {
 	}
 
 	componentDidMount() {
-		if(!this.props.questionsStore.submission && this.props.submissionId !== 'processing')
+		if(this.props.submissionId !== 'processing')
 			this.props.questionsStore.setSubmission(this.props.submissionId);
 
 		// var x = 1;

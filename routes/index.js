@@ -21,12 +21,27 @@ module.exports = (passport, io) => {
   const user = require('./user')(passport);
 
   //auth routes
-  router.post('/register', validator(schemas.auth.register), captcha, auth.register);
+  router.post(
+    '/register',
+    validator(schemas.auth.register),
+    captcha,
+    auth.register
+  );
   router.post('/login', validator(schemas.auth.login), auth.login);
   router.get('/logout', auth.logout);
   router.get('/userdata', auth.userData);
-  router.post('/forgotpass', validator(schemas.auth.forgotpass), captcha, auth.forgotpassword);
-  router.post('/resetpass', validator(schemas.auth.resetpass), captcha, auth.resetPassword);
+  router.post(
+    '/forgotpass',
+    validator(schemas.auth.forgotpass),
+    captcha,
+    auth.forgotpassword
+  );
+  router.post(
+    '/resetpass',
+    validator(schemas.auth.resetpass),
+    captcha,
+    auth.resetPassword
+  );
 
   //admin routes
   router.get('/showcontests', admin.showcontests);
@@ -116,7 +131,7 @@ module.exports = (passport, io) => {
     '/submit',
     access(10),
     validator(schemas.submissions.submit),
-    subLimit,
+    // subLimit,
     submissions.submit
   );
   router.get(
@@ -126,7 +141,7 @@ module.exports = (passport, io) => {
     submissions.get_submission
   );
   router.get(
-    '/viewsubmissions',
+    '/viewsubmissions/:question_slug',
     access(10),
     submissions.view_submissions
   );

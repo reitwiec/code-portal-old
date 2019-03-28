@@ -30,3 +30,4 @@ export { default as TextArea } from './TextArea';
 export { default as FormInput } from './FormInput';
 export { default as Leaderboard } from './Leaderboard';
 export { default as Profile } from './Profile';
+export { default as SubmissionsView } from './SubmissionsView';
