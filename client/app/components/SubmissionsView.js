@@ -68,10 +68,9 @@ class SubmissionsView extends Component {
 							</div>
 						</div>
 
-						<div className="stats">
+						{/* <div className="stats">
 							<div className="heading1">
 								<span id="rank">
-									{/* Current Rank: <strong>13</strong> */}
 								</span>
 								<span className="fadebg1">Win</span>
 							</div>
@@ -96,7 +95,7 @@ class SubmissionsView extends Component {
 								<span id="lead">Leaderboard</span>
 							</div>
 						</div>
-					</div>
+					</div> */}
 
 					<div className="beauty">
 						<h1>Subm</h1>
