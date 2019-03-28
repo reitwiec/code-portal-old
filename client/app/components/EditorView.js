@@ -51,10 +51,9 @@ class EditorView extends Component {
 		var elem = document.getElementById('myBar');
 		// var width = 1;
 		// var id = setInterval(frame.bind(this), 10);
-
+		this.props.questionsStore.resetQuestion();
 		this.props.questionsStore.fetchQuestion(this.props.slug, () => {
 			elem.style.width = levels[this.props.questionsStore.level] + '%';
-			console.log(levels[this.props.questionsStore.level] + '%');
 		});
 
 		// function frame() {
@@ -155,13 +154,13 @@ class EditorView extends Component {
 										<h3>Sample Input {i + 1}</h3>
 									</div>
 
-									<section>{MarkdownWrapper(sample.input)}</section>
+									<section className="copyable">{MarkdownWrapper(sample.input)}</section>
 
 									<div className="box1">
 										<h3>Sample Output {i + 1}</h3>
 									</div>
 
-									<section>{MarkdownWrapper(sample.output)}</section>
+									<section className="copyable">{MarkdownWrapper(sample.output)}</section>
 								</div>
 							))
 						}
@@ -238,6 +237,10 @@ export default styled(EditorView)`
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
+	}
+
+	.copyable {
+		user-select: auto;
 	}
 
 	${Content} > div {

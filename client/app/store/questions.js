@@ -93,6 +93,19 @@ class QuestionsStore {
 			});
 	};
 
+	@action resetQuestion = () => {
+		this.body = '';
+		this.constraints = '';
+		this.id = null;
+		this.input_format = '';
+		this.level = '';
+		this.output_format = '';
+		this.score = 0;
+		this.slug = '';
+		this.title = '';
+		this.samples = [];
+	};
+
 	@action fetchSubmissions = (slug) => {
 		console.log('asd')
 		fetch(`/api/viewsubmissions/${slug}`, { credentials: 'same-origin' })
