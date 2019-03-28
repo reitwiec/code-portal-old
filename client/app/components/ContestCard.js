@@ -9,8 +9,8 @@ class ContestCard extends Component {
 				className={this.props.className}>
 				<h3>{this.props.contest.title}</h3>
 				<h4>
-					{new Date(this.props.contest.start).toString().replace('GMT+0530', '')} to{' '}
-					{new Date(this.props.contest.end).toString().replace('GMT+0530', '')}
+					{new Date(this.props.contest.start.replace('Z', '')).toString().replace('GMT+0530', '')} to{' '}
+					{new Date(this.props.contest.end.replace('Z', '')).toString().replace('GMT+0530', '')}
 				</h4>
 				<p>{this.props.contest.description}</p>
 			</div>
