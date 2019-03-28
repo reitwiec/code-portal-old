@@ -38,7 +38,7 @@ export default styled(ContestCard)`
 
 	> h4 {
 		color: #fff;
-		opacity: 0.7;
+		opacity: 0.6;
 		font-size: 0.6em;
 		font-weight: 600;
 	}

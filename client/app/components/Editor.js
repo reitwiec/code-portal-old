@@ -9,9 +9,9 @@ import 'codemirror/mode/clike/clike';
 import 'codemirror/mode/python/python';
 
 const languages = {
-	cpp: {
+	cpp11: {
 		id: 1,
-		name: 'C++',
+		name: 'C++ 11',
 		mode: 'text/x-c++src',
 		boilerplate: `#include <iostream>
 
@@ -22,9 +22,22 @@ int main() {
 	return 0;
 }`
 	},
-	java: {
+	cpp14: {
 		id: 2,
-		name: 'Java',
+		name: 'C++ 14',
+		mode: 'text/x-c++src',
+		boilerplate: `#include <iostream>
+
+using namespace std;
+
+int main() {
+	cout << "Hello, world!" << endl;
+	return 0;
+}`
+	},
+	java8: {
+		id: 3,
+		name: 'Java 8',
 		mode: 'text/x-java',
 		boilerplate: `import java.util.Scanner;
 //Class name has to be Main.
@@ -34,9 +47,19 @@ public class Main {
 	}
 }`
 	},
-	python: {
-		id: 3,
-		name: 'Python',
+	python3: {
+		id: 4,
+		name: 'Python 3',
+		mode: 'text/x-python',
+		boilerplate: `def main():
+	print("Hello, world!")
+
+if __name__ == '__main__':
+	main()`
+	},
+	python2: {
+		id: 5,
+		name: 'Python 2',
 		mode: 'text/x-python',
 		boilerplate: `def main():
 	print("Hello, world!")
@@ -50,7 +73,7 @@ class Editor extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			language: 'cpp'
+			language: 'cpp11'
 		};
 	}
 
