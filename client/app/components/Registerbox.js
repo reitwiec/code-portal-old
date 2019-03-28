@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { observer, inject } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
+import Recaptcha from 'react-google-invisible-recaptcha';
 
 import { Button } from 'components';
 import { FormInput } from 'components';
@@ -132,7 +133,7 @@ class Registerbox extends Component {
 }
 
 const test = keyframes`
-	0% { 
+	0% {
 		opacity:0;
 	}
 	100% {

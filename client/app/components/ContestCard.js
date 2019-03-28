@@ -9,8 +9,8 @@ class ContestCard extends Component {
 				className={this.props.className}>
 				<h3>{this.props.contest.title}</h3>
 				<h4>
-					{new Date(this.props.contest.start).toUTCString()} to{' '}
-					{new Date(this.props.contest.end).toUTCString()}
+					{new Date(this.props.contest.start).toString()} to{' '}
+					{new Date(this.props.contest.end).toString()}
 				</h4>
 				<p>{this.props.contest.description}</p>
 			</div>
@@ -38,14 +38,14 @@ export default styled(ContestCard)`
 
 	> h4 {
 		color: #fff;
-		opacity: 0.5;
-		font-size: 0.5em;
+		opacity: 0.7;
+		font-size: 0.6em;
 		font-weight: 600;
 	}
 
 	> p {
 		color: #fff;
-		font-size: 0.7em;
+		font-size: 0.9em;
 		text-align: left;
 		height: auto;
 		min-height: 50px;
