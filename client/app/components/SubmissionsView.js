@@ -94,8 +94,8 @@ class SubmissionsView extends Component {
 								</NavLink>
 								<span id="lead">Leaderboard</span>
 							</div>
-						</div>
-					</div> */}
+						</div> */}
+					</div>
 
 					<div className="beauty">
 						<h1>Subm</h1>
