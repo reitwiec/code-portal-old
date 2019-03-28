@@ -79,6 +79,7 @@ class EditorView extends Component {
 				score,
 				slug,
 				title,
+				samples,
 				submitAnswer
 			}
 		} = this.props;
@@ -146,9 +147,28 @@ class EditorView extends Component {
 						</div>
 
 						<section>{MarkdownWrapper(output_format)}</section>
+
+						{
+							samples.map((sample, i) => (
+								<div>
+									<div className="box1">
+										<h3>Sample Input {i + 1}</h3>
+									</div>
+
+									<section>{MarkdownWrapper(sample.input)}</section>
+
+									<div className="box1">
+										<h3>Sample Output {i + 1}</h3>
+									</div>
+
+									<section>{MarkdownWrapper(sample.output)}</section>
+								</div>
+							))
+						}
+
 					</div>
 					<Editor />
-					<div class="java-note">Java class names must be: Main</div>
+					<div className="java-note">Java class names must be: Main</div>
 					<NavLink to="/submission/processing">
 						<Button onClick={submitAnswer}>Submit</Button>
 					</NavLink>

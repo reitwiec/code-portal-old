@@ -182,7 +182,7 @@ module.exports = () => {
     );
     if (err) return res.sendError(err);
     if (!questionobj) return res.sendError(null, 'Question doesnt exist', 404);
-    let samples,tests;
+    let samples, tests;
     [err, samples] = await to(
       testcase.findAll({
         where: {
@@ -191,15 +191,23 @@ module.exports = () => {
         }
       })
     );
-    try{
-      tests = samples.map(async ob => ({
-        input: await read_file_promise(ob.input_path),
-        output: await read_file_promise(ob.output_path)
-      }));
-    } catch(err) {
+    let smp = [];
+    try {
+      for (let i = 0; i < samples.length; i++) {
+        let input = await read_file_promise(samples[i].input_path);
+        let output = await read_file_promise(samples[i].output_path);
+        smp.push({
+          input,
+          output
+        });
+      }
+    } catch (err) {
       return res.sendError(err);
     }
-    res.sendSuccess({ questionobj, sample: tests }, 'Successfully displaying question');
+    res.sendSuccess(
+      { question: questionobj, samples: smp },
+      'Successfully displaying question'
+    );
   };
 
   /*exp.showquestionsbycontest = async (req, res) => {

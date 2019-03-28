@@ -37,6 +37,9 @@ class QuestionsStore {
 	@observable
 	title = '';
 
+	@observable
+	samples = [];
+
 	source = '';
 
 	language = 1;
@@ -81,9 +84,10 @@ class QuestionsStore {
 			.then(resp => resp.json())
 			.then(data => {
 				if (data.success) {
-					Object.keys(data.data).forEach(key => (this[key] = data.data[key]));
-					contestsStore.setTitle(data.data.contest.title);
-					contestsStore.setSlug(data.data.contest.slug);
+					Object.keys(data.data.question).forEach(key => (this[key] = data.data.question[key]));
+					this.samples = data.data.samples;
+					contestsStore.setTitle(data.data.question.contest.title);
+					contestsStore.setSlug(data.data.question.contest.slug);
 					callback();
 				}
 			});
