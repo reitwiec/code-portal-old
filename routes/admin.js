@@ -1,7 +1,18 @@
-const { contest } = require('../models');
-const { question } = require('../models');
-const { testcase } = require('../models');
-const { moderator } = require('../models');
+const {
+  contest
+} = require('../models');
+const {
+  question
+} = require('../models');
+const {
+  testcase
+} = require('../models');
+const {
+  moderator
+} = require('../models');
+const {
+  submission
+} = require('../models')
 const to = require('../utils/to');
 const fs = require('fs');
 const Busboy = require('busboy');
@@ -16,7 +27,11 @@ module.exports = () => {
   exp.showcontests = async (req, res) => {
     let [err, contests] = await to(
       contest.findAll({
-        ...(req.user.access < 30 && { where: { visibility: true } })
+        ...(req.user.access < 30 && {
+          where: {
+            visibility: true
+          }
+        })
       })
     );
     if (err) return res.sendError(err);
@@ -26,17 +41,22 @@ module.exports = () => {
   exp.showcontestbyslug = async (req, res) => {
     let [err, contestobj] = await to(
       contest.findOne({
-        where: { slug: req.params.slug }
+        where: {
+          slug: req.params.slug
+        }
       })
     );
     if (err) return res.sendError(err);
     if (!contestobj) return res.sendError(null, 'Contest does not exist', 404);
+    if (new Date(contestobj.start) > new Date() && req.user.access < 30) return res.sendError(null, 'Contest not yet started', 200);
     let questions;
     [err, questions] = await to(
       question.findAll({
         where: {
           contest_id: contestobj.id,
-          ...(req.user.access < 30 && { visibility: true })
+          ...(req.user.access < 30 && {
+            visibility: true
+          })
         },
         ...(req.user.access < 30 && {
           attributes: ['title', 'slug', 'score', 'level', 'id']
@@ -44,8 +64,36 @@ module.exports = () => {
       })
     );
     if (err) return res.sendError(err);
-    res.sendSuccess(
-      { contest: contestobj, questions },
+    let obtained_score,scores = {};
+    [err, obtained_score] = await to(
+      submission.findAll({
+        where: {
+          user_id: req.user.id,
+          contest_id: contestobj.id
+        },
+        attributes: [
+          'question_id',
+          [Sequelize.fn('MAX',Sequelize.col('points')),'points']
+        ],
+        group: ['question_id']
+      })
+    );
+    if (err) return res.sendError(err);
+    for(let i=0;i<obtained_score.length;i++) {
+      scores[obtained_score[i].question_id] = obtained_score[i].points;
+    }
+    for(let i=0;i<questions.length;i++) {
+      if(scores[questions[i].id]) {
+        questions[i]['dataValues']['attempted'] = true;
+        questions[i]['dataValues']['obtained_score'] = scores[questions[i].id];
+      } else {
+        questions[i]['dataValues']['attempted'] = false;
+      }
+    }
+    res.sendSuccess({
+        contest: contestobj,
+        questions
+      },
       'Successfully displaying contest'
     );
   };
@@ -61,7 +109,9 @@ module.exports = () => {
   exp.updatecontest = async (req, res) => {
     let [err, contestobj] = await to(
       contest.update(req.body, {
-        where: { slug: req.body.slug }
+        where: {
+          slug: req.body.slug
+        }
       })
     );
     if (err && err.name === 'SequelizeUniqueConstraintError')
@@ -75,7 +125,9 @@ module.exports = () => {
   exp.deletecontest = async (req, res) => {
     let [err, contestobj] = await to(
       contest.destroy({
-        where: { slug: req.params.slug }
+        where: {
+          slug: req.params.slug
+        }
       })
     );
     if (err) return res.sendError(err);
@@ -88,7 +140,9 @@ module.exports = () => {
     let err, questions;
     [err, questions] = await to(
       question.findAll({
-        where: { is_practice: true }
+        where: {
+          is_practice: true
+        }
       })
     );
     if (err) return res.sendError(err);
@@ -100,7 +154,9 @@ module.exports = () => {
       question.findOne({
         where: {
           slug: req.params.slug,
-          ...(req.user.access < 30 && { visibility: true })
+          ...(req.user.access < 30 && {
+            visibility: true
+          })
         },
         include: {
           model: contest,
@@ -150,13 +206,13 @@ module.exports = () => {
     if (req.user.access < 30) {
       [err, questions] = await to(
         question.findAll({
-          include: [
-            {
-              model: moderators,
-              where: { user_id: req.user.id }
-              //[Op.or] : [{ user_id: req.user.id }, { question.author_id: req.user.id }]
+          include: [{
+            model: moderators,
+            where: {
+              user_id: req.user.id
             }
-          ]
+            //[Op.or] : [{ user_id: req.user.id }, { question.author_id: req.user.id }]
+          }]
         })
       );
       if (err) return res.sendError(err);
@@ -173,13 +229,15 @@ module.exports = () => {
     if (req.user.access < 30) {
       [err, questionobj] = await to(
         question.findOne({
-          include: [
-            {
-              model: moderators,
-              where: { user_id: req.user.id }
+          include: [{
+            model: moderators,
+            where: {
+              user_id: req.user.id
             }
-          ],
-          where: { slug: req.params.slug }
+          }],
+          where: {
+            slug: req.params.slug
+          }
         })
       );
       if (err) return res.sendError(err);
@@ -189,7 +247,9 @@ module.exports = () => {
     }
     [err, questionobj] = await to(
       question.findOne({
-        where: { slug: req.params.slug }
+        where: {
+          slug: req.params.slug
+        }
       })
     );
     if (err) return res.sendError(err);
@@ -199,21 +259,23 @@ module.exports = () => {
 
   exp.addquestion = async (req, res) => {
     let [err, questionobj] = await to(
-      question.create({ ...req.body, author_id: req.user.id })
+      question.create({
+        ...req.body,
+        author_id: req.user.id
+      })
     );
     if (err && err.name === 'SequelizeUniqueConstraintError')
       return res.sendError(null, err.message, 409);
     if (err) return res.sendError(err);
     [err, questionobj] = await to(
-      question.update(
-        {
-          checker_path: path + '/' + questionobj.id,
-          author_id: req.user.id
-        },
-        {
-          where: { id: questionobj.id }
+      question.update({
+        checker_path: path + '/' + questionobj.id,
+        author_id: req.user.id
+      }, {
+        where: {
+          id: questionobj.id
         }
-      )
+      })
     );
     if (err) return res.sendError(err);
     return res.sendSuccess(null, 'Successfully added question');
@@ -234,7 +296,9 @@ module.exports = () => {
       return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(
       question.update(req.body, {
-        where: { id: req.body.id }
+        where: {
+          id: req.body.id
+        }
       })
     );
     if (err && err.name === 'SequelizeUniqueConstraintError')
@@ -258,7 +322,9 @@ module.exports = () => {
       return res.sendError(null, 'Access denied');
     [err, questionobj] = await to(
       question.destroy({
-        where: { slug: req.params.slug }
+        where: {
+          slug: req.params.slug
+        }
       })
     );
     if (err) return res.sendError(err);
@@ -278,7 +344,9 @@ module.exports = () => {
   exp.deletemoderator = async (req, res) => {
     let [err, modobj] = await to(
       moderator.destroy({
-        where: { user: req.params.id }
+        where: {
+          user: req.params.id
+        }
       })
     );
     if (err) return res.sendError(err);
@@ -393,15 +461,14 @@ module.exports = () => {
       req.files.outputfile.mv(outpath, async err => {
         if (err) return res.sendError(err);
         [err, testobj] = await to(
-          testcase.update(
-            {
-              input_path: inpath,
-              output_path: outpath
-            },
-            {
-              where: { id: testobj.id }
+          testcase.update({
+            input_path: inpath,
+            output_path: outpath
+          }, {
+            where: {
+              id: testobj.id
             }
-          )
+          })
         );
         if (err) return res.sendError(err);
         return res.sendSuccess(null, 'Testcase added successfully');
@@ -413,7 +480,9 @@ module.exports = () => {
     let err, testobj;
     [err, testobj] = await to(
       testcase.findOne({
-        where: { id: req.params.id }
+        where: {
+          id: req.params.id
+        }
       })
     );
     if (err) {

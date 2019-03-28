@@ -9,6 +9,8 @@ module.exports = (req, res, next) => {
     let user = req.user;
     if (user) {
       user.password = undefined;
+      user.token = undefined;
+      delete user.token;
       delete user.password;
     }
     res

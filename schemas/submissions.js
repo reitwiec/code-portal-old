@@ -24,4 +24,4 @@ exports.details = Joi.object({
       .required()
   })
   .required()
-})
+});
