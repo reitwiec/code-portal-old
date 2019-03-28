@@ -64,7 +64,7 @@ class QuestionsStore {
 		this.fetchSubmission();
 	}
 
-	@action fetchQuestions = slug => {
+	@action fetchQuestions = (slug, notStarted = () => {}) => {
 		fetch(`/api/showcontest/${slug}`, { credentials: 'same-origin' })
 			.then(resp => resp.json())
 			.then(data => {
@@ -72,7 +72,7 @@ class QuestionsStore {
 					contestsStore.setTitle(data.data.contest.title);
 					contestsStore.setSlug(data.data.contest.slug);
 					this.questions = data.data.questions;
-				}
+				} else window.location.href = '/';
 			});
 	};
 

@@ -41,15 +41,6 @@ class Registerbox extends Component {
 								placeholder="Name"
 							/>
 							<FormInput
-								type="email"
-								name="email"
-								className="required"
-								value={fields.email.value}
-								error={fields.email.error}
-								onChange={onFieldChange}
-								placeholder="Email"
-							/>
-							<FormInput
 								type="text"
 								name="username"
 								className="required"
@@ -57,6 +48,15 @@ class Registerbox extends Component {
 								error={fields.username.error}
 								onChange={onFieldChange}
 								placeholder="Username"
+							/>
+							<FormInput
+								type="email"
+								name="email"
+								className="required"
+								value={fields.email.value}
+								error={fields.email.error}
+								onChange={onFieldChange}
+								placeholder="Email"
 							/>
 							<FormInput
 								type="password"
