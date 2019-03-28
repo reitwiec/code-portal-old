@@ -2,6 +2,12 @@ import { observable, action } from 'mobx';
 import Validator from 'validatorjs';
 
 class RegisterStore {
+
+	@observable
+	captcha = null;
+
+	captchaDOM = null;
+
 	@observable
 	fields = {
 		name: { value: '', error: null, rule: 'required|min:3|max:50' },
@@ -27,6 +33,12 @@ class RegisterStore {
 		msg: null,
 		success: null
 	};
+
+	@action
+	onResolved = key => this.captcha = key;
+
+	@action
+	setCaptchaDOM = captcha => this.captchaDOM = captcha;
 
 	@action
 	onFieldChange = (field, value) => {
@@ -61,10 +73,17 @@ class RegisterStore {
 
 	@action
 	onSubmit = () => {
-		const postData = Object.keys(this.fields).reduce(
+		if (!this.captcha) {
+			this.meta.success = false;
+			this.meta.msg = 'Please fill the captcha';
+			return;
+		}
+		this.captchaDOM.reset();
+		let postData = Object.keys(this.fields).reduce(
 			(a, c) => ({ ...a, [c]: this.fields[c].value }),
 			{}
 		);
+		postData = {...postData, 'g-recaptcha-response': this.captcha};
 		fetch('/api/register', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -79,6 +98,7 @@ class RegisterStore {
 					Object.keys(this.fields).forEach(key => this.fields[key].value = '');
 			});
 	};
+
 }
 
 export default new RegisterStore();

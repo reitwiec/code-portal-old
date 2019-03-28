@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { observer, inject } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
-import Recaptcha from 'react-google-invisible-recaptcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Button } from 'components';
 import { FormInput } from 'components';
@@ -18,7 +18,7 @@ class Registerbox extends Component {
 	render() {
 		const {
 			className,
-			registerStore: { fields, meta, onFieldChange, onSubmit },
+			registerStore: { fields, meta, onFieldChange, onSubmit, captcha, onResolved, setCaptchaDOM },
 			authStore: isLoggedIn,
 			userStore: user
 		} = this.props;
@@ -101,7 +101,13 @@ class Registerbox extends Component {
 								onChange={onFieldChange}
 								placeholder="Phone number"
 							/>
-
+							<ReCAPTCHA
+								ref={el => setCaptchaDOM(el)}
+								sitekey="6LdYa5oUAAAAAH9l_zSg-xctsR5DH5Z6ZMnRd0XU"
+								render="explicit"
+								theme="dark"
+								className="recaptcha"
+								onChange={ onResolved } />
 							{meta.msg && (
 								<div
 									className={`meta ${
@@ -305,5 +311,9 @@ export default styled(Registerbox)`
 
 	.meta-error {
 		color: rgba(255, 0, 0, 0.7);
+	}
+
+	.recaptcha {
+		margin: 30px 50px;
 	}
 `;

@@ -27,7 +27,7 @@ int main() {
 		name: 'Java',
 		mode: 'text/x-java',
 		boilerplate: `import java.util.Scanner;
-
+//Class name has to be Main.
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("Hello, world!");

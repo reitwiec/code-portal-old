@@ -23,25 +23,28 @@ class Navbar extends Component {
 			}
 		} = this.props;
 		return (
-			<div className={this.props.className}>
-				<NavLink to="/">
-					<span id="logo">
-						<img src={iecselogo} alt="" id="logoimg" />
-					</span>
-					{/* <Homeicon title="hello" /> */}
-				</NavLink>
+			<div className={`${this.props.className}`}>
+				<div className=" navbar-flex">
+					<NavLink to="/" className="left-align-flex">
+						<span id="logo">
+							<img src={iecselogo} alt="" id="logoimg" />
+						</span>
+						{/* <Homeicon title="hello" /> */}
+					</NavLink>
 
-				<NavLink to={`/profile/${username}`}>
-					<span id="avatar">
-						<img src={avatar} alt="" id="avatarimg" />
-					</span>
-					<span id="unamenav">{name}</span>
-					<Notif />
-				</NavLink>
+					<NavLink to="/contests" className={`nav-item`}>
+						<Contesticon />
+					</NavLink>
 
-				<NavLink to="/contests">
-					<Contesticon />
-				</NavLink>
+					<NavLink to={`/profile/${username}`} className={`nav-item`}>
+						<span id="avatar">
+							<img src={avatar} alt="" id="avatarimg" />
+						</span>
+						<span id="unamenav">{name}</span>
+						<Notif />
+					</NavLink>
+				</div>
+
 {/*
 				<NavLink to="/practice">
 					<Practiceicon />
@@ -65,16 +68,33 @@ export default styled(Navbar)`
 	width: 100%;
 	height: 50px;
 
+	.left-align-flex {
+		margin-right: auto;
+	}
+
+	.navbar-flex {
+		display: flex;
+		justify-content: flex-end;
+		width: 100%:
+		align-items: center;
+		height: 100%;
+	}
+
+	.nav-item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0 10px;
+	}
+
 	#logo {
-		position: absolute;
-		top: -4px;
-		left: 25px;
 		transition: 1.2s;
 
 		img {
 			width: 80px;
 			height: 60px;
 			transition: 1.2s;
+			transform: translate(10px, -5px);
 		}
 
 		:hover {
@@ -83,6 +103,7 @@ export default styled(Navbar)`
 	}
 
 	#avatar {
+		display: none;
 		position: absolute;
 		top: 10px;
 		right: 25px;
@@ -110,6 +131,7 @@ export default styled(Navbar)`
 	}
 
 	#notif {
+		display: none;
 		position: absolute;
 		top: 9px;
 		right: 22px;
@@ -133,9 +155,6 @@ export default styled(Navbar)`
 		font-size: 0.7em;
 		color: #78a5fe;
 		font-weight: 600;
-		position: absolute;
-		top: 18px;
-		right: 65px;
 		transition: 0.5s;
 	}
 

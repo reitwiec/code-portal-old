@@ -30,9 +30,7 @@ const register = Joi.object({
     phone: Joi.string()
       .allow('')
       .max(20),
-    "g-recaptcha-response": Joi.string()
-      .max(50)
-      .required()
+    'g-recaptcha-response': Joi.string().required()
   }).required()
 });
 
@@ -50,7 +48,7 @@ const forgotpass = Joi.object({
     email: Joi.string()
       .email()
       .required(),
-    "g-recaptcha-response": Joi.string()
+    'g-recaptcha-response': Joi.string()
       .max(50)
       .required()
   }).required()
@@ -58,10 +56,8 @@ const forgotpass = Joi.object({
 
 const resetpass = Joi.object({
   body: Joi.object({
-    token: Joi.string()
-      .required(),
-    newpass: Joi.string()
-      .required()
+    token: Joi.string().required(),
+    newpass: Joi.string().required()
   }).required()
 });
 
