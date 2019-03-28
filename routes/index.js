@@ -66,7 +66,7 @@ module.exports = (passport, io) => {
 
   router.get('/showquestions', admin.showquestions);
 
-  router.get('/showquestions/:slug', admin.showquestionbyslug);
+  router.get('/showquestions/:slug', access(10), admin.showquestionbyslug);
 
   /*router.get(
     '/showquestionsbycontest/:contest_id',

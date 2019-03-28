@@ -11,6 +11,15 @@ const Path = require('path');
 const shell = require('shelljs');
 const Sequelize = require('sequelize');
 
+const read_file_promise = source => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(source, 'utf8', (err, data) => {
+      if (err) return reject(err);
+      return resolve(data);
+    });
+  });
+};
+
 module.exports = () => {
   let exp = {};
   const Op = Sequelize.Op;
@@ -173,7 +182,24 @@ module.exports = () => {
     );
     if (err) return res.sendError(err);
     if (!questionobj) return res.sendError(null, 'Question doesnt exist', 404);
-    res.sendSuccess(questionobj, 'Successfully displaying question');
+    let samples,tests;
+    [err, samples] = await to(
+      testcase.findAll({
+        where: {
+          question_id: questionobj.id,
+          sample: 1
+        }
+      })
+    );
+    try{
+      tests = samples.map(async ob => ({
+        input: await read_file_promise(ob.input_path),
+        output: await read_file_promise(ob.output_path)
+      }));
+    } catch(err) {
+      return res.sendError(err);
+    }
+    res.sendSuccess({ questionobj, sample: tests }, 'Successfully displaying question');
   };
 
   /*exp.showquestionsbycontest = async (req, res) => {
