@@ -148,6 +148,7 @@ class EditorView extends Component {
 						<section>{MarkdownWrapper(output_format)}</section>
 					</div>
 					<Editor />
+					<div class="java-note">Java class names must be: Main</div>
 					<NavLink to="/submission/processing">
 						<Button onClick={submitAnswer}>Submit</Button>
 					</NavLink>
@@ -330,5 +331,11 @@ export default styled(EditorView)`
 		margin-left: auto;
 		color: #699AFB;
 		cursor: pointer;
+	}
+
+	.java-note {
+		color: white;
+		display: flex;
+		justify-content: flex-end;
 	}
 `;
