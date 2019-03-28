@@ -39,11 +39,17 @@ class Questions extends Component {
 							<div className="content">
 								{questions.map((question, i) => (
 									<div className="questions" key={`question_${i}`}>
-										<section>{question.title}</section>
+										<section>
+											{question.title}
+										</section>
 										<span className="details">Max Score: {question.score}</span>
 										<span className="strength">
 											Difficulty: {question.level}
 										</span>
+										{question.attempted && <span className="strength">
+											Score: {question.obtained_score}
+										</span>}
+										{question.attempted && question.obtained_score >=question.score && <i className="fas fa-check accepted"></i>}
 										<NavLink to={`/question/${question.slug}`}>
 											<Button>Solve</Button>
 										</NavLink>
@@ -380,5 +386,11 @@ export default styled(Questions)`
 	}
 	.navigation:hover {
 		color: #fff;
+	}
+
+	.accepted {
+		color: #44db5e;
+		font-size: 0.8rem;
+		margin-left: 15px;
 	}
 `;

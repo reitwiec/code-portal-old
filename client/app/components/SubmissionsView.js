@@ -58,7 +58,7 @@ class SubmissionsView extends Component {
 										<section>{(new Date(submission.created_at).toString())}</section>
 										<span className="details">Score: {submission.points}</span>
 										<span className="strength">
-											Verdict: {submission.verdict}
+											Verdict: {submission.verdict === 'CE' ? 'COMPILE TIME ERROR' : submission.verdict}
 										</span>
 										<NavLink to={`/submission/${submission.id}`}>
 											<Button>View</Button>
