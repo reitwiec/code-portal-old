@@ -38,7 +38,8 @@ module.exports = () => {
           submission
             .findAll({
               where: {
-                contest_id: contest_id
+                contest_id: contest_id,
+		created_at: { [sequelize.Op.lt]: contestObj.end }
               },
               raw: true,
               attributes: [

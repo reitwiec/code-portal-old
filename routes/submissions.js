@@ -101,6 +101,7 @@ module.exports = io => {
               );
             } catch (err) {
               console.log('axios error');
+	      console.error(new Date(),err);
               return res.sendError();
             }
             // console.log(result);

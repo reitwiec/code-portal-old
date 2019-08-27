@@ -48,9 +48,7 @@ const forgotpass = Joi.object({
     email: Joi.string()
       .email()
       .required(),
-    'g-recaptcha-response': Joi.string()
-      .max(50)
-      .required()
+    'g-recaptcha-response': Joi.string().required()
   }).required()
 });
 
