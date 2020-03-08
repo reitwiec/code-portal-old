@@ -5,6 +5,8 @@ const basename = path.basename(__filename);
 const op = Sequelize.Op;
 let db = {};
 
+require('dotenv').config();
+
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,

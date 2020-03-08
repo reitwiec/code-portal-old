@@ -2,6 +2,8 @@ const request = require('request');
 
 const secret = '6LdYa5oUAAAAAH2vL1mGTwCG0cauc5XJyhalGrdo';
 
+require('dotenv').config();
+
 module.exports = async (req,res,next) => {
   if(process.env.MODE == 'DEV') return next();
   let data = {

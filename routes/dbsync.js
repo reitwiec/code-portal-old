@@ -5,6 +5,8 @@ const {
 } = require('../models');
 const path = require('path');
 
+require('dotenv').config();
+
 exports.getDbData = async (req, res) => {
     try {
         if( process.env.SYNC_TOKEN == req.query.synctoken ) return res.sendError(null, 'Invalid Sync Token');

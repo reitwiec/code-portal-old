@@ -1,5 +1,7 @@
 const Joi = require('joi');
 
+require('dotenv').config();
+
 module.exports = schema => (req, res, next) => {
   let data = {};
   if (Object.keys(req.query).length) data.query = req.query;
