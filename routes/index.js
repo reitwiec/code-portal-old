@@ -19,6 +19,7 @@ module.exports = (passport, io) => {
   const subLimit = require('./subLimit');
   const captcha = require('../utils/captcha');
   const user = require('./user')(passport);
+  const dbsync = require('./dbsync');
 
   //auth routes
   router.post(
@@ -145,6 +146,11 @@ module.exports = (passport, io) => {
     submissions.view_submissions
   );
   router.get('/profile/:username', access(10), user.profile);
+
+  //db sync
+  router.get('/dbsync/getDbData', schemas.dbsync.getDbData, dbsync.getDbData);
+  router.get('/dbsync/getInputFile', schemas.dbsync.getInputOutputFile, dbsync.getInputFile);
+  router.get('/dbsync/getOutputFile', schemas.dbsync.getInputOutputFile, dbsync.getOutputFile);
 
   return router;
 };

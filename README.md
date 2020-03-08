@@ -20,5 +20,6 @@
 	8. JUDGE_API=http://127.0.0.1:5612/submissions/?wait=true
 	9. MAIL_API=mail.iecsemanipal.com
 	10. NODE_ENV=production
+	11. SYNC_TOKEN=
 4. Create a database in mysql with the same name as DB_NAME
 5. run `yarn dev`
