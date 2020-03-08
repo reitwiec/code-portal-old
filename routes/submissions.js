@@ -101,7 +101,6 @@ module.exports = io => {
               );
             } catch (err) {
               console.log('axios error');
-	      console.error(new Date(),err);
               return res.sendError();
             }
             // console.log(result);
@@ -221,6 +220,25 @@ module.exports = io => {
     });
   };
 
+  async function getData(submissions) {
+    return Promise.all(
+      submissions.map(async submission => {
+        return Object.assign(
+          {},
+          {
+            id: submission.id,
+            points: submission.points,
+            verdict: submission.verdict,
+            created_at: submission.created_at,
+            source: await read_file_promise(
+              submission.path
+            )
+          }
+        )
+      })
+    );
+  }
+
   exp.view_submissions = async (req, res) => {
     let err, result, submissions;
     [err, result] = await to(
@@ -250,12 +268,13 @@ module.exports = io => {
           user_id: req.user.id,
           question_id: result.id
         },
-        attributes: ['id', 'points', 'verdict', 'created_at']
+        attributes: ['id', 'points', 'verdict', 'created_at', 'path']
       })
     );
+    const subResult = await getData(submissions);
     if (err) return res.sendError(err);
     if (!submissions) return res.sendError(null, 'No submissions yet');
-    res.sendSuccess({ submissions, question: result });
+    res.sendSuccess({ subResult, question: result });
   };
 
   return exp;
