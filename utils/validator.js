@@ -1,6 +1,7 @@
 const Joi = require('joi');
 
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 module.exports = schema => (req, res, next) => {
   let data = {};

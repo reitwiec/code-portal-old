@@ -5,7 +5,7 @@ const {
 } = require('../models');
 const path = require('path');
 
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 exports.getDbData = async (req, res) => {
     try {

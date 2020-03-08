@@ -2,7 +2,8 @@ const request = require('request');
 
 const secret = '6LdYa5oUAAAAAH2vL1mGTwCG0cauc5XJyhalGrdo';
 
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 module.exports = async (req,res,next) => {
   if(process.env.MODE == 'DEV') return next();

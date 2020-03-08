@@ -13,7 +13,7 @@ const axios = require('axios');
 
 const submissions_dir = path.join(__dirname, '..', 'submissions');
 
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const read_file_promise = source => {
   return new Promise((resolve, reject) => {
