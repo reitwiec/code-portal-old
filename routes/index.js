@@ -148,9 +148,9 @@ module.exports = (passport, io) => {
   router.get('/profile/:username', access(10), user.profile);
 
   //db sync
-  router.get('/dbsync/getDbData', schemas.dbsync.getDbData, dbsync.getDbData);
-  router.get('/dbsync/getInputFile', schemas.dbsync.getInputOutputFile, dbsync.getInputFile);
-  router.get('/dbsync/getOutputFile', schemas.dbsync.getInputOutputFile, dbsync.getOutputFile);
+  router.get('/dbsync/getDbData', validator(schemas.dbsync.getDbData), dbsync.getDbData);
+  router.get('/dbsync/getInputFile', validator(schemas.dbsync.getInputOutputFile), dbsync.getInputFile);
+  router.get('/dbsync/getOutputFile', validator(schemas.dbsync.getInputOutputFile), dbsync.getOutputFile);
 
   return router;
 };
