@@ -39,7 +39,6 @@ module.exports = (passport, io) => {
   router.post(
     '/resetpass',
     validator(schemas.auth.resetpass),
-    captcha,
     auth.resetPassword
   );
 

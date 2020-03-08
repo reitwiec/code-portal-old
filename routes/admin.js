@@ -64,6 +64,7 @@ module.exports = () => {
       })
     );
     if (err) return res.sendError(err);
+    questions.sort((a, b) => a.title > b.title ? 1 : -1);
     let obtained_score,
       scores = {};
     [err, obtained_score] = await to(

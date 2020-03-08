@@ -27,6 +27,7 @@ module.exports = passport => {
         )
       })
     );
+    console.log( req.body.username );
     if (err) return res.sendError(err);
     if (myUser && myUser.email === req.body.email)
       return res.sendError(null, 'A user with this email already exists', 409);
@@ -46,8 +47,12 @@ module.exports = passport => {
         password: hash
       })
     );
-    if (err) return res.sendError(err);
-    return res.sendSuccess(null, 'User registered successfully');
+    if (err) {
+	if (err && err.original && err.original.code === 'ER_DUP_ENTRY') return res.sendError(null, 'This username is already taken', 409);
+	else if(err && err.code && err.code ==='ER_DUP_ENTRY') return res.sendError(null, 'This username is already taken', 409);
+	else return res.sendError(err);
+    }
+    else return res.sendSuccess(null, 'User registered successfully');
   };
 
   exp.login = async (req, res) => {
@@ -85,6 +90,7 @@ module.exports = passport => {
 
   exp.forgotpassword = async (req, res) => {
     let tkn, emailobj;
+    req.body.email = String( req.body.email ).trim();
     let [e1, usr] = await to(
       user.findOne({
         where: {

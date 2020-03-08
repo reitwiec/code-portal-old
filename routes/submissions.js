@@ -11,6 +11,8 @@ const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
 
+process.env.JUDGE_API=`http://localhost:5612/submissions/?wait=true`;
+
 const submissions_dir = path.join(__dirname, '..', 'submissions');
 
 const read_file_promise = source => {
@@ -101,6 +103,7 @@ module.exports = io => {
               );
             } catch (err) {
               console.log('axios error');
+	      console.error(new Date(),err);
               return res.sendError();
             }
             // console.log(result);
