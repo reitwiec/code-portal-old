@@ -5,10 +5,6 @@ const basename = path.basename(__filename);
 const op = Sequelize.Op;
 let db = {};
 
-process.env.DB_NAME = 'codeportal';
-process.env.DB_USER = 'root';
-process.env.DB_PASS = 'courseranahilenatha';
-
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,

@@ -17,5 +17,8 @@
 	5. REDIS_HOST
 	6. REDIS_PORT
 	7. PORT (optional)
+	8. JUDGE_API=http://127.0.0.1:5612/submissions/?wait=true
+	9. MAIL_API=mail.iecsemanipal.com
+	10. NODE_ENV=production
 4. Create a database in mysql with the same name as DB_NAME
 5. run `yarn dev`

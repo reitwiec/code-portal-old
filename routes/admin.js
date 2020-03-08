@@ -385,7 +385,7 @@ module.exports = () => {
       })
     );
     if (err) return res.sendError(err);
-    if (modobj === 0) return res.sendError(null, 'Moderator doesnt exist');
+    if (modobj === 0) return res.sendError(null, 'Moderator does not exist');
     return res.sendSuccess(null, 'Successfully deleted moderator');
   };
 

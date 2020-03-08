@@ -11,8 +11,6 @@ const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
 
-process.env.JUDGE_API=`http://localhost:5612/submissions/?wait=true`;
-
 const submissions_dir = path.join(__dirname, '..', 'submissions');
 
 const read_file_promise = source => {

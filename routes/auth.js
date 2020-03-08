@@ -117,7 +117,7 @@ module.exports = passport => {
         )
       );
       if (err) return res.sendError(err);
-      // TODO : Finish Malier Call
+      // TODO : Finish Mailer Call
       axios
         .post(
           'https://mail.iecsemanipal.com/codeportal/forgotpassword',

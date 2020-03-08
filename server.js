@@ -22,7 +22,7 @@ const sess = session({
   saveUninitialized: false,
   secret: 'IECSE',
   store: redisStore,
-  cookie: { maxAge: 604800000 }
+  cookie: { maxAge: 365 * 24 * 60 * 60 * 1000 }
 });
 
 app.use(sess);
