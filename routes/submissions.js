@@ -76,8 +76,48 @@ module.exports = io => {
             }
           });
           // console.log(subcases);
-          let score = 0,
-            i;
+          let score = 0, i;
+          let result;
+          let compilationErrorOccured = false;
+          try{
+            result = await axios.post(
+              process.env.JUDGE_API,
+              {
+                sourceCode : req.body.source,
+                languageId : lang.id,
+                questionId : ques.id
+              },
+              {
+                maxContentLength: 52428890
+              }
+            );
+          }catch(err){
+            console.error(new Date(), err);
+            return res.sendError();
+          }
+          for(i = 0; i < subcases.length; i++){
+            let subcase = subcases[i];
+            let verdict = 'RE';
+            if( result.data.testcases.hasOwnProperty( subcase.testcase_id ) ) verdict = result.data.testcases[ subcase.testcase_id ];
+            if( verdict == 'AC' ) score += casesJSON[subcase.testcase_id].weight;
+            if( verdict == 'CE' ) compilationErrorOccured = true;
+            await subtestcase.update(
+              {
+                verdict
+              },
+              {
+                where: {
+                  id: subcase.id
+                }
+              }
+            );
+            io.emit('testcase_result', {
+              id: subcase.id,
+              points: ((score / totalWeight) * maxScore).toFixed(0),
+              verdict
+            });
+          }
+          /*
           for (i = 0; i < subcases.length; i++) {
             let subcase = subcases[i];
             let input = await read_file_promise(
@@ -103,7 +143,7 @@ module.exports = io => {
               );
             } catch (err) {
               console.log('axios error');
-	      console.error(new Date(),err);
+              console.error(new Date(), err);
               return res.sendError();
             }
             // console.log(result);
@@ -134,8 +174,9 @@ module.exports = io => {
               verdict
             });
           }
+          */
           // Compilation Error exits and does not do compilation everytime
-          if (i < subcases.length) {
+          if ( compilationErrorOccured ) {
             await subtestcase.update(
               {
                 verdict: 'CE',
