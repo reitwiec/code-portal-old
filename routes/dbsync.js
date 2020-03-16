@@ -1,8 +1,7 @@
 const {
     language,
     question,
-    testcase,
-    contest
+    testcase
 } = require('../models');
 const path = require('path');
 
@@ -16,12 +15,10 @@ exports.getDbData = async (req, res) => {
         let languageData = await language.findAll();
         let questionData = await question.findAll();
         let testcaseData = await testcase.findAll();
-        let contestData = await contest.findAll();
         return res.sendSuccess({
             languageData,
             questionData,
-            testcaseData,
-            contestData
+            testcaseData
         });
     } catch (err) {
         return res.sendError(err);
