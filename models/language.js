@@ -22,6 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       multiplier: {
         type: DataTypes.DOUBLE,
         allowNull: false
+      },
+      compilation_command: {
+        type: DataTypes.STRING(256),
+        allowNull: false,
+        defaultValue: "compilation-not-needed"
+      },
+      execution_command: {
+        type: DataTypes.STRING(256),
+        allowNull: false,
+        defaultValue: "execution-not-needed"
       }
     },
     {
