@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(256),
         allowNull: false,
         defaultValue: "execution-not-needed"
+      },
+      target_filename: {
+        type: DataTypes.STRING(256),
+        allowNull: false,
+        defaultValue: "main"
       }
     },
     {
