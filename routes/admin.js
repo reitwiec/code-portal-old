@@ -10,6 +10,8 @@ const path = '../questions';
 const Path = require('path');
 const shell = require('shelljs');
 const Sequelize = require('sequelize');
+const extract = require('extract-zip');
+const util = require('util')
 
 const read_file_promise = source => {
   return new Promise((resolve, reject) => {
@@ -466,13 +468,46 @@ module.exports = () => {
   //   }
   //   return res.sendSuccess(null, 'Test case added along with file upload');
   // };
-
-  exp.addtestcase = async (req, res) => {
-    if (!req.files.inputfile || !req.files.outputfile)
+  
+  exp.addtestcase = async(req, res) => {
+    if (!req.files.testcases)
       return res.sendError(null, 'Invalid query format');
     let err, testobj;
-    [err, testobj] = await to(testcase.create(req.body));
-    if (err) return res.sendError(err);
+    let tempPath = Path.join(
+      __dirname,
+      '..',
+      'temporary'
+    )
+    shell.mkdir('-p', tempPath);
+    tempPath = Path.join(tempPath, req.body.question_id + '.zip');
+    err = req.files.testcases.mv(tempPath, async err => {
+      return err;
+    });
+    if (err) {
+      res.sendError(err);
+    }
+    let extractionPath = Path.join(
+      __dirname,
+      '..',
+      'questions',
+      req.body.question_id,
+    );
+    extract(tempPath, { dir: Path.join(extractionPath) }, async function (err) {
+      if(err) res.sendError(err);
+      try {
+        fs.access(tempPath, async err => {
+          fs.unlinkSync(tempPath);
+          if (err) {
+            res.sendError(err);
+          }
+        });
+      } catch (err) {
+        res.sendError(err)
+      }
+    });
+    if (err) {
+      res.sendError(err);
+    }
     let inpath = Path.join(
       __dirname,
       '..',
@@ -487,19 +522,21 @@ module.exports = () => {
       req.body.question_id,
       'output'
     );
-    shell.mkdir('-p', inpath);
-    shell.mkdir('-p', outpath);
-    inpath = Path.join(inpath, testobj.id + '.txt');
-    outpath = Path.join(outpath, testobj.id + '.txt');
-    req.files.inputfile.mv(inpath, async err => {
-      if (err) return res.sendError(err);
-      req.files.outputfile.mv(outpath, async err => {
-        if (err) return res.sendError(err);
-        [err, testobj] = await to(
+    for (let i = 0; i < req.body.weight.length; i++) {
+      let testweight = req.body.weight[i];
+      [err, testobj] = await to(testcase.create({sample: req.body.sample, explanation: req.body.explanation, weight: testweight, question_id: req.body.question_id}));
+      if (err) {
+        res.sendError(err);
+      }
+      fs.rename(inpath+'/inp_0'+(i+1)+'.txt', inpath+'/'+testobj.id+'.txt', async function(err) {
+        if(err) res.sendError(err);
+        fs.rename(outpath+'/out_0'+(i+1)+'.txt', outpath+'/'+testobj.id+'.txt', async function(err) {
+          if(err) res.sendError(err);
+          [err, testobj] = await to(
           testcase.update(
             {
-              input_path: inpath,
-              output_path: outpath
+              input_path: inpath + '/' + testobj.id + '.txt',
+              output_path: outpath + '/' + testobj.id + '.txt'
             },
             {
               where: {
@@ -509,10 +546,11 @@ module.exports = () => {
           )
         );
         if (err) return res.sendError(err);
-        return res.sendSuccess(null, 'Testcase added successfully');
-      });
-    });
-  };
+        })
+      })
+    }
+    return res.sendSuccess();
+  }
 
   exp.deletetestcase = async (req, res) => {
     let err, testobj;

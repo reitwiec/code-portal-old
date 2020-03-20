@@ -139,7 +139,7 @@ const addtestcase = Joi.object({
       .max(1)
       .required(),
     explanation: Joi.string().optional(),
-    weight: Joi.number().required()
+    weight: Joi.array().items(Joi.number())
   })
 });
 
