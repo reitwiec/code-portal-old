@@ -10,7 +10,7 @@ const uuid = require('uuid/v4');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
-
+axios.defaults.timeout = 1000 * 60 * 5;
 const submissions_dir = path.join(__dirname, '..', 'submissions');
 
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
@@ -98,7 +98,7 @@ module.exports = io => {
           for(i = 0; i < subcases.length; i++){
             let subcase = subcases[i];
             let verdict = 'RE';
-            if( result.data.testcases.hasOwnProperty( subcase.testcase_id ) ) verdict = result.data.testcases[ subcase.testcase_id ];
+            if( result.data.data.testcases.hasOwnProperty( subcase.testcase_id ) ) verdict = result.data.data.testcases[ subcase.testcase_id ];
             if( verdict == 'AC' ) score += casesJSON[subcase.testcase_id].weight;
             if( verdict == 'CE' ) compilationErrorOccured = true;
             await subtestcase.update(
